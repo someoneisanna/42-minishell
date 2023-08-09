@@ -7,15 +7,23 @@ RESET = \033[0m
 
 # ---------------------------------- VARIABLES ---------------------------------
 
-NAME = philo
+NAME = minishell
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g -lreadline
+
+FLAGS_MANDATORY = -Wall -Wextra -Werror
+FLAGS_DEBUG = -g
+FLAGS_EXTRA = -lreadline
+
+CFLAGS = $(FLAGS_MANDATORY) $(FLAGS_DEBUG) $(FLAGS_EXTRA)
 
 RM = rm -f
-MAKE = make --no-print-directory
+MAKE = make --no-print-directory -C
 
-SRCS =
+LIBFT_DIR = libft
+LIBFT = $(LIBFT_DIR)/libft.a
+
+SRCS = srcs/main.c
 S_OBJS = $(SRCS:.c=.o)
 
 # ------------------------------------ RULES -----------------------------------
@@ -24,19 +32,22 @@ S_OBJS = $(SRCS:.c=.o)
 
 all: $(NAME)
 
-$(NAME): $(S_OBJS)
-	@$(CC) $(CFLAGS) $(S_OBJS) -o $(NAME) -I.
-	@printf "$(GREEN)	Executable ./$(NAME) was created.\n$(RESET)"
-
 %.o : %.c
 	@$(CC) $(CFLAGS) -c $< -o $@ -I.
 	@printf "$(PURPLE)	Compiled$(RESET) $<\n"
 
+$(NAME): $(S_OBJS)
+	@$(MAKE) $(LIBFT_DIR)
+	@$(CC) $(CFLAGS) $(SRCS) $(LIBFT) -o $(NAME)
+	@printf "$(GREEN)	Executable ./$(NAME) was created.\n$(RESET)"
+
 clean:
+	@$(MAKE) $(LIBFT_DIR) clean
 	@$(RM) $(S_OBJS)
 	@printf "$(RED)	Object files were removed.\n$(RESET)"
 
 fclean: clean
+	@$(MAKE) $(LIBFT_DIR) fclean
 	@$(RM) $(NAME)
 	@printf "$(RED)	Executable ./$(NAME) was removed.\n$(RESET)"
 
