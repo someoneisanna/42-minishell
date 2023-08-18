@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 19:12:59 by ataboada          #+#    #+#             */
-/*   Updated: 2023/07/13 17:11:15 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/08/18 11:07:30 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 # include <stdlib.h>
 # include <unistd.h>
 
-# include "ft_printf.h"
-# include "get_next_line.h"
+# include "printf/ft_printf.h"
+# include "gnl/get_next_line.h"
 
 typedef struct s_list
 {

@@ -1,0 +1,11 @@
+
+This is a folder that will help us understand some functions
+
+It was done using Indradhanush Gupta's tutorial on Writing a Unix Shell
+
+The right order is: (you don't have to follow it, but it was created in that order):
+	1. forks
+	2. execve
+	3. readline
+	4. chdir
+	5. 
