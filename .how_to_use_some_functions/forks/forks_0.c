@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/18 11:16:21 by ataboada          #+#    #+#             */
-/*   Updated: 2023/08/18 11:37:21 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/08/28 11:02:21 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 
 /*
 	this is a file that will help with the understanding of forks, without using the wait and waitpid functions
+
+	reminder: we cannot use getpid in minishell
 */
 
 int main(void)

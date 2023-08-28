@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/18 16:11:46 by ataboada          #+#    #+#             */
-/*   Updated: 2023/08/18 17:55:00 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/08/28 15:44:16 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include <sys/wait.h>
 #include <readline/readline.h>
 
-#include "../libft/libft.h"
+#include "../../libft/libft.h"
 
 /*
 	here we will see how to solve the issue of chdir_1.c
@@ -30,7 +30,7 @@
 
 	why it seems we are in an inifinite loop? because when shell executes the command, it creates a new child process. once the child process is done and returns a result, the parent process will wait for it to finish and then it will execute the next command. this is why we are in an infinite loop, because the parent process never finishes, it just waits for the child process to finish and then it executes the next command.
 
-	compile: ccf chdir_2.c ../libft/libft.a -lreadline
+	compile: ccf chdir_2.c ../../libft/libft.a -lreadline
 */
 
 int cd(char *path)
@@ -54,12 +54,16 @@ int main()
 			free(command); // free_split
 			continue;
 		}
+
+		// THIS IS THE CD HANDLER
 		if (strcmp(command[0], "cd") == 0)
 		{
 			if (cd(command[1]) < 0)
 				perror(command[1]);
 			continue;
 		}
+
+		// HERE IS THE FORK
 		child_pid = fork();
 		if (child_pid < 0)
 		{
@@ -76,6 +80,8 @@ int main()
 		}
 		else
 			wait(NULL);
+
+		// HERE ARE THE FREES
 		free(input);
 		int i = 0;
 		while (command[i]) // this is free_split
