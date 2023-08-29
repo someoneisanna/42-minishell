@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 09:30:28 by ataboada          #+#    #+#             */
-/*   Updated: 2023/08/09 11:38:24 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/08/28 18:46:14 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@
 # include <dirent.h>
 # include <termios.h>
 # include <curses.h>
+# include <term.h>
+# include <termcap.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 
