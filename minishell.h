@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 09:30:28 by ataboada          #+#    #+#             */
-/*   Updated: 2023/08/28 18:46:14 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/08/29 18:11:08 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@
 
 # include "libft/libft.h"
 # include <stdio.h>
+# include <stdlib.h>
 # include <unistd.h>
 # include <string.h>
-# include <stdlib.h>
 # include <fcntl.h>
 # include <sys/wait.h>
 # include <sys/stat.h>
@@ -35,14 +35,23 @@
 
 // ---------------------------------- DEFINES ----------------------------------
 
+# define TRUE	1
+# define FALSE	0
 
+# define PIPE_W	1
+# define PIPE_R	0
 
 // ---------------------------------- STRUCTS ----------------------------------
 
+typedef struct s_minishell
+{
+	char	*input;
 
+}	t_minishell;
 
 // --------------------------------- PROTOTYPES --------------------------------
 
+void	ft_prompt(t_minishell *ms);
 
 
 # endif

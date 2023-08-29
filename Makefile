@@ -11,11 +11,8 @@ NAME = minishell
 
 CC = cc
 
-FLAGS_MANDATORY = -Wall -Wextra -Werror
-FLAGS_DEBUG = -g
-FLAGS_EXTRA = -lreadline
-
-CFLAGS = $(FLAGS_MANDATORY) $(FLAGS_DEBUG) $(FLAGS_EXTRA)
+CFLAGS = -Wall -Wextra -Werror
+LFLAGS = -lreadline
 
 RM = rm -f
 MAKE = make --no-print-directory -C
@@ -23,7 +20,9 @@ MAKE = make --no-print-directory -C
 LIBFT_DIR = libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
-SRCS = srcs/main.c
+SRCS = srcs/main.c \
+		srcs/prompt.c
+
 S_OBJS = $(SRCS:.c=.o)
 
 # ------------------------------------ RULES -----------------------------------
@@ -38,7 +37,7 @@ all: $(NAME)
 
 $(NAME): $(S_OBJS)
 	@$(MAKE) $(LIBFT_DIR)
-	@$(CC) $(CFLAGS) $(SRCS) $(LIBFT) -o $(NAME)
+	@$(CC) $(CFLAGS) $(SRCS) $(LIBFT) $(LFLAGS) -o $(NAME)
 	@printf "$(GREEN)	Executable ./$(NAME) was created.\n$(RESET)"
 
 clean:
