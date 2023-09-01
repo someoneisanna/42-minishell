@@ -1,27 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   prompt.c                                           :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/29 18:10:19 by ataboada          #+#    #+#             */
-/*   Updated: 2023/08/29 18:11:04 by ataboada         ###   ########.fr       */
+/*   Created: 2023/08/30 17:44:16 by ataboada          #+#    #+#             */
+/*   Updated: 2023/09/01 16:53:18 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	ft_prompt(t_minishell *ms);
+int	ft_isspace(char c);
+int	ft_len_until_match(char *input, char *match);
 
-void	ft_prompt(t_minishell *ms)
+int	ft_isspace(char c)
 {
-	while (1)
-	{
-		ms->input = readline("minishell> ");
-		if (!ms->input)
-			exit(0);
-		add_history(ms->input);
-		free(ms->input);
-	}
+	if (c == ' ' || c == '\t' || c == '\n' || c == '\v' || c == '\f')
+		return (YES);
+	return (NO);
+}
+
+int	ft_len_until_match(char *input, char *match)
+{
+	int	i;
+
+	i = 0;
+	while (input[i] && ft_strchr(match, input[i]) == NULL)
+		i++;
+	return (i);
 }

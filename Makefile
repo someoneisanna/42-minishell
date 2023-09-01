@@ -21,7 +21,10 @@ LIBFT_DIR = libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
 SRCS = srcs/main.c \
-		srcs/prompt.c
+		srcs/parser.c \
+		srcs/utils.c \
+		srcs/tokenization/tokenizer.c \
+		srcs/tokenization/tokenizer_utils.c
 
 S_OBJS = $(SRCS:.c=.o)
 
