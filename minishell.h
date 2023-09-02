@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 09:30:28 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/02 16:33:35 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/09/02 17:16:48 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@
 # define PIPE_W			1
 # define PIPE_R			0
 
+# define E_QUOTES		"Syntax Error: Unclosed quotes"
 # define E_SYNTAX		"Syntax error near unexpected token"
 // ---------------------------------- STRUCTS ----------------------------------
 

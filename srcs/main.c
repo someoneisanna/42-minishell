@@ -6,13 +6,23 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 11:26:27 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/02 16:21:58 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/09/02 16:43:49 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
 void	ft_main_loop(t_minishell *ms);
+
+/*
+	This is the beginning of the program.
+	We initialize the main structure and start the main loop.
+	Cronologically, minishell uses the files/folders in this order:
+		1) main.c
+		2) parser.c
+		3) lexical_analysis
+		4) syntactic_analysis
+*/
 
 int	main(int ac, char **av)
 {

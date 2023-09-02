@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 11:14:28 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/01 16:50:43 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/09/02 18:22:03 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,11 @@
 t_token *ft_new_token(char *input, t_type type);
 void	ft_add_token_back(t_token **token, t_token *new_token);
 void	ft_free_token_lst(t_token **token_lst);
+
+/*
+	Here are the functions that helped us to build the doubly linked list.
+	The logic is very similar to the one used in normal linked lists, but we have to add the *prev pointer (see ft_add_token_back()).
+*/
 
 t_token *ft_new_token(char *input, t_type type)
 {

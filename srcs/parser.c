@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 11:51:17 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/02 11:54:46 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/09/02 18:16:54 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,14 @@
 
 int		ft_parser(t_minishell *ms, char *input);
 int		ft_quote_checker(char *input);
+
+/*
+	When building a shell, the first step is parsing the input.
+	The parser has three main steps:
+	1) Lexical analysis: The input is split into tokens (tokenizer).
+	2) Syntax analysis: The tokens are checked for syntax errors (syntax checker)
+	3) Command Table Construction: The tokens are converted into a command table.
+*/
 
 int	ft_parser(t_minishell *ms, char *input)
 {
@@ -44,9 +52,6 @@ int		ft_quote_checker(char *input)
 		i++;
 	}
 	if (closed_quote == NO)
-	{
-		printf("Syntax error: unclosed quote\n");
-		return (ERROR_FOUND);
-	}
+		return (ft_error(E_QUOTES));
 	return (EXIT_SUCCESS);
 }

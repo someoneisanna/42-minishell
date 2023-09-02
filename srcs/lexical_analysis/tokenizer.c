@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 11:06:37 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/02 10:43:00 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/09/02 18:19:46 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,13 @@
 void	ft_tokenizer(t_minishell *ms, char *input);
 int		ft_add_token(t_token **token_lst, char *input, t_type type);
 int		ft_add_command_token(t_token **token_lst, char *input, t_type type);
+
+/*
+	This is the first step of the parser, where the input is split into tokens.
+	Each token will have assigned it's content and type.
+	The type is used to build the command table and execute the commands.
+	We will use a doubly linked list to store the tokens, so we can easily work with the commands (there is a *prev and *next pointer in the struct).
+*/
 
 void	ft_tokenizer(t_minishell *ms, char *input)
 {
