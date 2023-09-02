@@ -1,25 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   utils_0.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 17:44:16 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/01 16:53:18 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/09/02 16:12:41 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../minishell.h"
 
-int	ft_isspace(char c);
+int	ft_is_space(char c);
+int	ft_everything_is_space(char *str);
 int	ft_len_until_match(char *input, char *match);
+int	ft_is_cmd_or_file(t_type type);
+int	ft_perror(char *error);
 
-int	ft_isspace(char c)
+int	ft_is_space(char c)
 {
 	if (c == ' ' || c == '\t' || c == '\n' || c == '\v' || c == '\f')
 		return (YES);
 	return (NO);
+}
+
+int	ft_everything_is_space(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (ft_is_space(str[i]) == NO)
+			return (FALSE);
+		i++;
+	}
+	return (TRUE);
 }
 
 int	ft_len_until_match(char *input, char *match)
@@ -30,4 +47,17 @@ int	ft_len_until_match(char *input, char *match)
 	while (input[i] && ft_strchr(match, input[i]) == NULL)
 		i++;
 	return (i);
+}
+
+int	ft_is_cmd_or_file(t_type type)
+{
+	if (type == T_OTHER || type == T_QUOTE || type == T_DQUOTE)
+		return (YES);
+	return (NO);
+}
+
+int	ft_perror(char *error)
+{
+	printf("%s\n", error);
+	return (EXIT_FAILURE);
 }

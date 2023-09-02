@@ -22,9 +22,10 @@ LIBFT = $(LIBFT_DIR)/libft.a
 
 SRCS = srcs/main.c \
 		srcs/parser.c \
-		srcs/utils.c \
-		srcs/tokenization/tokenizer.c \
-		srcs/tokenization/tokenizer_utils.c
+		srcs/utils/utils_0.c \
+		srcs/lexical_analysis/tokenizer.c \
+		srcs/lexical_analysis/tokenizer_utils.c \
+		srcs/syntactic_analysis/syntax_checker.c \
 
 S_OBJS = $(SRCS:.c=.o)
 
@@ -54,3 +55,6 @@ fclean: clean
 	@printf "$(RED)	Executable ./$(NAME) was removed.\n$(RESET)"
 
 re: fclean all
+
+valgrind: $(NAME)
+	@valgrind --suppressions=readline.supp --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(NAME)

@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 11:51:17 by ataboada          #+#    #+#             */
-/*   Updated: 2023/08/31 11:07:26 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/09/02 11:54:46 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ int	ft_parser(t_minishell *ms, char *input)
 {
 	if (ft_quote_checker(input) == ERROR_FOUND)
 		return (EXIT_FAILURE);
-
 	ft_tokenizer(ms, input);
-
-	return (EXIT_SUCCESS); //we later have to change to a function that checks if the input is valid
+	if (ft_syntax_checker(ms->token) == ERROR_FOUND)
+		return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
 }
 
 int		ft_quote_checker(char *input)

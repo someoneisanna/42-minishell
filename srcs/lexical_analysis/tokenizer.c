@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 11:06:37 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/01 16:53:43 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/09/02 10:43:00 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	ft_tokenizer(t_minishell *ms, char *input)
 	i = 0;
 	while (input[i])
 	{
-		if (ft_isspace(input[i]) == YES)
+		if (ft_is_space(input[i]) == YES)
 			i++;
 		else if (input[i] == '|')
 			i += ft_add_token(&ms->token, "|", T_PIPE);
