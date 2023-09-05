@@ -23,9 +23,11 @@ LIBFT = $(LIBFT_DIR)/libft.a
 SRCS = srcs/main.c \
 		srcs/parser.c \
 		srcs/utils/utils_0.c \
-		srcs/lexical_analysis/tokenizer.c \
-		srcs/lexical_analysis/tokenizer_utils.c \
-		srcs/syntactic_analysis/syntax_checker.c \
+		srcs/parsing/tokenizer.c \
+		srcs/parsing/tokenizer_utils.c \
+		srcs/parsing/syntax_checker.c \
+		srcs/parsing/expander.c \
+		srcs/environment/environment_lst.c \
 
 S_OBJS = $(SRCS:.c=.o)
 
@@ -56,5 +58,5 @@ fclean: clean
 
 re: fclean all
 
-valgrind: $(NAME)
+valgrind: all
 	@valgrind --suppressions=readline.supp --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(NAME)

@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 09:30:28 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/02 17:16:48 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/09/05 10:31:38 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,12 @@ typedef enum e_type
 	T_OTHER,
 }	t_type;
 
+typedef struct s_env
+{
+	char			*key;
+	char			*value;
+	struct s_env	*next;
+}	t_env;
 typedef struct s_token
 {
 	char			*content;
@@ -75,6 +81,8 @@ typedef struct s_token
 typedef struct s_minishell
 {
 	char	*input;
+
+	t_env	*env;
 	t_token	*token;
 }	t_minishell;
 
@@ -82,31 +90,51 @@ typedef struct s_minishell
 
 // ROOT _________________________________________________________________________
 
+// main.c
 void	ft_main_loop(t_minishell *ms);
+void	ft_free_all(t_minishell *ms, int exit_flag);
 
+// parser.c
 int		ft_parser(t_minishell *ms, char *input);
 int		ft_quote_checker(char *input);
 
-// LEXICAL_ANALYSIS _____________________________________________________________
+// PARSING ______________________________________________________________________
 
+// tokenizer.c
 void	ft_tokenizer(t_minishell *ms, char *input);
 int		ft_add_token(t_token **token_lst, char *input, t_type type);
 int		ft_add_command_token(t_token **token_lst, char *input, t_type type);
 
+// tokenizer_utils.c
 t_token *ft_new_token(char *input, t_type type);
 void	ft_add_token_back(t_token **token, t_token *new_token);
 void	ft_free_token_lst(t_token **token_lst);
 
-// SYNTACTIC_ANALYSIS ___________________________________________________________
+// syntax_checker.c
+int		ft_syntax_checker(t_token *token);
 
-int		ft_syntax_checker(t_token *head);
+// expander.c
+void	ft_expander(t_minishell *ms, t_token *token);
+void	ft_expand_command(t_minishell *ms, t_token *token);
+char	*ft_get_key(char *cmd);
+char	*ft_get_env_value(t_env **env_lst, char *key);
+char	*ft_replace_content(char *cmd, char *key, char *value);
+
+// ENVIRONMENT __________________________________________________________________
+
+// environment_lst.c
+void	ft_init_env_lst(t_env **env, char **envp);
+t_env	*ft_new_env(char *key, char *value);
+void	ft_add_env_back(t_env **env_lst, t_env *new_env);
+void	ft_free_env_lst(t_env **env_lst);
 
 // UTILS ________________________________________________________________________
 
-int	ft_is_space(char c);
-int	ft_everything_is_space(char *str);
-int	ft_len_until_match(char *input, char *match);
-int	ft_is_cmd_or_file(t_type type);
-int	ft_perror(char *error);
+// utils_0.c
+int		ft_is_space(char c);
+int		ft_everything_is_space(char *str);
+int		ft_len_until_match(char *input, char *match);
+int		ft_is_cmd_or_file(t_type type);
+int		ft_perror(char *error);
 
 # endif

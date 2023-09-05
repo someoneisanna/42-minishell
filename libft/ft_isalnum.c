@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_isalnum.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataboada <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 18:50:56 by ataboada          #+#    #+#             */
-/*   Updated: 2023/05/08 18:50:57 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/09/04 10:25:29 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	ft_isalnum(int arg)
 	}
 	if ((arg >= 65 && arg <= 90) || (arg >= 97 && arg <= 122))
 	{
-		return (2);
+		return (1);
 	}
 	return (0);
 }
