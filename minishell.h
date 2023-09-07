@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 09:30:28 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/05 10:31:38 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/09/07 18:15:39 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,11 @@ typedef enum e_type
 	T_QUOTE,
 	T_DQUOTE,
 	T_OTHER,
+	T_COMMAND,
+	T_FILE_IN,
+	T_FILE_TRUNC,
+	T_DELIMITER,
+	T_FILE_APPEND,
 }	t_type;
 
 typedef struct s_env
@@ -78,12 +83,24 @@ typedef struct s_token
 	struct s_token	*next;
 }	t_token;
 
+typedef struct s_cmd
+{
+	char			*cmd;
+	char			**args;
+	char			*file_in;
+	char			*file_tr;
+	char			*heredoc;
+	char			*file_ap;
+	struct s_cmd	*next;
+}	t_cmd;
+
 typedef struct s_minishell
 {
 	char	*input;
 
 	t_env	*env;
 	t_token	*token;
+	t_cmd	*cmd_table;
 }	t_minishell;
 
 // --------------------------------- PROTOTYPES ---------------------------------
@@ -120,6 +137,17 @@ char	*ft_get_key(char *cmd);
 char	*ft_get_env_value(t_env **env_lst, char *key);
 char	*ft_replace_content(char *cmd, char *key, char *value);
 
+// command_table.c
+void	ft_command_table_creator(t_minishell *ms);
+void	ft_command_table_helper(t_minishell *ms);
+
+// command_table_utils.c
+t_cmd	*ft_new_cmd(t_token *first, int n_args);
+char	**ft_get_args(t_token *first, int n_args);
+char	*ft_add_redirections(t_token *first, int n_args, t_type type);
+void	ft_add_cmd_back(t_cmd **cmd_table, t_cmd *new_cmd);
+void	ft_free_cmd_lst(t_cmd **cmd_table);
+
 // ENVIRONMENT __________________________________________________________________
 
 // environment_lst.c
@@ -136,5 +164,8 @@ int		ft_everything_is_space(char *str);
 int		ft_len_until_match(char *input, char *match);
 int		ft_is_cmd_or_file(t_type type);
 int		ft_perror(char *error);
+
+// utils_1.c
+void	ft_free_str_array(char **str_array);
 
 # endif

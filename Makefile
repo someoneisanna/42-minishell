@@ -22,12 +22,15 @@ LIBFT = $(LIBFT_DIR)/libft.a
 
 SRCS = srcs/main.c \
 		srcs/parser.c \
-		srcs/utils/utils_0.c \
 		srcs/parsing/tokenizer.c \
 		srcs/parsing/tokenizer_utils.c \
 		srcs/parsing/syntax_checker.c \
 		srcs/parsing/expander.c \
+		srcs/parsing/command_table.c \
+		srcs/parsing/command_table_utils.c \
 		srcs/environment/environment_lst.c \
+		srcs/utils/utils_0.c \
+		srcs/utils/utils_1.c \
 
 S_OBJS = $(SRCS:.c=.o)
 

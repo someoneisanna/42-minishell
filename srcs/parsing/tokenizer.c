@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 11:06:37 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/02 18:19:46 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/09/06 09:45:02 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ int	ft_add_command_token(t_token **token_lst, char *input, t_type type)
 	char	*command;
 	int		found_match;
 
+	match = NULL;
 	if (type == T_QUOTE || type == T_DQUOTE)
 	{
 		if (type == T_QUOTE)

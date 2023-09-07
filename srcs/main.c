@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 11:26:27 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/05 10:13:29 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/09/07 18:09:52 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,16 @@ void	ft_free_all(t_minishell *ms, int exit_flag);
 	Cronologically, minishell uses the files/folders in this order:
 		1) main.c
 		2) environment
-		2) parser.c
-		3) lexical_analysis
-		4) syntactic_analysis
-		5) expansions
+			- environment_lst.c
+		3) parser.c
+		4) parsing
+			- tokenizer.c
+			- tokenizer_utils.c
+			- syntax_checker.c
+			- expander.c
+			- command_table.c
+			- command_table_utils.c
+		5) execution
 */
 
 int	main(int ac, char **av, char **envp)
@@ -59,6 +65,7 @@ void	ft_main_loop(t_minishell *ms)
 void	ft_free_all(t_minishell *ms, int exit_flag)
 {
 	ft_free_token_lst(&ms->token);
+	ft_free_cmd_lst(&ms->cmd_table);
 	if (exit_flag == YES)
 	{
 		ft_free_env_lst(&ms->env);
