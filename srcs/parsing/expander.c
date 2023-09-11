@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 15:51:46 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/05 10:15:34 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/09/11 12:19:21 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,10 @@ void	ft_expand_command(t_minishell *ms, t_token *token)
 	while (ft_strchr(token->content, '$') != NULL)
 	{
 		key = ft_get_key(token->content);
-		if (ft_strncmp(key, "$?", 2) == 0)
+		if (ft_strncmp(key, "$?", 3) == 0)
 			value = ft_itoa(42); //create a exit status variable
 		else
-			value = ft_get_env_value(&ms->env, key);
+			value = ft_get_env_value(&ms->env_lst, key);
 		tmp = token->content;
 		token->content = ft_replace_content(token->content, key, value);
 		free(tmp);

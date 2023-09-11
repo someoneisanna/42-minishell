@@ -21,7 +21,7 @@ LIBFT_DIR = libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
 SRCS = srcs/main.c \
-		srcs/parser.c \
+		srcs/parsing/parser.c \
 		srcs/parsing/tokenizer.c \
 		srcs/parsing/tokenizer_utils.c \
 		srcs/parsing/syntax_checker.c \
@@ -29,6 +29,15 @@ SRCS = srcs/main.c \
 		srcs/parsing/command_table.c \
 		srcs/parsing/command_table_utils.c \
 		srcs/environment/environment_lst.c \
+		srcs/execution/executer.c \
+		srcs/execution/handlers.c \
+		srcs/builtins/cd.c \
+		srcs/builtins/echo.c \
+		srcs/builtins/env.c \
+		srcs/builtins/exit.c \
+		srcs/builtins/export.c \
+		srcs/builtins/pwd.c \
+		srcs/builtins/unset.c \
 		srcs/utils/utils_0.c \
 		srcs/utils/utils_1.c \
 

@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 11:06:37 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/06 09:45:02 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/09/11 11:25:31 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,21 +33,21 @@ void	ft_tokenizer(t_minishell *ms, char *input)
 		if (ft_is_space(input[i]) == YES)
 			i++;
 		else if (input[i] == '|')
-			i += ft_add_token(&ms->token, "|", T_PIPE);
+			i += ft_add_token(&ms->token_lst, "|", T_PIPE);
 		else if (input[i] == '<' && input[i + 1] != '<')
-			i += ft_add_token(&ms->token, "<", T_REDIR_IN);
+			i += ft_add_token(&ms->token_lst, "<", T_REDIR_IN);
 		else if (input[i] == '>' && input[i + 1] != '>')
-			i += ft_add_token(&ms->token, ">", T_REDIR_OUT);
+			i += ft_add_token(&ms->token_lst, ">", T_REDIR_OUT);
 		else if (input[i] == '<' && input[i + 1] == '<')
-			i += ft_add_token(&ms->token, "<<", T_REDIR2_IN);
+			i += ft_add_token(&ms->token_lst, "<<", T_REDIR2_IN);
 		else if (input[i] == '>' && input[i + 1] == '>')
-			i += ft_add_token(&ms->token, ">>", T_REDIR2_OUT);
+			i += ft_add_token(&ms->token_lst, ">>", T_REDIR2_OUT);
 		else if (input[i] == '\'')
-			i += ft_add_command_token(&ms->token, input + i, T_QUOTE);
+			i += ft_add_command_token(&ms->token_lst, input + i, T_QUOTE);
 		else if (input[i] == '\"')
-			i += ft_add_command_token(&ms->token, input + i, T_DQUOTE);
+			i += ft_add_command_token(&ms->token_lst, input + i, T_DQUOTE);
 		else
-			i += ft_add_command_token(&ms->token, input + i, T_OTHER);
+			i += ft_add_command_token(&ms->token_lst, input + i, T_OTHER);
 	}
 }
 

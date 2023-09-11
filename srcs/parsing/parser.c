@@ -6,11 +6,11 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 11:51:17 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/07 18:16:51 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/09/11 14:36:44 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../minishell.h"
 
 int		ft_parser(t_minishell *ms, char *input);
 int		ft_quote_checker(char *input);
@@ -30,9 +30,9 @@ int	ft_parser(t_minishell *ms, char *input)
 	if (ft_quote_checker(input) == ERROR_FOUND)
 		return (EXIT_FAILURE);
 	ft_tokenizer(ms, input);
-	if (ft_syntax_checker(ms->token) == ERROR_FOUND)
+	if (ft_syntax_checker(ms, ms->token_lst) == ERROR_FOUND)
 		return (EXIT_FAILURE);
-	ft_expander(ms, ms->token);
+	ft_expander(ms, ms->token_lst);
 	ft_command_table_creator(ms);
 	return (EXIT_SUCCESS);
 }
@@ -56,6 +56,6 @@ int		ft_quote_checker(char *input)
 		i++;
 	}
 	if (closed_quote == NO)
-		return (ft_perror(E_QUOTES));
+		return (printf("%s\n", E_QUOTES) && EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }

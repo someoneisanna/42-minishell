@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 11:26:27 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/07 18:09:52 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/09/11 14:41:49 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,19 @@ void	ft_free_all(t_minishell *ms, int exit_flag);
 		1) main.c
 		2) environment
 			- environment_lst.c
-		3) parser.c
-		4) parsing
+		3) parsing
+			- parser.c
 			- tokenizer.c
 			- tokenizer_utils.c
 			- syntax_checker.c
 			- expander.c
 			- command_table.c
 			- command_table_utils.c
-		5) execution
+		4) execution
+			- executer.c
+			- handlers.c
+		5) builtins
+			- cd.c, echo.c, env.c, exit.c, export.c, pwd.c, unset.c
 */
 
 int	main(int ac, char **av, char **envp)
@@ -40,7 +44,9 @@ int	main(int ac, char **av, char **envp)
 	(void)ac;
 	(void)av;
 	ft_bzero(&ms, sizeof(t_minishell));
-	ft_init_env_lst(&ms.env, envp);
+	ft_init_env_lst(&ms.env_lst, envp);
+	ms.envp = envp;
+	ms.paths = ft_get_paths(ms.env_lst);
 	ft_main_loop(&ms);
 }
 
@@ -55,6 +61,7 @@ void	ft_main_loop(t_minishell *ms)
 		if (ft_everything_is_space(ms->input) == FALSE)
 		{
 			ft_parser(ms, ms->input);
+			ft_executer(ms);
 			ft_free_all(ms, NO);
 		}
 		free(ms->input);
@@ -64,11 +71,13 @@ void	ft_main_loop(t_minishell *ms)
 
 void	ft_free_all(t_minishell *ms, int exit_flag)
 {
-	ft_free_token_lst(&ms->token);
-	ft_free_cmd_lst(&ms->cmd_table);
+	ft_free_token_lst(&ms->token_lst);
+	ft_free_cmd_lst(&ms->cmd_lst);
+	unlink(".heredoc");
 	if (exit_flag == YES)
 	{
-		ft_free_env_lst(&ms->env);
+		ft_free_env_lst(&ms->env_lst);
+		ft_free_str_array(ms->paths);
 		exit (EXIT_SUCCESS); //change to exit status variable
 	}
 }

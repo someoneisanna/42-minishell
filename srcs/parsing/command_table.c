@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 10:49:32 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/07 18:15:04 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/09/11 14:09:21 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	ft_command_table_creator(t_minishell *ms)
 {
 	t_token	*curr;
 
-	curr = ms->token;
+	curr = ms->token_lst;
 	while (curr)
 	{
 		if (ft_is_cmd_or_file(curr->type) == YES)
@@ -51,7 +51,7 @@ void	ft_command_table_helper(t_minishell *ms)
 	t_token	*first_cmd;
 
 	n_args = 0;
-	curr = ms->token;
+	curr = ms->token_lst;
 	while (curr)
 	{
 		if (curr->type == T_COMMAND)
@@ -63,7 +63,7 @@ void	ft_command_table_helper(t_minishell *ms)
 				n_args++;
 				curr = curr->next;
 			}
-			ft_add_cmd_back(&ms->cmd_table, ft_new_cmd(first_cmd, n_args));
+			ft_add_cmd_back(&ms->cmd_lst, ft_new_cmd(first_cmd, n_args));
 		}
 		else
 			curr = curr->next;

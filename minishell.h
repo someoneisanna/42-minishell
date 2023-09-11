@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 09:30:28 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/07 18:15:39 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/09/11 14:37:25 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,13 @@
 
 # define E_QUOTES		"Syntax Error: Unclosed quotes"
 # define E_SYNTAX		"Syntax error near unexpected token"
+# define E_CMD			"Error: Command not found"
+# define E_FILE			"Error: No such file or directory"
+# define E_PIPE			"Pipe error"
+# define E_FORK			"Fork error"
+# define E_HEREDOC		"Heredoc error"
+
+
 // ---------------------------------- STRUCTS ----------------------------------
 
 typedef enum e_type
@@ -75,6 +82,7 @@ typedef struct s_env
 	char			*value;
 	struct s_env	*next;
 }	t_env;
+
 typedef struct s_token
 {
 	char			*content;
@@ -91,16 +99,19 @@ typedef struct s_cmd
 	char			*file_tr;
 	char			*heredoc;
 	char			*file_ap;
+	int				fd_in;
+	int				fd_out;
 	struct s_cmd	*next;
 }	t_cmd;
 
 typedef struct s_minishell
 {
 	char	*input;
-
-	t_env	*env;
-	t_token	*token;
-	t_cmd	*cmd_table;
+	char	**envp;
+	char	**paths;
+	t_env	*env_lst;
+	t_token	*token_lst;
+	t_cmd	*cmd_lst;
 }	t_minishell;
 
 // --------------------------------- PROTOTYPES ---------------------------------
@@ -111,11 +122,11 @@ typedef struct s_minishell
 void	ft_main_loop(t_minishell *ms);
 void	ft_free_all(t_minishell *ms, int exit_flag);
 
+// PARSING ______________________________________________________________________
+
 // parser.c
 int		ft_parser(t_minishell *ms, char *input);
 int		ft_quote_checker(char *input);
-
-// PARSING ______________________________________________________________________
 
 // tokenizer.c
 void	ft_tokenizer(t_minishell *ms, char *input);
@@ -128,7 +139,7 @@ void	ft_add_token_back(t_token **token, t_token *new_token);
 void	ft_free_token_lst(t_token **token_lst);
 
 // syntax_checker.c
-int		ft_syntax_checker(t_token *token);
+int		ft_syntax_checker(t_minishell *ms, t_token *token);
 
 // expander.c
 void	ft_expander(t_minishell *ms, t_token *token);
@@ -156,6 +167,32 @@ t_env	*ft_new_env(char *key, char *value);
 void	ft_add_env_back(t_env **env_lst, t_env *new_env);
 void	ft_free_env_lst(t_env **env_lst);
 
+// EXECUTION ____________________________________________________________________
+
+// executer.c
+void	ft_executer(t_minishell *ms);
+void	ft_execute_only_cmd(t_minishell *ms, t_cmd *curr, char *cmd);
+void	ft_execute_mult_cmd(t_minishell *ms, t_cmd *curr, char *cmd);
+void	ft_execute_cmd(t_minishell *ms, t_cmd *curr, char *cmd);
+void	ft_execute_external(t_minishell *ms, t_cmd *curr, char *cmd);
+
+// handlers.c
+void	ft_redir_handler(t_minishell *ms, t_cmd *curr);
+void	ft_close_fds(t_cmd *curr);
+int		ft_heredoc_handler(t_minishell *ms, char *delimiter);
+void	ft_heredoc_creator(t_minishell *ms, char *delimiter);
+char	*ft_heredoc_expander(t_minishell *ms, char *line);
+
+// BUILTINS _____________________________________________________________________
+
+void	ft_echo(t_minishell *ms, t_cmd *curr);
+void	ft_cd(t_minishell *ms, t_cmd *curr);
+void	ft_pwd(t_minishell *ms, t_cmd *curr);
+void	ft_export(t_minishell *ms, t_cmd *curr);
+void	ft_unset(t_minishell *ms, t_cmd *curr);
+void	ft_env(t_minishell *ms, t_cmd *curr);
+void	ft_exit(t_minishell *ms, t_cmd *curr);
+
 // UTILS ________________________________________________________________________
 
 // utils_0.c
@@ -163,9 +200,12 @@ int		ft_is_space(char c);
 int		ft_everything_is_space(char *str);
 int		ft_len_until_match(char *input, char *match);
 int		ft_is_cmd_or_file(t_type type);
-int		ft_perror(char *error);
+int		ft_perror(t_minishell *ms, char *error);
 
 // utils_1.c
 void	ft_free_str_array(char **str_array);
+char	**ft_get_paths(t_env *env_lst);
+int		ft_count_cmds(t_cmd *cmd_table);
+int		ft_cmd_has_redir(t_cmd *cmd);
 
 # endif
