@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 11:03:52 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/11 14:17:47 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/09/15 17:50:46 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,18 +28,18 @@ int	ft_syntax_checker(t_minishell *ms, t_token *token)
 
 	curr = token;
 	if (!ft_is_cmd_or_file(curr->type))
-		return (ft_perror(ms, E_SYNTAX));
+		return (ft_perror(ms, E_SYNTAX, NO));
 	while (curr && curr->next)
 	{
 		prev = curr->prev;
 		next = curr->next;
 		if (!ft_is_cmd_or_file(curr->type) && !ft_is_cmd_or_file(next->type))
-			return (ft_perror(ms, E_SYNTAX));
+			return (ft_perror(ms, E_SYNTAX, NO));
 		if (!ft_is_cmd_or_file(curr->type) && !ft_is_cmd_or_file(prev->type))
-			return (ft_perror(ms, E_SYNTAX));
+			return (ft_perror(ms, E_SYNTAX, NO));
 		curr = curr->next;
 	}
 	if (!ft_is_cmd_or_file(curr->type))
-		return (ft_perror(ms, E_SYNTAX));
+		return (ft_perror(ms, E_SYNTAX, NO));
 	return (EXIT_SUCCESS);
 }

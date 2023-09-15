@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 13:50:25 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/11 14:47:12 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/09/15 18:17:00 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	ft_redir_handler(t_minishell *ms, t_cmd *curr)
 	if (curr->file_ap)
 		curr->fd_out = open(curr->file_ap, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (curr->fd_in < 0 || curr->fd_out < 0)
-		exit (ft_perror(ms, E_FILE));
+		exit (ft_perror(ms, E_FILE, YES));
 	else
 	{
 		dup2(curr->fd_in, STDIN_FILENO);
@@ -51,9 +51,9 @@ void	ft_redir_handler(t_minishell *ms, t_cmd *curr)
 
 void	ft_close_fds(t_cmd *curr)
 {
-	if (curr->fd_in > STDIN_FILENO)
+	if (curr->fd_in)
 		close(curr->fd_in);
-	if (curr->fd_out > STDOUT_FILENO)
+	if (curr->fd_out)
 		close(curr->fd_out);
 }
 
@@ -63,7 +63,7 @@ int	ft_heredoc_handler(t_minishell *ms, char *delimiter)
 
 	pid = fork();
 	if (pid < 0)
-		ft_perror(ms, E_FORK);
+		ft_perror(ms, E_FORK, YES);
 	else if (pid == 0)
 		ft_heredoc_creator(ms, delimiter);
 	else
@@ -82,7 +82,7 @@ void	ft_heredoc_creator(t_minishell *ms, char *delimiter)
 		line = readline("heredoc> ");
 		if (!line)
 		{
-			ft_perror(ms, E_HEREDOC);
+			ft_perror(ms, E_HEREDOC, YES);
 			break ;
 		}
 		if (line && ft_strncmp(line, delimiter, ft_strlen(delimiter)) == 0)
@@ -95,7 +95,7 @@ void	ft_heredoc_creator(t_minishell *ms, char *delimiter)
 		free(line);
 	}
 	close(fd);
-	exit (EXIT_SUCCESS);
+	ft_free_all(ms, YES);
 }
 
 char	*ft_heredoc_expander(t_minishell *ms, char *line)

@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 09:30:28 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/11 14:37:25 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/09/15 18:06:28 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,13 +185,13 @@ char	*ft_heredoc_expander(t_minishell *ms, char *line);
 
 // BUILTINS _____________________________________________________________________
 
-void	ft_echo(t_minishell *ms, t_cmd *curr);
 void	ft_cd(t_minishell *ms, t_cmd *curr);
-void	ft_pwd(t_minishell *ms, t_cmd *curr);
-void	ft_export(t_minishell *ms, t_cmd *curr);
-void	ft_unset(t_minishell *ms, t_cmd *curr);
+void	ft_echo(t_minishell *ms, t_cmd *curr);
 void	ft_env(t_minishell *ms, t_cmd *curr);
 void	ft_exit(t_minishell *ms, t_cmd *curr);
+void	ft_export(t_minishell *ms, t_cmd *curr);
+void	ft_pwd(t_minishell *ms, t_cmd *curr);
+void	ft_unset(t_minishell *ms, t_cmd *curr);
 
 // UTILS ________________________________________________________________________
 
@@ -200,12 +200,11 @@ int		ft_is_space(char c);
 int		ft_everything_is_space(char *str);
 int		ft_len_until_match(char *input, char *match);
 int		ft_is_cmd_or_file(t_type type);
-int		ft_perror(t_minishell *ms, char *error);
+int		ft_perror(t_minishell *ms, char *error, int free_flag);
 
 // utils_1.c
 void	ft_free_str_array(char **str_array);
 char	**ft_get_paths(t_env *env_lst);
-int		ft_count_cmds(t_cmd *cmd_table);
 int		ft_cmd_has_redir(t_cmd *cmd);
 
 # endif

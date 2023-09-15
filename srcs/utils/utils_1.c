@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 17:56:24 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/10 12:06:57 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/09/15 17:53:39 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void	ft_free_str_array(char **str_array);
 char	**ft_get_paths(t_env *env_lst);
-int		ft_count_cmds(t_cmd *cmd_lst);
 int		ft_cmd_has_redir(t_cmd *cmd);
 
 void	ft_free_str_array(char **str_array)
@@ -48,21 +47,6 @@ char	**ft_get_paths(t_env *env_lst)
 		env = env->next;
 	}
 	return (NULL);
-}
-
-int	ft_count_cmds(t_cmd *cmd_lst)
-{
-	int		count;
-	t_cmd	*curr;
-
-	count = 0;
-	curr = cmd_lst;
-	while (curr)
-	{
-		count++;
-		curr = curr->next;
-	}
-	return (count);
 }
 
 int	ft_cmd_has_redir(t_cmd *cmd)

@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 11:28:01 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/11 14:50:17 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/09/15 18:06:40 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	ft_executer(t_minishell *ms)
 	curr = ms->cmd_lst;
 	while (curr)
 	{
-		if (ft_count_cmds(ms->cmd_lst) == 1)
+		if (curr->next == NULL)
 			ft_execute_only_cmd(ms, curr, curr->cmd);
 		else
 			ft_execute_mult_cmd(ms, curr, curr->cmd);
@@ -54,7 +54,7 @@ void	ft_execute_only_cmd(t_minishell *ms, t_cmd *curr, char *cmd)
 
 	pid = fork();
 	if (pid < 0)
-		ft_perror(ms, E_FORK);
+		ft_perror(ms, E_FORK, YES);
 	else if (pid == 0)
 	{
 		if (ft_cmd_has_redir(curr) == YES)
@@ -114,5 +114,5 @@ void	ft_execute_external(t_minishell *ms, t_cmd *curr, char *cmd)
 		free(possible_path);
 		i++;
 	}
-	ft_perror(ms, E_CMD);
+	ft_perror(ms, E_CMD, YES);
 }

@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 11:26:27 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/11 14:41:49 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/09/15 18:17:32 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ void	ft_main_loop(t_minishell *ms)
 		{
 			ft_parser(ms, ms->input);
 			ft_executer(ms);
+			unlink(".heredoc");
 			ft_free_all(ms, NO);
 		}
 		free(ms->input);
@@ -73,7 +74,6 @@ void	ft_free_all(t_minishell *ms, int exit_flag)
 {
 	ft_free_token_lst(&ms->token_lst);
 	ft_free_cmd_lst(&ms->cmd_lst);
-	unlink(".heredoc");
 	if (exit_flag == YES)
 	{
 		ft_free_env_lst(&ms->env_lst);
