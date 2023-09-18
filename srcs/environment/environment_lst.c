@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 11:25:15 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/05 10:19:15 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/09/18 10:11:18 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	ft_init_env_lst(t_env **env, char **envp);
 t_env	*ft_new_env(char *key, char *value);
 void	ft_add_env_back(t_env **env_lst, t_env *new_env);
 void	ft_free_env_lst(t_env **env_lst);
+char	**ft_get_paths(t_env *env_lst);
 
 /*
 	In this file, we will create a linked list of environment variables.
@@ -39,11 +40,10 @@ void	ft_init_env_lst(t_env **env, char **envp)
 	while (envp[i] != NULL)
 	{
 		equal_ptr = ft_strchr(envp[i], '=');
-		if (equal_ptr != NULL)
-			*equal_ptr = '\0';
-		key = envp[i];
+		key = ft_substr(envp[i], 0, equal_ptr - envp[i]);
 		value = equal_ptr + 1;
 		ft_add_env_back(env, ft_new_env(key, value));
+		free(key);
 		i++;
 	}
 }
@@ -98,4 +98,22 @@ void	ft_free_env_lst(t_env **env_lst)
 		current = next;
 	}
 	*env_lst = NULL;
+}
+
+char	**ft_get_paths(t_env *env_lst)
+{
+	t_env	*env;
+	char	**path_array;
+
+	env = env_lst;
+	while (env)
+	{
+		if (ft_strncmp(env->key, "PATH", 4) == 0)
+		{
+			path_array = ft_split(env->value, ':');
+			return (path_array);
+		}
+		env = env->next;
+	}
+	return (NULL);
 }

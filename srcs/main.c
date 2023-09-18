@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 11:26:27 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/15 18:17:32 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/09/17 15:42:21 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@ int	main(int ac, char **av, char **envp)
 	(void)ac;
 	(void)av;
 	ft_bzero(&ms, sizeof(t_minishell));
-	ft_init_env_lst(&ms.env_lst, envp);
 	ms.envp = envp;
+	ft_init_env_lst(&ms.env_lst, ms.envp);
 	ms.paths = ft_get_paths(ms.env_lst);
 	ft_main_loop(&ms);
 }
@@ -65,13 +65,13 @@ void	ft_main_loop(t_minishell *ms)
 			unlink(".heredoc");
 			ft_free_all(ms, NO);
 		}
-		free(ms->input);
 	}
 	rl_clear_history();
 }
 
 void	ft_free_all(t_minishell *ms, int exit_flag)
 {
+	free(ms->input);
 	ft_free_token_lst(&ms->token_lst);
 	ft_free_cmd_lst(&ms->cmd_lst);
 	if (exit_flag == YES)

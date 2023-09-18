@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 13:50:25 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/15 18:17:00 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/09/17 13:14:33 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ void	ft_close_fds(t_cmd *curr)
 		close(curr->fd_in);
 	if (curr->fd_out)
 		close(curr->fd_out);
+	curr->fd_in = STDIN_FILENO;
+	curr->fd_out = STDOUT_FILENO;
 }
 
 int	ft_heredoc_handler(t_minishell *ms, char *delimiter)

@@ -1,28 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_0.c                                          :+:      :+:    :+:   */
+/*   main_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 17:44:16 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/15 17:48:54 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/09/18 10:11:05 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-int	ft_is_space(char c);
-int	ft_everything_is_space(char *str);
-int	ft_len_until_match(char *input, char *match);
-int	ft_is_cmd_or_file(t_type type);
-int	ft_perror(t_minishell *ms, char *error, int free_flag);
+int		ft_perror(t_minishell *ms, char *error, int free_flag);
+int		ft_everything_is_space(char *str);
+void	ft_free_str_array(char **str_array);
 
-int	ft_is_space(char c)
+
+int	ft_perror(t_minishell *ms, char *error, int free_flag)
 {
-	if (c == ' ' || c == '\t' || c == '\n' || c == '\v' || c == '\f')
-		return (YES);
-	return (NO);
+	printf("%s\n", error);
+	if (free_flag == YES)
+		ft_free_all(ms, YES);
+	return (EXIT_FAILURE);
 }
 
 int	ft_everything_is_space(char *str)
@@ -39,27 +39,17 @@ int	ft_everything_is_space(char *str)
 	return (TRUE);
 }
 
-int	ft_len_until_match(char *input, char *match)
+void	ft_free_str_array(char **str_array)
 {
 	int	i;
 
 	i = 0;
-	while (input[i] && ft_strchr(match, input[i]) == NULL)
+	if (!str_array)
+		return ;
+	while (str_array[i])
+	{
+		free(str_array[i]);
 		i++;
-	return (i);
-}
-
-int	ft_is_cmd_or_file(t_type type)
-{
-	if (type == T_OTHER || type == T_QUOTE || type == T_DQUOTE)
-		return (YES);
-	return (NO);
-}
-
-int	ft_perror(t_minishell *ms, char *error, int free_flag)
-{
-	printf("%s\n", error);
-	if (free_flag == YES)
-		ft_free_all(ms, YES);
-	return (EXIT_FAILURE);
+	}
+	free(str_array);
 }

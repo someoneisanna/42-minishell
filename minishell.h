@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 09:30:28 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/15 18:06:28 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/09/18 10:12:07 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,11 @@
 # define EXIT_FAILURE	1
 # define EXIT_SUCCESS	0
 
-# define PIPE_W			1
-# define PIPE_R			0
+# define P_WRITE			1
+# define P_READ			0
+
+# define CHILD			0
+# define PARENT			1
 
 # define E_QUOTES		"Syntax Error: Unclosed quotes"
 # define E_SYNTAX		"Syntax error near unexpected token"
@@ -166,6 +169,7 @@ void	ft_init_env_lst(t_env **env, char **envp);
 t_env	*ft_new_env(char *key, char *value);
 void	ft_add_env_back(t_env **env_lst, t_env *new_env);
 void	ft_free_env_lst(t_env **env_lst);
+char	**ft_get_paths(t_env *env_lst);
 
 // EXECUTION ____________________________________________________________________
 
@@ -195,16 +199,17 @@ void	ft_unset(t_minishell *ms, t_cmd *curr);
 
 // UTILS ________________________________________________________________________
 
-// utils_0.c
-int		ft_is_space(char c);
+// main_utils.c
+int		ft_perror(t_minishell *ms, char *error, int free_flag);
 int		ft_everything_is_space(char *str);
+void	ft_free_str_array(char **str_array);
+
+// parsing_utils.c
+int		ft_is_space(char c);
 int		ft_len_until_match(char *input, char *match);
 int		ft_is_cmd_or_file(t_type type);
-int		ft_perror(t_minishell *ms, char *error, int free_flag);
 
-// utils_1.c
-void	ft_free_str_array(char **str_array);
-char	**ft_get_paths(t_env *env_lst);
+// execution_utils.c
 int		ft_cmd_has_redir(t_cmd *cmd);
 
 # endif

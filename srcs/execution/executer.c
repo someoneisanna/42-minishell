@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 11:28:01 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/15 18:06:40 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/09/18 10:52:12 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,15 +35,17 @@ void	ft_execute_external(t_minishell *ms, t_cmd *curr, char *cmd);
 
 void	ft_executer(t_minishell *ms)
 {
+	char	*cmd;
 	t_cmd	*curr;
 
 	curr = ms->cmd_lst;
 	while (curr)
 	{
+		cmd = curr->cmd;
 		if (curr->next == NULL)
-			ft_execute_only_cmd(ms, curr, curr->cmd);
+			ft_execute_only_cmd(ms, curr, cmd);
 		else
-			ft_execute_mult_cmd(ms, curr, curr->cmd);
+			ft_execute_mult_cmd(ms, curr, cmd);
 		curr = curr->next;
 	}
 }
@@ -68,9 +70,29 @@ void	ft_execute_only_cmd(t_minishell *ms, t_cmd *curr, char *cmd)
 
 void	ft_execute_mult_cmd(t_minishell *ms, t_cmd *curr, char *cmd)
 {
-	printf("executing piped %s\n", curr->cmd);
-	(void)ms;
-	(void)cmd;
+	int		pipe_fd[2];
+	pid_t	pid;
+
+	if (pipe(pipe_fd) == -1)
+		ft_perror(ms, E_PIPE, YES);
+	pid = fork();
+	if (pid < 0)
+		ft_perror(ms, E_FORK, YES);
+	else if (pid == 0)
+	{
+		if (ft_cmd_has_redir(curr) == YES)
+			ft_redir_handler(ms, curr);
+		close(pipe_fd[0]);
+		dup2(pipe_fd[1], STDOUT_FILENO);
+		ft_execute_cmd(ms, curr, cmd);
+		ft_close_fds(curr);
+	}
+	else
+	{
+		close(pipe_fd[1]);
+		dup2(pipe_fd[0], STDIN_FILENO);
+		waitpid(pid, NULL, 0);
+	}
 }
 
 void	ft_execute_cmd(t_minishell *ms, t_cmd *curr, char *cmd)
@@ -111,7 +133,6 @@ void	ft_execute_external(t_minishell *ms, t_cmd *curr, char *cmd)
 			break ;
 		if (access(possible_path, F_OK | X_OK) == 0)
 			execve(possible_path, curr->args, ms->envp);
-		free(possible_path);
 		i++;
 	}
 	ft_perror(ms, E_CMD, YES);

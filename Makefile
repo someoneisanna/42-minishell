@@ -11,7 +11,7 @@ NAME = minishell
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g
 LFLAGS = -lreadline
 
 RM = rm -f
@@ -38,8 +38,9 @@ SRCS = srcs/main.c \
 		srcs/builtins/export.c \
 		srcs/builtins/pwd.c \
 		srcs/builtins/unset.c \
-		srcs/utils/utils_0.c \
-		srcs/utils/utils_1.c \
+		srcs/utils/main_utils.c \
+		srcs/utils/parsing_utils.c \
+		srcs/utils/execution_utils.c \
 
 S_OBJS = $(SRCS:.c=.o)
 
