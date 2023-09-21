@@ -30,7 +30,8 @@ SRCS = srcs/main.c \
 		srcs/parsing/command_table_utils.c \
 		srcs/environment/environment_lst.c \
 		srcs/execution/executer.c \
-		srcs/execution/handlers.c \
+		srcs/execution/redir_handler.c \
+		srcs/execution/pipes_handler.c \
 		srcs/builtins/cd.c \
 		srcs/builtins/echo.c \
 		srcs/builtins/env.c \

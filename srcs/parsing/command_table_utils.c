@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 17:47:33 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/11 14:06:41 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/09/19 19:06:40 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ t_cmd	*ft_new_cmd(t_token *first, int n_args)
 	new_cmd->file_ap = ft_add_redirections(first, n_args, T_FILE_APPEND);
 	new_cmd->fd_in = STDIN_FILENO;
 	new_cmd->fd_out = STDOUT_FILENO;
+	new_cmd->index = 0;
+	new_cmd->next = NULL;
 	return (new_cmd);
 }
 
@@ -61,18 +63,15 @@ char	**ft_get_args(t_token *first, int n_args)
 
 char	*ft_add_redirections(t_token *first, int n_args, t_type type)
 {
-	int		i;
+	(void)n_args;
+	(void)type;
 	t_token	*curr;
 
-	i = 1;
 	curr = first;
-	while (i < n_args)
-	{
+	while (curr && curr->next)
 		curr = curr->next;
-		i++;
-	}
 	while (curr && curr->type != type)
-		curr = curr->next;
+		curr = curr->prev;
 	if (curr)
 		return (ft_strdup(curr->content));
 	return (NULL);

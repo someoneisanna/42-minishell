@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 11:28:01 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/18 10:52:12 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/09/21 09:39:54 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,19 +35,23 @@ void	ft_execute_external(t_minishell *ms, t_cmd *curr, char *cmd);
 
 void	ft_executer(t_minishell *ms)
 {
-	char	*cmd;
 	t_cmd	*curr;
 
 	curr = ms->cmd_lst;
-	while (curr)
+	ms->n_pipes = ft_count_pipes(ms->cmd_lst);
+	if (ms->n_pipes == 0)
+		ft_execute_only_cmd(ms, curr, curr->cmd);
+	else
 	{
-		cmd = curr->cmd;
-		if (curr->next == NULL)
-			ft_execute_only_cmd(ms, curr, cmd);
-		else
-			ft_execute_mult_cmd(ms, curr, cmd);
-		curr = curr->next;
+		ft_set_cmd_index(ms);
+		ft_pipes_creator(ms);
+		while (curr)
+		{
+			ft_execute_mult_cmd(ms, curr, curr->cmd);
+			curr = curr->next;
+		}
 	}
+	ft_close_pipes(ms);
 }
 
 void	ft_execute_only_cmd(t_minishell *ms, t_cmd *curr, char *cmd)
@@ -70,29 +74,9 @@ void	ft_execute_only_cmd(t_minishell *ms, t_cmd *curr, char *cmd)
 
 void	ft_execute_mult_cmd(t_minishell *ms, t_cmd *curr, char *cmd)
 {
-	int		pipe_fd[2];
-	pid_t	pid;
-
-	if (pipe(pipe_fd) == -1)
-		ft_perror(ms, E_PIPE, YES);
-	pid = fork();
-	if (pid < 0)
-		ft_perror(ms, E_FORK, YES);
-	else if (pid == 0)
-	{
-		if (ft_cmd_has_redir(curr) == YES)
-			ft_redir_handler(ms, curr);
-		close(pipe_fd[0]);
-		dup2(pipe_fd[1], STDOUT_FILENO);
-		ft_execute_cmd(ms, curr, cmd);
-		ft_close_fds(curr);
-	}
-	else
-	{
-		close(pipe_fd[1]);
-		dup2(pipe_fd[0], STDIN_FILENO);
-		waitpid(pid, NULL, 0);
-	}
+	(void)cmd;
+	(void)ms;
+	(void)curr;
 }
 
 void	ft_execute_cmd(t_minishell *ms, t_cmd *curr, char *cmd)

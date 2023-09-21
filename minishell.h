@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 09:30:28 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/18 10:12:07 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/09/19 19:38:59 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@
 # define E_SYNTAX		"Syntax error near unexpected token"
 # define E_CMD			"Error: Command not found"
 # define E_FILE			"Error: No such file or directory"
+# define E_MALLOC		"Malloc error"
 # define E_PIPE			"Pipe error"
 # define E_FORK			"Fork error"
 # define E_HEREDOC		"Heredoc error"
@@ -104,6 +105,7 @@ typedef struct s_cmd
 	char			*file_ap;
 	int				fd_in;
 	int				fd_out;
+	int				index;
 	struct s_cmd	*next;
 }	t_cmd;
 
@@ -112,6 +114,9 @@ typedef struct s_minishell
 	char	*input;
 	char	**envp;
 	char	**paths;
+	int		**pipe_fd;
+	int		n_pipes;
+	pid_t	*pid;
 	t_env	*env_lst;
 	t_token	*token_lst;
 	t_cmd	*cmd_lst;
@@ -180,12 +185,18 @@ void	ft_execute_mult_cmd(t_minishell *ms, t_cmd *curr, char *cmd);
 void	ft_execute_cmd(t_minishell *ms, t_cmd *curr, char *cmd);
 void	ft_execute_external(t_minishell *ms, t_cmd *curr, char *cmd);
 
-// handlers.c
+// redir_handlers.c
 void	ft_redir_handler(t_minishell *ms, t_cmd *curr);
 void	ft_close_fds(t_cmd *curr);
 int		ft_heredoc_handler(t_minishell *ms, char *delimiter);
 void	ft_heredoc_creator(t_minishell *ms, char *delimiter);
 char	*ft_heredoc_expander(t_minishell *ms, char *line);
+
+// pipes_handler.c
+void	ft_set_cmd_index(t_minishell *ms);
+void	ft_pipes_creator(t_minishell *ms);
+void	ft_pipes_handler(t_minishell *ms);
+void	ft_close_pipes(t_minishell *ms);
 
 // BUILTINS _____________________________________________________________________
 
@@ -211,5 +222,6 @@ int		ft_is_cmd_or_file(t_type type);
 
 // execution_utils.c
 int		ft_cmd_has_redir(t_cmd *cmd);
+int		ft_count_pipes(t_cmd *cmd_lst);
 
 # endif

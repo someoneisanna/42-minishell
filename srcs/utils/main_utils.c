@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 17:44:16 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/18 10:11:05 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/09/19 19:19:32 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,9 @@ void	ft_free_str_array(char **str_array);
 
 int	ft_perror(t_minishell *ms, char *error, int free_flag)
 {
-	printf("%s\n", error);
+	ft_putstr_fd("minishell: ", STDERR_FILENO);
+	ft_putstr_fd(error, STDERR_FILENO);
+	ft_putstr_fd("\n", STDERR_FILENO);
 	if (free_flag == YES)
 		ft_free_all(ms, YES);
 	return (EXIT_FAILURE);
