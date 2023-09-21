@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 11:28:01 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/21 09:58:02 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/09/21 16:53:31 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ void	ft_execute_external(t_minishell *ms, t_cmd *curr, char *cmd);
 /*
 	This is the main function of the execution part of the program.
 	We have:
-		- ft_executer: this function will loop through the cmd_lst and execute
-			each cmd, depending on the existence of pipes.
+		- ft_executer: we will check for the existence of pipes and direct the
+			program to the right function.
 		- ft_execute_only_cmd: if there are no pipes, we will execute the cmd
 			(cmd could be a builtin or external).
 		- ft_execute_mult_cmd: if there are pipes, we will execute the piped
@@ -35,10 +35,12 @@ void	ft_execute_external(t_minishell *ms, t_cmd *curr, char *cmd);
 
 void	ft_executer(t_minishell *ms)
 {
+	int		n_pipes;
 	t_cmd	*curr;
 
 	curr = ms->cmd_lst;
 	ms->n_pipes = ft_count_pipes(ms->cmd_lst);
+	n_pipes = ms->n_pipes;
 	if (ms->n_pipes == 0)
 		ft_execute_only_cmd(ms, curr, curr->cmd);
 	else
@@ -50,8 +52,13 @@ void	ft_executer(t_minishell *ms)
 			ft_execute_mult_cmd(ms, curr, curr->cmd);
 			curr = curr->next;
 		}
+		ft_close_pipes(ms);
+		while (n_pipes >= 0)
+		{
+			waitpid(ms->pid[n_pipes], NULL, 0);
+			n_pipes--;
+		}
 	}
-	ft_close_pipes(ms);
 }
 
 void	ft_execute_only_cmd(t_minishell *ms, t_cmd *curr, char *cmd)
@@ -74,9 +81,21 @@ void	ft_execute_only_cmd(t_minishell *ms, t_cmd *curr, char *cmd)
 
 void	ft_execute_mult_cmd(t_minishell *ms, t_cmd *curr, char *cmd)
 {
-	(void)cmd;
-	(void)ms;
-	(void)curr;
+	pid_t	pid;
+
+	pid = ms->pid[curr->index];
+	pid = fork();
+	if (pid < 0)
+		ft_perror(ms, E_FORK, YES);
+	else if (pid == 0)
+	{
+		if (ft_cmd_has_redir(curr) == YES)
+			ft_redir_handler(ms, curr);
+		ft_pipes_handler(ms, curr);
+		ft_close_pipes(ms);
+		ft_close_fds(curr);
+		ft_execute_cmd(ms, curr, cmd);
+	}
 }
 
 void	ft_execute_cmd(t_minishell *ms, t_cmd *curr, char *cmd)

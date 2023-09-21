@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 11:26:27 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/21 10:01:52 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/09/21 16:44:33 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ void	ft_free_all(t_minishell *ms, int exit_flag);
 			- command_table_utils.c
 		4) execution
 			- executer.c
-			- handlers.c
+			- redir_handler.c
+			- pipes_handler.c
 		5) builtins
 			- cd.c, echo.c, env.c, exit.c, export.c, pwd.c, unset.c
 */
@@ -74,6 +75,8 @@ void	ft_free_all(t_minishell *ms, int exit_flag)
 	free(ms->input);
 	ft_free_token_lst(&ms->token_lst);
 	ft_free_cmd_lst(&ms->cmd_lst);
+	if (ms->n_pipes > 0)
+			ft_free_pipes(ms);
 	if (exit_flag == YES)
 	{
 		ft_free_env_lst(&ms->env_lst);

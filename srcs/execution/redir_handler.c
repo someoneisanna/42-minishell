@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   handlers.c                                         :+:      :+:    :+:   */
+/*   redir_handler.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 13:50:25 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/17 13:14:33 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/09/21 16:05:28 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,9 @@ void	ft_redir_handler(t_minishell *ms, t_cmd *curr)
 
 void	ft_close_fds(t_cmd *curr)
 {
-	if (curr->fd_in)
+	if (curr->fd_in > STDIN_FILENO)
 		close(curr->fd_in);
-	if (curr->fd_out)
+	if (curr->fd_out > STDOUT_FILENO)
 		close(curr->fd_out);
 	curr->fd_in = STDIN_FILENO;
 	curr->fd_out = STDOUT_FILENO;

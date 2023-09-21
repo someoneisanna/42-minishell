@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 09:30:28 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/19 19:38:59 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/09/21 16:33:10 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@
 # define E_FILE			"Error: No such file or directory"
 # define E_MALLOC		"Malloc error"
 # define E_PIPE			"Pipe error"
+# define E_DUP2			"Dup2 error"
 # define E_FORK			"Fork error"
 # define E_HEREDOC		"Heredoc error"
 
@@ -193,9 +194,8 @@ void	ft_heredoc_creator(t_minishell *ms, char *delimiter);
 char	*ft_heredoc_expander(t_minishell *ms, char *line);
 
 // pipes_handler.c
-void	ft_set_cmd_index(t_minishell *ms);
 void	ft_pipes_creator(t_minishell *ms);
-void	ft_pipes_handler(t_minishell *ms);
+void	ft_pipes_handler(t_minishell *ms, t_cmd *curr);
 void	ft_close_pipes(t_minishell *ms);
 
 // BUILTINS _____________________________________________________________________
@@ -223,5 +223,7 @@ int		ft_is_cmd_or_file(t_type type);
 // execution_utils.c
 int		ft_cmd_has_redir(t_cmd *cmd);
 int		ft_count_pipes(t_cmd *cmd_lst);
+void	ft_set_cmd_index(t_minishell *ms);
+void	ft_free_pipes(t_minishell *ms);
 
 # endif
