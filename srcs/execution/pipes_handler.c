@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 18:58:27 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/21 09:38:59 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/09/21 09:57:38 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,21 +37,23 @@ void	ft_pipes_creator(t_minishell *ms)
 	int	i;
 
 	i = 0;
+	if (ms->n_pipes == 0)
+		return ;
 	ms->pid = (pid_t *)malloc(sizeof(pid_t) * ms->n_pipes + 1);
 	if (!ms->pid)
-		ft_perror(ms, E_MALLOC, YES);
+		ft_perror(ms, E_MALLOC, NO);
 	if (ms->n_pipes == 0)
 		return ;
 	ms->pipe_fd = (int **)malloc(sizeof(int *) * ms->n_pipes);
 	if (!ms->pipe_fd)
-		ft_perror(ms, E_MALLOC, YES);
+		ft_perror(ms, E_MALLOC, NO);
 	while (i < ms->n_pipes)
 	{
 		ms->pipe_fd[i] = (int *)malloc(sizeof(int) * 2);
 		if (!ms->pipe_fd[i])
-			ft_perror(ms, E_MALLOC, YES);
+			ft_perror(ms, E_MALLOC, NO);
 		if (pipe(ms->pipe_fd[i]) < 0)
-			ft_perror(ms, E_PIPE, YES);
+			ft_perror(ms, E_PIPE, NO);
 		i++;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 17:02:07 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/19 19:17:27 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/09/21 09:57:30 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	ft_count_pipes(t_cmd *cmd_lst)
 		n_cmds++;
 		curr = curr->next;
 	}
-	if (n_cmds == 1)
+	if (n_cmds < 2)
 		n_pipes = 0;
 	else
 		n_pipes = n_cmds - 1;
