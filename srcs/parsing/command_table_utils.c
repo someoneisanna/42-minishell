@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 17:47:33 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/25 10:46:49 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/09/25 19:11:36 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,15 +53,21 @@ t_cmd	*ft_new_cmd(t_token *first, int n_args)
 char	**ft_get_args(t_token *first, int n_args)
 {
 	int		i;
+	int		j;
 	char	**args;
 
 	i = 0;
+	j = 0;
 	args = ft_calloc(n_args + 1, sizeof(char *));
 	if (!args)
 		return (NULL);
 	while (i < n_args)
 	{
-		args[i] = ft_strdup(first->content);
+		if (first->type == T_COMMAND)
+		{
+			args[j] = ft_strdup(first->content);
+			j++;
+		}
 		i++;
 		first = first->next;
 	}

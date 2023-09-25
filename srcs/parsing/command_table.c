@@ -6,21 +6,24 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 10:49:32 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/11 14:09:21 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/09/25 19:35:37 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-void	ft_command_table_creator(t_minishell *ms);
-void	ft_command_table_helper(t_minishell *ms);
+int	ft_command_table_creator(t_minishell *ms);
+int	ft_command_table_helper(t_minishell *ms);
 
 /*
 	This is where the command table will be created.
-	It will be a linked list of t_cmd structures. Each t_cmd structure will have a the command name, its arguments and its associated redirections.
+	It will be a linked list of t_cmd structures. Each t_cmd structure will have the command name, its arguments and its associated redirections.
+	We will first separate our T_OTHER tokens into T_COMMAND and T_FILE tokens.
+	Then, we will create the command table.
+	Remember: if the expanded variable doesn't exist, it will be called T_EMPTY.
 */
 
-void	ft_command_table_creator(t_minishell *ms)
+int	ft_command_table_creator(t_minishell *ms)
 {
 	t_token	*curr;
 
@@ -41,10 +44,12 @@ void	ft_command_table_creator(t_minishell *ms)
 			curr->next->type = T_COMMAND;
 		curr = curr->next;
 	}
-	ft_command_table_helper(ms);
+	if (ft_command_table_helper(ms) == ERROR_FOUND)
+		return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
 }
 
-void	ft_command_table_helper(t_minishell *ms)
+int	ft_command_table_helper(t_minishell *ms)
 {
 	int		n_args;
 	t_token	*curr;
@@ -54,18 +59,21 @@ void	ft_command_table_helper(t_minishell *ms)
 	curr = ms->token_lst;
 	while (curr)
 	{
-		if (curr->type == T_COMMAND)
+		if (curr->type == T_COMMAND || curr->type == T_EMPTY)
 		{
 			n_args = 0;
 			first_cmd = curr;
-			while (curr && curr->type == T_COMMAND)
+			while (curr && (curr->type == T_COMMAND || curr->type == T_EMPTY))
 			{
 				n_args++;
 				curr = curr->next;
 			}
+			if (n_args == 1 && ms->token_lst->type == T_EMPTY)
+				return (EXIT_FAILURE);
 			ft_add_cmd_back(&ms->cmd_lst, ft_new_cmd(first_cmd, n_args));
 		}
 		else
 			curr = curr->next;
 	}
+	return (EXIT_SUCCESS);
 }

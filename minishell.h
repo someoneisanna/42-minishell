@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 09:30:28 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/25 10:21:43 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/09/25 19:35:22 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ typedef enum e_type
 	T_FILE_TRUNC,
 	T_DELIMITER,
 	T_FILE_APPEND,
+	T_EMPTY,
 }	t_type;
 
 typedef struct s_env
@@ -152,8 +153,8 @@ char	*ft_get_env_value(t_env **env_lst, char *key);
 char	*ft_replace_content(char *cmd, char *key, char *value);
 
 // command_table.c
-void	ft_command_table_creator(t_minishell *ms);
-void	ft_command_table_helper(t_minishell *ms);
+int		ft_command_table_creator(t_minishell *ms);
+int		ft_command_table_helper(t_minishell *ms);
 
 // command_table_utils.c
 t_cmd	*ft_new_cmd(t_token *first, int n_args);

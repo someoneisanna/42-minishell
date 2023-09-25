@@ -47,8 +47,6 @@ S_OBJS = $(SRCS:.c=.o)
 
 # ------------------------------------ RULES -----------------------------------
 
-.PHONY: all clean fclean re
-
 all: $(NAME)
 
 %.o : %.c
@@ -74,3 +72,5 @@ re: fclean all
 
 valgrind: all
 	@valgrind --suppressions=readline.supp --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(NAME)
+
+.PHONY: all clean fclean re

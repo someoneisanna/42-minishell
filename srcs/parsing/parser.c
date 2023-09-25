@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 11:51:17 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/17 13:45:48 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/09/25 19:33:51 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ int	ft_parser(t_minishell *ms, char *input)
 	if (ft_syntax_checker(ms, ms->token_lst) == ERROR_FOUND)
 		return (EXIT_FAILURE);
 	ft_expander(ms, ms->token_lst);
-	ft_command_table_creator(ms);
+	if (ft_command_table_creator(ms) == ERROR_FOUND)
+		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
 
