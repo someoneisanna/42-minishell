@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 17:47:33 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/19 19:06:40 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/09/25 10:46:49 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,20 @@
 
 t_cmd	*ft_new_cmd(t_token *first, int n_args);
 char	**ft_get_args(t_token *first, int n_args);
-char	*ft_add_redirections(t_token *first, int n_args, t_type type);
+char	*ft_add_redirections(t_token *first, t_type type);
 void	ft_add_cmd_back(t_cmd **cmd_table, t_cmd *new_cmd);
 void	ft_free_cmd_lst(t_cmd **cmd_table);
 
 /*
 	Here are the auxiliary functions for the command table. Here are the usual ft_new, ft_add_back and ft_free, but also some functions to get the arguments and redirections properly.
+	We have:
+		- ft_new_cmd: this function will create a new command.
+		- ft_get_args: this function will get the arguments of the command (for
+			example, if your input is ls -l -a, it will be: ls, -l, -a, NULL)
+		- ft_add_redirections: this function will get the redirections of the
+			command. It looks confusing, but it is because it has to handle cases like: ls > file1 > file2 > file3, in which each file has to be opened, but only the last one will be used as the STDOUT.
+		- ft_add_cmd_back: this function will add the cmd to the command table.
+		- ft_free_cmd_lst: this function will free the command table.
 */
 
 t_cmd	*ft_new_cmd(t_token *first, int n_args)
@@ -31,10 +39,10 @@ t_cmd	*ft_new_cmd(t_token *first, int n_args)
 		return (NULL);
 	new_cmd->args = ft_get_args(first, n_args);
 	new_cmd->cmd = ft_strdup(new_cmd->args[0]);
-	new_cmd->file_in = ft_add_redirections(first, n_args, T_FILE_IN);
-	new_cmd->file_tr = ft_add_redirections(first, n_args, T_FILE_TRUNC);
-	new_cmd->heredoc = ft_add_redirections(first, n_args, T_DELIMITER);
-	new_cmd->file_ap = ft_add_redirections(first, n_args, T_FILE_APPEND);
+	new_cmd->file_in = ft_add_redirections(first, T_FILE_IN);
+	new_cmd->file_tr = ft_add_redirections(first, T_FILE_TRUNC);
+	new_cmd->heredoc = ft_add_redirections(first, T_DELIMITER);
+	new_cmd->file_ap = ft_add_redirections(first, T_FILE_APPEND);
 	new_cmd->fd_in = STDIN_FILENO;
 	new_cmd->fd_out = STDOUT_FILENO;
 	new_cmd->index = 0;
@@ -61,15 +69,23 @@ char	**ft_get_args(t_token *first, int n_args)
 	return (args);
 }
 
-char	*ft_add_redirections(t_token *first, int n_args, t_type type)
+char	*ft_add_redirections(t_token *first, t_type type)
 {
-	(void)n_args;
-	(void)type;
+	int		fd;
 	t_token	*curr;
 
+	fd = 0;
 	curr = first;
 	while (curr && curr->next)
+	{
+		if (curr->type == T_FILE_APPEND)
+			fd = open(curr->content, O_WRONLY | O_CREAT | O_APPEND, 0644);
+		if (curr->type == T_FILE_TRUNC)
+			fd = open(curr->content, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		if (fd > 0)
+			close(fd);
 		curr = curr->next;
+	}
 	while (curr && curr->type != type)
 		curr = curr->prev;
 	if (curr)

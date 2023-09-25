@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 18:58:27 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/21 16:56:20 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/09/25 10:50:03 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,10 @@ void	ft_close_pipes(t_minishell *ms);
 /*
 	Here we have the functions that help us handle the pipes.
 	We have:
-		- ft_pipes_creator: this function will create the pipes, as well as the
-		pids.
-		- ft_pipes_handler: this function will deal with duplicating the right fds to the right places.
+		- ft_pipes_creator: this function will create and allocate memory for
+			the pipes, as well as allocate memory for the pids.
+		- ft_pipes_handler: this function is the responsible to handle the STDIN
+			and STDOUT of each command, depending on each being the first command, last command, or middle command (pipe before and after it).
 		- ft_close_pipes: this function will close all the pipes.
 */
 
@@ -58,7 +59,7 @@ void	ft_pipes_handler(t_minishell *ms, t_cmd *curr)
 		dup2(curr->fd_in, STDIN_FILENO);
 		dup2(ms->pipe_fd[curr->index][1], STDOUT_FILENO);
 	}
-	else if (curr->next == NULL)
+	else if (curr->next == NULL || curr->fd_out != STDOUT_FILENO)
 	{
 		dup2(ms->pipe_fd[curr->index - 1][0], STDIN_FILENO);
 		dup2(curr->fd_out, STDOUT_FILENO);

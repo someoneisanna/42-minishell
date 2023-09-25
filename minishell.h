@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 09:30:28 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/21 16:33:10 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/09/25 10:21:43 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,21 +45,15 @@
 # define EXIT_FAILURE	1
 # define EXIT_SUCCESS	0
 
-# define P_WRITE			1
-# define P_READ			0
-
-# define CHILD			0
-# define PARENT			1
-
-# define E_QUOTES		"Syntax Error: Unclosed quotes"
-# define E_SYNTAX		"Syntax error near unexpected token"
-# define E_CMD			"Error: Command not found"
-# define E_FILE			"Error: No such file or directory"
-# define E_MALLOC		"Malloc error"
-# define E_PIPE			"Pipe error"
-# define E_DUP2			"Dup2 error"
-# define E_FORK			"Fork error"
-# define E_HEREDOC		"Heredoc error"
+# define E_QUOTES		"syntax error: unclosed quotes"
+# define E_SYNTAX		"syntax error near unexpected token"
+# define E_CMD			"error: command not found"
+# define E_FILE			"error: no such file or directory"
+# define E_MALLOC		"error: malloc"
+# define E_PIPE			"error: pipe"
+# define E_DUP2			"error: dup2"
+# define E_FORK			"error: fork"
+# define E_HEREDOC		"error: heredoc"
 
 
 // ---------------------------------- STRUCTS ----------------------------------
@@ -164,7 +158,7 @@ void	ft_command_table_helper(t_minishell *ms);
 // command_table_utils.c
 t_cmd	*ft_new_cmd(t_token *first, int n_args);
 char	**ft_get_args(t_token *first, int n_args);
-char	*ft_add_redirections(t_token *first, int n_args, t_type type);
+char	*ft_add_redirections(t_token *first, t_type type);
 void	ft_add_cmd_back(t_cmd **cmd_table, t_cmd *new_cmd);
 void	ft_free_cmd_lst(t_cmd **cmd_table);
 
