@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 11:28:01 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/25 19:29:01 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/09/26 10:35:07 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,11 +129,16 @@ void	ft_execute_external(t_minishell *ms, t_cmd *curr, char *cmd)
 	possible_paths = ms->paths;
 	while (possible_paths[i])
 	{
-		tmp = ft_strjoin(possible_paths[i], "/");
-		possible_path = ft_strjoin(tmp, cmd);
-		free(tmp);
-		if (!tmp || !possible_path)
-			break ;
+		if (ft_strncmp(cmd, "/", 1) == 0 || ft_strncmp(cmd, "./", 2) == 0)
+			possible_path = ft_strdup(cmd);
+		else
+		{
+			tmp = ft_strjoin(possible_paths[i], "/");
+			possible_path = ft_strjoin(tmp, cmd);
+			free(tmp);
+			if (!tmp || !possible_path)
+				break ;
+		}
 		if (access(possible_path, F_OK | X_OK) == 0)
 			execve(possible_path, curr->args, ms->envp);
 		i++;
