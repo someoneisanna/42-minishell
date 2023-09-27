@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 13:50:25 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/26 19:02:45 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/09/27 17:30:18 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void	ft_heredoc_creator(t_minishell *ms, char *delimiter)
 			ft_perror(ms, E_HEREDOC, YES);
 			break ;
 		}
-		if (line && ft_strncmp(line, delimiter, ft_strlen(line)) == 0)
+		if (line && ft_strncmp(line, delimiter, ft_strlen(line) + 1) == 0)
 		{
 			free(line);
 			break ;

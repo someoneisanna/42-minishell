@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 17:44:16 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/26 19:32:35 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/09/27 17:28:36 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ int	ft_perror(t_minishell *ms, char *error, int free_flag)
 	ft_putstr_fd("minishell: ", STDERR_FILENO);
 	ft_putstr_fd(error, STDERR_FILENO);
 	ft_putstr_fd("\n", STDERR_FILENO);
+	if (ms->n_pipes > 0)
+		ft_free_pipes(ms);
 	if (free_flag == YES)
 		ft_free_all(ms, YES);
 	return (EXIT_FAILURE);
