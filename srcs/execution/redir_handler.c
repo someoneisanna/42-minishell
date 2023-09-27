@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 13:50:25 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/21 16:05:28 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/09/26 19:02:45 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,15 +61,13 @@ void	ft_close_fds(t_cmd *curr)
 
 int	ft_heredoc_handler(t_minishell *ms, char *delimiter)
 {
-	pid_t	pid;
-
-	pid = fork();
-	if (pid < 0)
+	ms->pid_heredoc = fork();
+	if (ms->pid_heredoc < 0)
 		ft_perror(ms, E_FORK, YES);
-	else if (pid == 0)
+	else if (ms->pid_heredoc == 0)
 		ft_heredoc_creator(ms, delimiter);
 	else
-		waitpid(pid, NULL, 0);
+		waitpid(ms->pid_heredoc, NULL, 0);
 	return (open(".heredoc", O_RDONLY));
 }
 
@@ -87,7 +85,7 @@ void	ft_heredoc_creator(t_minishell *ms, char *delimiter)
 			ft_perror(ms, E_HEREDOC, YES);
 			break ;
 		}
-		if (line && ft_strncmp(line, delimiter, ft_strlen(delimiter)) == 0)
+		if (line && ft_strncmp(line, delimiter, ft_strlen(line)) == 0)
 		{
 			free(line);
 			break ;
