@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 11:28:01 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/28 08:51:59 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/09/28 16:07:46 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,24 +40,21 @@ void	ft_executer(t_minishell *ms)
 
 	curr = ms->cmd_lst;
 	ms->n_pipes = ft_count_pipes(ms->cmd_lst);
-	n_pipes = ms->n_pipes;
+	n_pipes = ms->n_pipes + 1;
 	if (ms->n_pipes == 0)
 		ft_execute_only_cmd(ms, curr, curr->cmd);
 	else
 	{
 		ft_set_cmd_index(ms);
-		ft_pipes_creator(ms);
+		ft_open_pipes(ms);
 		while (curr)
 		{
 			ft_execute_mult_cmd(ms, curr, curr->cmd);
 			curr = curr->next;
 		}
 		ft_close_pipes(ms);
-		while (n_pipes >= 0)
-		{
+		while (n_pipes-- > 0)
 			waitpid(ms->pid[n_pipes], NULL, 0);
-			n_pipes--;
-		}
 	}
 }
 
@@ -71,7 +68,7 @@ void	ft_execute_only_cmd(t_minishell *ms, t_cmd *curr, char *cmd)
 	else if (pid == 0)
 	{
 		if (ft_cmd_has_redir(curr) == YES)
-			ft_redir_handler(ms, curr);
+			ft_handle_redir(ms, curr);
 		ft_execute_cmd(ms, curr, cmd);
 		ft_close_fds(curr);
 	}
@@ -89,8 +86,8 @@ void	ft_execute_mult_cmd(t_minishell *ms, t_cmd *curr, char *cmd)
 	else if (ms->pid[curr->index] == 0)
 	{
 		if (ft_cmd_has_redir(curr) == YES)
-			ft_redir_handler(ms, curr);
-		ft_pipes_handler(ms, curr);
+			ft_handle_redir(ms, curr);
+		ft_handle_pipes(ms, curr);
 		ft_close_pipes(ms);
 		ft_close_fds(curr);
 		ft_execute_cmd(ms, curr, cmd);

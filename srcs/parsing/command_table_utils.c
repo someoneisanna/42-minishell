@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 17:47:33 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/25 19:11:36 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/09/28 16:01:41 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ char	*ft_add_redirections(t_token *first, t_type type)
 
 	fd = 0;
 	curr = first;
-	while (curr && curr->next)
+	while (curr && curr->next && curr->type != T_PIPE)
 	{
 		if (curr->type == T_FILE_APPEND)
 			fd = open(curr->content, O_WRONLY | O_CREAT | O_APPEND, 0644);

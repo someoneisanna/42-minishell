@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 09:30:28 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/27 14:25:19 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/09/28 16:08:58 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,15 +183,15 @@ void	ft_execute_cmd(t_minishell *ms, t_cmd *curr, char *cmd);
 void	ft_execute_external(t_minishell *ms, t_cmd *curr, char *cmd);
 
 // redir_handlers.c
-void	ft_redir_handler(t_minishell *ms, t_cmd *curr);
+void	ft_handle_redir(t_minishell *ms, t_cmd *curr);
 void	ft_close_fds(t_cmd *curr);
-int		ft_heredoc_handler(t_minishell *ms, char *delimiter);
-void	ft_heredoc_creator(t_minishell *ms, char *delimiter);
-char	*ft_heredoc_expander(t_minishell *ms, char *line);
+int		ft_handle_heredoc(t_minishell *ms, char *delimiter);
+void	ft_create_heredoc(t_minishell *ms, char *delimiter);
+char	*ft_expand_heredoc(t_minishell *ms, char *line);
 
 // pipes_handler.c
-void	ft_pipes_creator(t_minishell *ms);
-void	ft_pipes_handler(t_minishell *ms, t_cmd *curr);
+void	ft_open_pipes(t_minishell *ms);
+void	ft_handle_pipes(t_minishell *ms, t_cmd *curr);
 void	ft_close_pipes(t_minishell *ms);
 
 // BUILTINS _____________________________________________________________________
