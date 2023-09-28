@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 15:51:46 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/25 18:25:48 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/09/28 10:13:53 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,9 @@ void	ft_expander(t_minishell *ms, t_token *token)
 	curr = token;
 	while (curr)
 	{
+		if (curr->content[0] == '$' &&
+			(curr->content[1] == '\0' || curr->content[1] == ' '))
+			return ;
 		if (curr->type == T_DQUOTE || curr->type == T_OTHER)
 			ft_expand_command(ms, curr);
 		if (ft_strlen(curr->content) == 0)
