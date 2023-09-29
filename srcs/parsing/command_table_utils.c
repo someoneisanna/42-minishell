@@ -6,15 +6,15 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 17:47:33 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/28 16:01:41 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/09/29 10:46:27 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-t_cmd	*ft_new_cmd(t_token *first, int n_args);
+t_cmd	*ft_new_cmd(t_minishell *ms, t_token *first, int n_args);
 char	**ft_get_args(t_token *first, int n_args);
-char	*ft_add_redirections(t_token *first, t_type type);
+char	*ft_add_redirections(t_minishell *ms, t_token *first, t_type type);
 void	ft_add_cmd_back(t_cmd **cmd_table, t_cmd *new_cmd);
 void	ft_free_cmd_lst(t_cmd **cmd_table);
 
@@ -30,7 +30,7 @@ void	ft_free_cmd_lst(t_cmd **cmd_table);
 		- ft_free_cmd_lst: this function will free the command table.
 */
 
-t_cmd	*ft_new_cmd(t_token *first, int n_args)
+t_cmd	*ft_new_cmd(t_minishell *ms, t_token *first, int n_args)
 {
 	t_cmd	*new_cmd;
 
@@ -39,10 +39,10 @@ t_cmd	*ft_new_cmd(t_token *first, int n_args)
 		return (NULL);
 	new_cmd->args = ft_get_args(first, n_args);
 	new_cmd->cmd = ft_strdup(new_cmd->args[0]);
-	new_cmd->file_in = ft_add_redirections(first, T_FILE_IN);
-	new_cmd->file_tr = ft_add_redirections(first, T_FILE_TRUNC);
-	new_cmd->heredoc = ft_add_redirections(first, T_DELIMITER);
-	new_cmd->file_ap = ft_add_redirections(first, T_FILE_APPEND);
+	new_cmd->file_in = ft_add_redirections(ms, first, T_FILE_IN);
+	new_cmd->file_tr = ft_add_redirections(ms, first, T_FILE_TRUNC);
+	new_cmd->heredoc = ft_add_redirections(ms, first, T_DELIMITER);
+	new_cmd->file_ap = ft_add_redirections(ms, first, T_FILE_APPEND);
 	new_cmd->fd_in = STDIN_FILENO;
 	new_cmd->fd_out = STDOUT_FILENO;
 	new_cmd->index = 0;
@@ -75,26 +75,29 @@ char	**ft_get_args(t_token *first, int n_args)
 	return (args);
 }
 
-char	*ft_add_redirections(t_token *first, t_type type)
+char	*ft_add_redirections(t_minishell *ms, t_token *first, t_type type)
 {
 	int		fd;
 	t_token	*curr;
 
 	fd = 0;
 	curr = first;
-	while (curr && curr->next && curr->type != T_PIPE)
+	while (curr && curr->type != T_PIPE)
 	{
-		if (curr->type == T_FILE_APPEND)
-			fd = open(curr->content, O_WRONLY | O_CREAT | O_APPEND, 0644);
-		if (curr->type == T_FILE_TRUNC)
-			fd = open(curr->content, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		if (fd > 0)
-			close(fd);
+		if (curr->type == type)
+		{
+			fd = ft_perror_fd(ms, curr->content, type);
+			if (fd > 0)
+				close(fd);
+			else
+				break ;
+		}
 		curr = curr->next;
 	}
-	while (curr && curr->type != type)
-		curr = curr->prev;
-	if (curr)
+	curr = first;
+	while (curr && curr->next && curr->next->type != T_PIPE)
+		curr = curr->next;
+	if (curr && curr->type == type)
 		return (ft_strdup(curr->content));
 	return (NULL);
 }

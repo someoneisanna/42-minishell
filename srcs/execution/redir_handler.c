@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 13:50:25 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/28 16:12:18 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/09/29 11:18:09 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,8 @@ void	ft_handle_redir(t_minishell *ms, t_cmd *curr)
 		curr->fd_in = ft_handle_heredoc(ms, curr->heredoc);
 	if (curr->file_ap)
 		curr->fd_out = open(curr->file_ap, O_WRONLY | O_CREAT | O_APPEND, 0644);
-	if (curr->fd_in < 0 || curr->fd_out < 0)
-		exit (ft_perror(ms, E_FILE, YES));
-	else
-	{
-		dup2(curr->fd_in, STDIN_FILENO);
-		dup2(curr->fd_out, STDOUT_FILENO);
-	}
+	dup2(curr->fd_in, STDIN_FILENO);
+	dup2(curr->fd_out, STDOUT_FILENO);
 }
 
 void	ft_close_fds(t_cmd *curr)

@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 09:30:28 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/28 16:08:58 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/09/29 10:26:06 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,7 @@ typedef struct s_minishell
 	char	*input;
 	char	**envp;
 	char	**paths;
+	int		file_error;
 	int		**pipe_fd;
 	int		n_pipes;
 	pid_t	pid_heredoc;
@@ -158,9 +159,9 @@ int		ft_command_table_creator(t_minishell *ms);
 int		ft_command_table_helper(t_minishell *ms);
 
 // command_table_utils.c
-t_cmd	*ft_new_cmd(t_token *first, int n_args);
+t_cmd	*ft_new_cmd(t_minishell *ms, t_token *first, int n_args);
 char	**ft_get_args(t_token *first, int n_args);
-char	*ft_add_redirections(t_token *first, t_type type);
+char	*ft_add_redirections(t_minishell *ms, t_token *first, t_type type);
 void	ft_add_cmd_back(t_cmd **cmd_table, t_cmd *new_cmd);
 void	ft_free_cmd_lst(t_cmd **cmd_table);
 
@@ -208,6 +209,7 @@ void	ft_unset(t_minishell *ms, t_cmd *curr);
 
 // main_utils.c
 int		ft_perror(t_minishell *ms, char *error, int free_flag);
+int		ft_perror_fd(t_minishell *ms, char *filename, t_type file_type);
 int		ft_everything_is_space(char *str);
 void	ft_free_str_array(char **str_array);
 

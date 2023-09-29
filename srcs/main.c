@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 11:26:27 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/28 16:02:56 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/09/29 10:49:41 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ void	ft_main_loop(t_minishell *ms)
 		add_history(ms->input);
 		if (ft_everything_is_space(ms->input) == FALSE)
 		{
+			ms->file_error = NO;
 			if (ft_parser(ms, ms->input) == EXIT_SUCCESS)
 				ft_executer(ms);
 			if (ms->n_pipes > 0)
