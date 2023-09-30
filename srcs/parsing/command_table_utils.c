@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 17:47:33 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/29 10:46:27 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/09/30 10:13:52 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 t_cmd	*ft_new_cmd(t_minishell *ms, t_token *first, int n_args);
 char	**ft_get_args(t_token *first, int n_args);
 char	*ft_add_redirections(t_minishell *ms, t_token *first, t_type type);
+char	**ft_add_heredocs(t_token *first);
 void	ft_add_cmd_back(t_cmd **cmd_table, t_cmd *new_cmd);
-void	ft_free_cmd_lst(t_cmd **cmd_table);
 
 /*
 	Here are the auxiliary functions for the command table. Here are the usual ft_new, ft_add_back and ft_free, but also some functions to get the arguments and redirections properly.
@@ -41,8 +41,8 @@ t_cmd	*ft_new_cmd(t_minishell *ms, t_token *first, int n_args)
 	new_cmd->cmd = ft_strdup(new_cmd->args[0]);
 	new_cmd->file_in = ft_add_redirections(ms, first, T_FILE_IN);
 	new_cmd->file_tr = ft_add_redirections(ms, first, T_FILE_TRUNC);
-	new_cmd->heredoc = ft_add_redirections(ms, first, T_DELIMITER);
 	new_cmd->file_ap = ft_add_redirections(ms, first, T_FILE_APPEND);
+	new_cmd->heredoc = ft_add_heredocs(first);
 	new_cmd->fd_in = STDIN_FILENO;
 	new_cmd->fd_out = STDOUT_FILENO;
 	new_cmd->index = 0;
@@ -58,7 +58,7 @@ char	**ft_get_args(t_token *first, int n_args)
 
 	i = 0;
 	j = 0;
-	args = ft_calloc(n_args + 1, sizeof(char *));
+	args = (char **)ft_calloc(n_args + 1, sizeof(char *));
 	if (!args)
 		return (NULL);
 	while (i < n_args)
@@ -102,6 +102,32 @@ char	*ft_add_redirections(t_minishell *ms, t_token *first, t_type type)
 	return (NULL);
 }
 
+char	**ft_add_heredocs(t_token *first)
+{
+	int		i;
+	int		n_heredocs;
+	char	**heredocs;
+	t_token	*curr;
+
+	i = 0;
+	n_heredocs = ft_count_heredocs(first);
+	heredocs = (char **)ft_calloc(n_heredocs + 1, sizeof(char *));
+	if (!heredocs)
+		return (NULL);
+	curr = first;
+	while (curr && curr->type != T_PIPE)
+	{
+		if (curr->type == T_DELIMITER)
+		{
+			heredocs[i] = ft_strdup(curr->content);
+			i++;
+		}
+		curr = curr->next;
+	}
+	heredocs[i] = NULL;
+	return (heredocs);
+}
+
 void	ft_add_cmd_back(t_cmd **cmd_table, t_cmd *new_cmd)
 {
 	t_cmd	*current;
@@ -115,27 +141,4 @@ void	ft_add_cmd_back(t_cmd **cmd_table, t_cmd *new_cmd)
 	while (current && current->next)
 		current = current->next;
 	current->next = new_cmd;
-}
-
-void	ft_free_cmd_lst(t_cmd **cmd_table)
-{
-	t_cmd	*current;
-	t_cmd	*next;
-
-	if (!*cmd_table)
-		return ;
-	current = *cmd_table;
-	while (current)
-	{
-		next = current->next;
-		ft_free_str_array(current->args);
-		free(current->cmd);
-		free(current->file_in);
-		free(current->file_tr);
-		free(current->heredoc);
-		free(current->file_ap);
-		free(current);
-		current = next;
-	}
-	*cmd_table = NULL;
 }

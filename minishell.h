@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 09:30:28 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/29 10:26:06 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/09/30 10:13:57 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,8 +97,8 @@ typedef struct s_cmd
 	char			**args;
 	char			*file_in;
 	char			*file_tr;
-	char			*heredoc;
 	char			*file_ap;
+	char			**heredoc;
 	int				fd_in;
 	int				fd_out;
 	int				index;
@@ -157,13 +157,14 @@ char	*ft_replace_content(char *cmd, char *key, char *value);
 // command_table.c
 int		ft_command_table_creator(t_minishell *ms);
 int		ft_command_table_helper(t_minishell *ms);
+void	ft_free_cmd_lst(t_cmd **cmd_table);
 
 // command_table_utils.c
 t_cmd	*ft_new_cmd(t_minishell *ms, t_token *first, int n_args);
 char	**ft_get_args(t_token *first, int n_args);
 char	*ft_add_redirections(t_minishell *ms, t_token *first, t_type type);
+char	**ft_add_heredocs(t_token *first);
 void	ft_add_cmd_back(t_cmd **cmd_table, t_cmd *new_cmd);
-void	ft_free_cmd_lst(t_cmd **cmd_table);
 
 // ENVIRONMENT __________________________________________________________________
 
@@ -217,6 +218,7 @@ void	ft_free_str_array(char **str_array);
 int		ft_is_space(char c);
 int		ft_len_until_match(char *input, char *match);
 int		ft_is_cmd_or_file(t_type type);
+int		ft_count_heredocs(t_token *first);
 
 // execution_utils.c
 int		ft_cmd_has_redir(t_cmd *cmd);
