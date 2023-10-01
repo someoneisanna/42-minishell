@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 17:47:33 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/30 10:13:52 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/09/30 17:42:52 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ t_cmd	*ft_new_cmd(t_minishell *ms, t_token *first, int n_args)
 	new_cmd->file_in = ft_add_redirections(ms, first, T_FILE_IN);
 	new_cmd->file_tr = ft_add_redirections(ms, first, T_FILE_TRUNC);
 	new_cmd->file_ap = ft_add_redirections(ms, first, T_FILE_APPEND);
-	new_cmd->heredoc = ft_add_heredocs(first);
+	new_cmd->heredocs = ft_add_heredocs(first);
 	new_cmd->fd_in = STDIN_FILENO;
 	new_cmd->fd_out = STDOUT_FILENO;
 	new_cmd->index = 0;
@@ -77,28 +77,25 @@ char	**ft_get_args(t_token *first, int n_args)
 
 char	*ft_add_redirections(t_minishell *ms, t_token *first, t_type type)
 {
-	int		fd;
 	t_token	*curr;
+	t_token *last;
 
-	fd = 0;
 	curr = first;
+	last = NULL;
 	while (curr && curr->type != T_PIPE)
 	{
 		if (curr->type == type)
 		{
-			fd = ft_perror_fd(ms, curr->content, type);
-			if (fd > 0)
-				close(fd);
-			else
+			if (ft_perror_fd(ms, curr->content, type) != 0)
 				break ;
 		}
+		last = curr;
 		curr = curr->next;
 	}
-	curr = first;
-	while (curr && curr->next && curr->next->type != T_PIPE)
-		curr = curr->next;
-	if (curr && curr->type == type)
-		return (ft_strdup(curr->content));
+	while (last->prev && last->type != type && last->type != T_PIPE)
+		last = last->prev;
+	if (last && last->type == type)
+		return (ft_strdup(last->content));
 	return (NULL);
 }
 

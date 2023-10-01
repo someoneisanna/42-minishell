@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 11:25:15 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/18 10:11:18 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/10/01 12:05:35 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 void	ft_init_env_lst(t_env **env, char **envp);
 t_env	*ft_new_env(char *key, char *value);
 void	ft_add_env_back(t_env **env_lst, t_env *new_env);
-void	ft_free_env_lst(t_env **env_lst);
 char	**ft_get_paths(t_env *env_lst);
 
 /*
@@ -79,25 +78,6 @@ void	ft_add_env_back(t_env **env_lst, t_env *new_env)
 	while (current && current->next)
 		current = current->next;
 	current->next = new_env;
-}
-
-void	ft_free_env_lst(t_env **env_lst)
-{
-	t_env	*current;
-	t_env	*next;
-
-	if (!*env_lst)
-		return ;
-	current = *env_lst;
-	while (current)
-	{
-		next = current->next;
-		free(current->key);
-		free(current->value);
-		free(current);
-		current = next;
-	}
-	*env_lst = NULL;
 }
 
 char	**ft_get_paths(t_env *env_lst)

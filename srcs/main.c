@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 11:26:27 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/30 10:17:50 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/09/30 17:19:52 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,11 +62,14 @@ void	ft_main_loop(t_minishell *ms)
 		if (ft_everything_is_space(ms->input) == FALSE)
 		{
 			ms->file_error = NO;
+			ms->n_pipes = 0;
 			if (ft_parser(ms, ms->input) == EXIT_SUCCESS)
+			{
 				ft_executer(ms);
-			if (ms->n_pipes > 0)
-				ft_free_pipes(ms);
-			unlink(".heredoc");
+				if (ms->n_pipes > 0)
+					ft_free_pipes(ms);
+				unlink(".heredoc");
+			}
 			ft_free_all(ms, NO);
 		}
 	}

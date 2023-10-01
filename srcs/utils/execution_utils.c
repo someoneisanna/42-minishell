@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 17:02:07 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/26 19:11:04 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/10/01 12:06:48 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 int		ft_cmd_has_redir(t_cmd *cmd);
 int		ft_count_pipes(t_cmd *cmd_lst);
 void	ft_set_cmd_index(t_minishell *ms);
-void	ft_free_pipes(t_minishell *ms);
 
 int	ft_cmd_has_redir(t_cmd *cmd)
 {
@@ -23,7 +22,7 @@ int	ft_cmd_has_redir(t_cmd *cmd)
 		return (YES);
 	if (cmd->file_tr)
 		return (YES);
-	if (cmd->heredoc)
+	if (cmd->heredocs[0])
 		return (YES);
 	if (cmd->file_ap)
 		return (YES);
@@ -63,18 +62,4 @@ void	ft_set_cmd_index(t_minishell *ms)
 		i++;
 		curr = curr->next;
 	}
-}
-
-void	ft_free_pipes(t_minishell *ms)
-{
-	int	i;
-
-	i = 0;
-	while (i < ms->n_pipes)
-	{
-		free(ms->pipe_fd[i]);
-		i++;
-	}
-	free(ms->pipe_fd);
-	free(ms->pid);
 }

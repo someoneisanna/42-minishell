@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 09:30:28 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/30 10:13:57 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/10/01 12:08:38 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,10 @@
 # define YES			1
 # define NO				0
 
-# define ERROR_FOUND	1
-# define EXIT_FAILURE	1
 # define EXIT_SUCCESS	0
+# define EXIT_FAILURE	1
+# define ERROR_FOUND	1
+# define EXIT_NO_CMD	2
 
 # define E_QUOTES		"syntax error: unclosed quotes"
 # define E_SYNTAX		"syntax error near unexpected token"
@@ -54,7 +55,6 @@
 # define E_DUP2			"error: dup2"
 # define E_FORK			"error: fork"
 # define E_HEREDOC		"error: heredoc"
-
 
 // ---------------------------------- STRUCTS ----------------------------------
 
@@ -98,7 +98,7 @@ typedef struct s_cmd
 	char			*file_in;
 	char			*file_tr;
 	char			*file_ap;
-	char			**heredoc;
+	char			**heredocs;
 	int				fd_in;
 	int				fd_out;
 	int				index;
@@ -107,17 +107,17 @@ typedef struct s_cmd
 
 typedef struct s_minishell
 {
-	char	*input;
-	char	**envp;
-	char	**paths;
-	int		file_error;
-	int		**pipe_fd;
-	int		n_pipes;
-	pid_t	pid_heredoc;
-	pid_t	*pid;
-	t_env	*env_lst;
-	t_token	*token_lst;
-	t_cmd	*cmd_lst;
+	char			*input;
+	char			**envp;
+	char			**paths;
+	int				**pipe_fd;
+	int				n_pipes;
+	int				file_error;
+	pid_t			pid_heredoc;
+	pid_t			*pid;
+	t_env			*env_lst;
+	t_token			*token_lst;
+	t_cmd			*cmd_lst;
 }	t_minishell;
 
 // --------------------------------- PROTOTYPES ---------------------------------
@@ -142,7 +142,6 @@ int		ft_add_command_token(t_token **token_lst, char *input, t_type type);
 // tokenizer_utils.c
 t_token *ft_new_token(char *input, t_type type);
 void	ft_add_token_back(t_token **token, t_token *new_token);
-void	ft_free_token_lst(t_token **token_lst);
 
 // syntax_checker.c
 int		ft_syntax_checker(t_minishell *ms, t_token *token);
@@ -157,7 +156,6 @@ char	*ft_replace_content(char *cmd, char *key, char *value);
 // command_table.c
 int		ft_command_table_creator(t_minishell *ms);
 int		ft_command_table_helper(t_minishell *ms);
-void	ft_free_cmd_lst(t_cmd **cmd_table);
 
 // command_table_utils.c
 t_cmd	*ft_new_cmd(t_minishell *ms, t_token *first, int n_args);
@@ -172,7 +170,6 @@ void	ft_add_cmd_back(t_cmd **cmd_table, t_cmd *new_cmd);
 void	ft_init_env_lst(t_env **env, char **envp);
 t_env	*ft_new_env(char *key, char *value);
 void	ft_add_env_back(t_env **env_lst, t_env *new_env);
-void	ft_free_env_lst(t_env **env_lst);
 char	**ft_get_paths(t_env *env_lst);
 
 // EXECUTION ____________________________________________________________________
@@ -212,7 +209,6 @@ void	ft_unset(t_minishell *ms, t_cmd *curr);
 int		ft_perror(t_minishell *ms, char *error, int free_flag);
 int		ft_perror_fd(t_minishell *ms, char *filename, t_type file_type);
 int		ft_everything_is_space(char *str);
-void	ft_free_str_array(char **str_array);
 
 // parsing_utils.c
 int		ft_is_space(char c);
@@ -224,6 +220,12 @@ int		ft_count_heredocs(t_token *first);
 int		ft_cmd_has_redir(t_cmd *cmd);
 int		ft_count_pipes(t_cmd *cmd_lst);
 void	ft_set_cmd_index(t_minishell *ms);
+
+// free_utils.c
+void	ft_free_token_lst(t_token **token_lst);
+void	ft_free_cmd_lst(t_cmd **cmd_table);
+void	ft_free_env_lst(t_env **env_lst);
+void	ft_free_str_array(char **str_array);
 void	ft_free_pipes(t_minishell *ms);
 
 # endif

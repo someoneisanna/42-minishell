@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 18:58:27 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/30 10:51:29 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/09/30 15:42:47 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	ft_handle_pipes(t_minishell *ms, t_cmd *curr)
 		dup2(curr->fd_in, STDIN_FILENO);
 		dup2(ms->pipe_fd[curr->index][1], STDOUT_FILENO);
 	}
-	else if (curr->next == NULL)
+	else if (curr->next == NULL || curr->fd_out > STDOUT_FILENO)
 	{
 		dup2(ms->pipe_fd[curr->index - 1][0], STDIN_FILENO);
 		dup2(curr->fd_out, STDOUT_FILENO);
@@ -69,6 +69,10 @@ void	ft_handle_pipes(t_minishell *ms, t_cmd *curr)
 		dup2(ms->pipe_fd[curr->index - 1][0], STDIN_FILENO);
 		dup2(ms->pipe_fd[curr->index][1], STDOUT_FILENO);
 	}
+	if (curr->fd_in > STDIN_FILENO)
+		dup2(curr->fd_in, STDIN_FILENO);
+	if (curr->fd_out > STDOUT_FILENO)
+		dup2(curr->fd_out, STDOUT_FILENO);
 }
 
 void	ft_close_pipes(t_minishell *ms)

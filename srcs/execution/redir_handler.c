@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 13:50:25 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/30 10:18:31 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/09/30 17:53:59 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,15 +32,20 @@ char	*ft_expand_heredoc(t_minishell *ms, char *line);
 
 void	ft_handle_redir(t_minishell *ms, t_cmd *curr)
 {
-	(void)ms;
+	int	i;
+
+	i = 0;
 	if (curr->file_in)
 		curr->fd_in = open(curr->file_in, O_RDONLY);
 	if (curr->file_tr)
 		curr->fd_out = open(curr->file_tr, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	//if (curr->heredoc)
-	//	curr->fd_in = ft_handle_heredoc(ms, curr->heredoc);
 	if (curr->file_ap)
 		curr->fd_out = open(curr->file_ap, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	while (curr->heredocs[i])
+	{
+		curr->fd_in = ft_handle_heredoc(ms, curr->heredocs[i]);
+		i++;
+	}
 	dup2(curr->fd_in, STDIN_FILENO);
 	dup2(curr->fd_out, STDOUT_FILENO);
 }
@@ -57,19 +62,63 @@ void	ft_close_fds(t_cmd *curr)
 
 int	ft_handle_heredoc(t_minishell *ms, char *delimiter)
 {
-	(void)ms;
-	return (open(delimiter, O_RDONLY));
+	ms->pid_heredoc = fork();
+	if (ms->pid_heredoc < 0)
+		ft_perror(ms, E_FORK, YES);
+	else if (ms->pid_heredoc == 0)
+		ft_create_heredoc(ms, delimiter);
+	else
+		waitpid(ms->pid_heredoc, NULL, 0);
+	return (open(".heredoc", O_RDONLY));
 }
 
 void	ft_create_heredoc(t_minishell *ms, char *delimiter)
 {
-	(void)ms;
-	(void)delimiter;
+	int		fd;
+	char	*line;
+
+	fd = open(".heredoc", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	while (42)
+	{
+		line = readline("heredoc> ");
+		if (!line)
+		{
+			ft_perror(ms, E_HEREDOC, YES);
+			break ;
+		}
+		if (line && ft_strncmp(line, delimiter, ft_strlen(line) + 1) == 0)
+		{
+			free(line);
+			break ;
+		}
+		line = ft_expand_heredoc(ms, line);
+		ft_putendl_fd(line, fd);
+		free(line);
+	}
+	close(fd);
+	ft_free_all(ms, YES);
 }
 
 char	*ft_expand_heredoc(t_minishell *ms, char *line)
 {
-	(void)ms;
-	line = NULL;
-	return (line);
+	char	*tmp;
+	char	*key;
+	char	*value;
+	char	*heredoc_expanded;
+
+	heredoc_expanded = ft_strdup(line);
+	while (ft_strchr(heredoc_expanded, '$') != NULL)
+	{
+		key = ft_get_key(heredoc_expanded);
+		if (ft_strncmp(key, "$?", 3) == 0)
+			value = ft_itoa(42); //create a exit status variable
+		else
+			value = ft_get_env_value(&ms->env_lst, key);
+		tmp = heredoc_expanded;
+		heredoc_expanded = ft_replace_content(heredoc_expanded, key, value);
+		free(tmp);
+		free(key);
+		free(value);
+	}
+	return (heredoc_expanded);
 }

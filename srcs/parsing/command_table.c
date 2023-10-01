@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 10:49:32 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/30 10:13:26 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/10/01 12:04:27 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 int		ft_command_table_creator(t_minishell *ms);
 int		ft_command_table_helper(t_minishell *ms);
-void	ft_free_cmd_lst(t_cmd **cmd_table);
 
 /*
 	This is where the command table will be created.
@@ -45,8 +44,8 @@ int	ft_command_table_creator(t_minishell *ms)
 			curr->next->type = T_COMMAND;
 		curr = curr->next;
 	}
-	if (ft_command_table_helper(ms) == ERROR_FOUND)
-		return (EXIT_FAILURE);
+	if (ft_command_table_helper(ms) == EXIT_NO_CMD)
+		return (EXIT_NO_CMD);
 	return (EXIT_SUCCESS);
 }
 
@@ -70,34 +69,11 @@ int	ft_command_table_helper(t_minishell *ms)
 				curr = curr->next;
 			}
 			if (n_args == 1 && ms->token_lst->type == T_EMPTY)
-				return (EXIT_FAILURE);
+				return (EXIT_NO_CMD);
 			ft_add_cmd_back(&ms->cmd_lst, ft_new_cmd(ms, first_cmd, n_args));
 		}
 		else
 			curr = curr->next;
 	}
 	return (EXIT_SUCCESS);
-}
-
-void	ft_free_cmd_lst(t_cmd **cmd_table)
-{
-	t_cmd	*current;
-	t_cmd	*next;
-
-	if (!*cmd_table)
-		return ;
-	current = *cmd_table;
-	while (current)
-	{
-		next = current->next;
-		ft_free_str_array(current->args);
-		free(current->cmd);
-		free(current->file_in);
-		free(current->file_tr);
-		free(current->file_ap);
-		ft_free_str_array(current->heredoc);
-		free(current);
-		current = next;
-	}
-	*cmd_table = NULL;
 }

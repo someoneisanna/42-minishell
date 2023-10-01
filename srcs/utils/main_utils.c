@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 17:44:16 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/29 12:25:41 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/10/01 12:06:07 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 int		ft_perror(t_minishell *ms, char *error, int free_flag);
 int		ft_perror_fd(t_minishell *ms, char *filename, t_type file_type);
 int		ft_everything_is_space(char *str);
-void	ft_free_str_array(char **str_array);
-
 
 int	ft_perror(t_minishell *ms, char *error, int free_flag)
 {
@@ -45,8 +43,11 @@ int	ft_perror_fd(t_minishell *ms, char *filename, t_type file_type)
 	{
 		ft_perror(ms, E_FILE, NO);
 		ms->file_error = YES;
+		return (EXIT_FAILURE);
 	}
-	return (fd);
+	else
+		close(fd);
+	return (0);
 }
 
 int	ft_everything_is_space(char *str)
@@ -61,19 +62,4 @@ int	ft_everything_is_space(char *str)
 		i++;
 	}
 	return (TRUE);
-}
-
-void	ft_free_str_array(char **str_array)
-{
-	int	i;
-
-	i = 0;
-	if (!str_array)
-		return ;
-	while (str_array[i])
-	{
-		free(str_array[i]);
-		i++;
-	}
-	free(str_array);
 }

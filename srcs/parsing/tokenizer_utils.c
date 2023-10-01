@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 11:14:28 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/04 15:29:52 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/10/01 12:03:42 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 t_token *ft_new_token(char *input, t_type type);
 void	ft_add_token_back(t_token **token, t_token *new_token);
-void	ft_free_token_lst(t_token **token_lst);
 
 /*
 	Here are the functions that helped us to build the doubly linked list.
@@ -54,22 +53,4 @@ void	ft_add_token_back(t_token **token_lst, t_token *new_token)
 		current = current->next;
 	current->next = new_token;
 	new_token->prev = current;
-}
-
-void	ft_free_token_lst(t_token **token_lst)
-{
-	t_token	*current;
-	t_token	*next;
-
-	if (!*token_lst)
-		return ;
-	current = *token_lst;
-	while (current)
-	{
-		next = current->next;
-		free(current->content);
-		free(current);
-		current = next;
-	}
-	*token_lst = NULL;
 }
