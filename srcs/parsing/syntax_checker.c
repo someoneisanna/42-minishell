@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 11:03:52 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/15 17:50:46 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/10/01 16:06:38 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,14 @@
 		1) If the first token is not a pipe or a redirection.
 		2) If pipes and redirections are not next to each other.
 		3) If the last token is not a pipe or a redirection.
+	Examples:
+		ALLOWED:		ls | wc -l > a.txt
+		NOT ALLOWED:	| ls | wc -l
+						ls | wc -l |
+						ls | | wc -l
+						< ls | wc -l
+						ls | wc -l >
+						ls < > a.txt
 */
 
 int	ft_syntax_checker(t_minishell *ms, t_token *token)

@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 17:47:33 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/30 17:42:52 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/10/01 16:27:42 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,14 @@ char	**ft_add_heredocs(t_token *first);
 void	ft_add_cmd_back(t_cmd **cmd_table, t_cmd *new_cmd);
 
 /*
-	Here are the auxiliary functions for the command table. Here are the usual ft_new, ft_add_back and ft_free, but also some functions to get the arguments and redirections properly.
+	Here are the auxiliary functions for the command table. Here are the usual ft_new and ft_add_back, but also some functions to get the arguments and redirections properly.
 	We have:
 		- ft_new_cmd: this function will create a new command.
 		- ft_get_args: this function will get the arguments of the command (for
 			example, if your input is ls -l -a, it will be: ls, -l, -a, NULL)
 		- ft_add_redirections: this function will get the redirections of the
-			command. It looks confusing, but it is because it has to handle cases like: ls > file1 > file2 > file3, in which each file has to be opened, but only the last one will be used as the STDOUT.
+			command. It looks confusing, but it needs to be like this because it has to handle cases like: ls > file1 > file2 > file3, in which each file has to be opened, but only the last one will be used as the STDOUT.
 		- ft_add_cmd_back: this function will add the cmd to the command table.
-		- ft_free_cmd_lst: this function will free the command table.
 */
 
 t_cmd	*ft_new_cmd(t_minishell *ms, t_token *first, int n_args)

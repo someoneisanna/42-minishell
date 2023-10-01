@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 15:51:46 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/28 10:13:53 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/10/01 16:09:32 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,21 @@ char	*ft_replace_content(char *cmd, char *key, char *value);
 
 /*
 	This is where we will check if the command has a variable that needs to be expanded.
-	We will only expand variables that are followed by $.
+	We will only expand variables that are followed by $, and won't handle $().
 	Reminders:
 		When a command has single quotes, we don't expand anything (we will only expand when the token is T_DQUOTE or T_OTHER)
 		$? is a special variable that expands to the exit status of the last command.
+	Example:
+		input: env | grep $USER
+		|-------------------------------|
+		| token | content |    type     |
+		|-------|---------|-------------|
+		|   1   |   env   | T_OTHER		|
+		|   2   |    |    | T_PIPE		|
+		|   3   |  grep   | T_OTHER		|
+		|   5   |  anna   | T_OTHER		|
+		|_______|_________|_____________|
+		note: $USER expands to my user, int his case, anna
 */
 
 void	ft_expander(t_minishell *ms, t_token *token)

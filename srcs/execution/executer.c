@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 11:28:01 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/30 17:56:12 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/10/01 16:32:16 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,18 @@ void	ft_execute_external(t_minishell *ms, t_cmd *curr, char *cmd);
 /*
 	This is the main function of the execution part of the program.
 	We have:
-		- ft_executer: we will check for the existence of pipes and direct the
-			program to the right function.
-		- ft_execute_only_cmd: if there are no pipes, we will execute the cmd
+		- ft_executer:
+			- will check if there are pipes or not. if not, we will execute
+				the cmd directly.
+			- if there are pipes, we will set the cmd indexes, open the pipes,
+				execute the cmds and then close the pipes.
+			- we also have to wait for each child process (one for each command)
+				to finish.
+		- ft_execute_only_cmd: if there are no pipes, we will execute the single
+			cmd inside a child process.
 			(cmd could be a builtin or external).
 		- ft_execute_mult_cmd: if there are pipes, we will execute the piped
-			cmds here.
+			cmds here. it's very similar to ft_execute_only_cmd, but we will also redirect the inputs and outputs to the pipes, as well as to the files if there are any redirections.
 		- ft_execute_cmd: we will check if the cmd is a builtin or not and
 			direct it to the right function.
 		- ft_execute_external: if the cmd is not a builtin, we will check if it
