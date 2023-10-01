@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 13:50:25 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/30 17:53:59 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/10/01 16:50:03 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,8 @@ void	ft_create_heredoc(t_minishell *ms, char *delimiter)
 		free(line);
 	}
 	close(fd);
+	if (ms->n_pipes > 0)
+		ft_free_pipes(ms);
 	ft_free_all(ms, YES);
 }
 
