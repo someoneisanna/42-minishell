@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 13:50:25 by ataboada          #+#    #+#             */
-/*   Updated: 2023/10/01 16:50:03 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/10/02 10:25:18 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,17 +35,17 @@ void	ft_handle_redir(t_minishell *ms, t_cmd *curr)
 	int	i;
 
 	i = 0;
-	if (curr->file_in)
-		curr->fd_in = open(curr->file_in, O_RDONLY);
-	if (curr->file_tr)
-		curr->fd_out = open(curr->file_tr, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	if (curr->file_ap)
-		curr->fd_out = open(curr->file_ap, O_WRONLY | O_CREAT | O_APPEND, 0644);
-	while (curr->heredocs[i])
-	{
-		curr->fd_in = ft_handle_heredoc(ms, curr->heredocs[i]);
-		i++;
-	}
+	while (curr->file_in[i])
+		curr->fd_in = ft_perror_fd(ms, curr->file_in[i++], T_FILE_IN);
+	i = 0;
+	while (curr->file_tr[i])
+		curr->fd_out = ft_perror_fd(ms, curr->file_tr[i++], T_FILE_TRUNC);
+	i = 0;
+	while (curr->file_ap[i])
+		curr->fd_out = ft_perror_fd(ms, curr->file_ap[i++], T_FILE_APPEND);
+	i = 0;
+	while (curr->heredoc[i])
+		curr->fd_in = ft_handle_heredoc(ms, curr->heredoc[i++]);
 	dup2(curr->fd_in, STDIN_FILENO);
 	dup2(curr->fd_out, STDOUT_FILENO);
 }

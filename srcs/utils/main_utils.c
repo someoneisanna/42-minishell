@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 17:44:16 by ataboada          #+#    #+#             */
-/*   Updated: 2023/10/01 12:06:07 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/10/02 11:19:33 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,8 @@ int		ft_everything_is_space(char *str);
 
 int	ft_perror(t_minishell *ms, char *error, int free_flag)
 {
-	ft_putstr_fd("minishell: ", STDERR_FILENO);
-	ft_putstr_fd(error, STDERR_FILENO);
-	ft_putstr_fd("\n", STDERR_FILENO);
+	dup2(STDERR_FILENO, STDOUT_FILENO);
+	printf("minishell: %s\n", error);
 	if (ms->n_pipes > 0)
 		ft_free_pipes(ms);
 	if (free_flag == YES)
@@ -40,14 +39,8 @@ int	ft_perror_fd(t_minishell *ms, char *filename, t_type file_type)
 	else if (file_type == T_FILE_APPEND)
 		fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (fd < 0)
-	{
-		ft_perror(ms, E_FILE, NO);
-		ms->file_error = YES;
-		return (EXIT_FAILURE);
-	}
-	else
-		close(fd);
-	return (0);
+		ft_perror(ms, E_FILE, YES);
+	return (fd);
 }
 
 int	ft_everything_is_space(char *str)

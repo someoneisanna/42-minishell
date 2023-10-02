@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 17:02:07 by ataboada          #+#    #+#             */
-/*   Updated: 2023/10/01 12:06:48 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/10/02 09:59:49 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	ft_cmd_has_redir(t_cmd *cmd)
 		return (YES);
 	if (cmd->file_tr)
 		return (YES);
-	if (cmd->heredocs[0])
+	if (cmd->heredoc[0])
 		return (YES);
 	if (cmd->file_ap)
 		return (YES);

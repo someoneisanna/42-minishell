@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 11:28:01 by ataboada          #+#    #+#             */
-/*   Updated: 2023/10/02 09:15:00 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/10/02 11:39:28 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	ft_executer(t_minishell *ms)
 	int		i;
 	t_cmd	*curr;
 
-	i = -1;
+	i = 0;
 	curr = ms->cmd_lst;
 	ms->n_pipes = ft_count_pipes(ms->cmd_lst);
 	if (ms->n_pipes == 0)
@@ -59,8 +59,8 @@ void	ft_executer(t_minishell *ms)
 			curr = curr->next;
 		}
 		ft_close_pipes(ms);
-		while (i++ < ms->n_pipes)
-			waitpid(ms->pid[i], NULL, 0);
+		while (i < ms->n_pipes + 1)
+			waitpid(ms->pid[i++], NULL, 0);
 	}
 }
 
@@ -84,7 +84,7 @@ void	ft_execute_only_cmd(t_minishell *ms, t_cmd *curr, char *cmd)
 
 void	ft_execute_mult_cmd(t_minishell *ms, t_cmd *curr, char *cmd)
 {
-	if (curr->heredocs[0])
+	if (curr->heredoc[0])
 		waitpid(ms->pid_heredoc, NULL, 0);
 	ms->pid[curr->index] = fork();
 	if (ms->pid[curr->index] < 0)

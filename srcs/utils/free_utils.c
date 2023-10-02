@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/01 12:00:25 by ataboada          #+#    #+#             */
-/*   Updated: 2023/10/01 12:06:51 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/10/02 09:58:40 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,10 @@ void	ft_free_cmd_lst(t_cmd **cmd_table)
 		next = current->next;
 		ft_free_str_array(current->args);
 		free(current->cmd);
-		free(current->file_in);
-		free(current->file_tr);
-		free(current->file_ap);
-		ft_free_str_array(current->heredocs);
+		ft_free_str_array(current->file_in);
+		ft_free_str_array(current->file_tr);
+		ft_free_str_array(current->file_ap);
+		ft_free_str_array(current->heredoc);
 		free(current);
 		current = next;
 	}

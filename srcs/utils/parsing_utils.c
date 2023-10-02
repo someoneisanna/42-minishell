@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 17:56:24 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/30 10:10:48 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/10/02 10:18:57 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int		ft_is_space(char c);
 int		ft_len_until_match(char *input, char *match);
 int		ft_is_cmd_or_file(t_type type);
-int		ft_count_heredocs(t_token *first);
+int		ft_count_redir(t_token *first, t_type type);
 
 int	ft_is_space(char c)
 {
@@ -41,18 +41,18 @@ int	ft_is_cmd_or_file(t_type type)
 	return (NO);
 }
 
-int	ft_count_heredocs(t_token *first)
+int	ft_count_redir(t_token *first, t_type type)
 {
-	int		n_heredocs;
+	int		n_redirs;
 	t_token	*curr;
 
-	n_heredocs = 0;
+	n_redirs = 0;
 	curr = first;
 	while (curr && curr->type != T_PIPE)
 	{
-		if (curr->type == T_DELIMITER)
-			n_heredocs++;
+		if (curr->type == type)
+			n_redirs++;
 		curr = curr->next;
 	}
-	return (n_heredocs);
+	return (n_redirs);
 }

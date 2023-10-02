@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 10:49:32 by ataboada          #+#    #+#             */
-/*   Updated: 2023/10/01 16:26:17 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/10/02 10:04:26 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int		ft_command_table_helper(t_minishell *ms);
 		|  file_in   |   NULL  |  NULL   |
 		|  file_tr   |  a.txt  |  b.txt  |
 		|  file_ap   |   NULL  |  NULL   |
-		|  heredocs  |   NULL  |  A, B   |
+		|  heredoc  |   NULL  |  A, B   |
 		|____________|_________|_________|
 
 	Remember: if the expanded variable doesn't exist, it will be called T_EMPTY, and it should be ignored.
@@ -97,7 +97,7 @@ int	ft_command_table_helper(t_minishell *ms)
 			}
 			if (n_args == 1 && ms->token_lst->type == T_EMPTY)
 				return (EXIT_NO_CMD);
-			ft_add_cmd_back(&ms->cmd_lst, ft_new_cmd(ms, first_cmd, n_args));
+			ft_add_cmd_back(&ms->cmd_lst, ft_new_cmd(first_cmd, n_args));
 		}
 		else
 			curr = curr->next;
