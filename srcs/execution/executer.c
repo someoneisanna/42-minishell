@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 11:28:01 by ataboada          #+#    #+#             */
-/*   Updated: 2023/10/01 16:32:16 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/10/02 09:15:00 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,12 @@ void	ft_execute_external(t_minishell *ms, t_cmd *curr, char *cmd);
 
 void	ft_executer(t_minishell *ms)
 {
-	int		n_pipes;
+	int		i;
 	t_cmd	*curr;
 
+	i = -1;
 	curr = ms->cmd_lst;
 	ms->n_pipes = ft_count_pipes(ms->cmd_lst);
-	n_pipes = ms->n_pipes + 1;
 	if (ms->n_pipes == 0)
 		ft_execute_only_cmd(ms, curr, curr->cmd);
 	else
@@ -59,8 +59,8 @@ void	ft_executer(t_minishell *ms)
 			curr = curr->next;
 		}
 		ft_close_pipes(ms);
-		while (n_pipes-- > 0)
-			waitpid(ms->pid[n_pipes], NULL, 0);
+		while (i++ < ms->n_pipes)
+			waitpid(ms->pid[i], NULL, 0);
 	}
 }
 
