@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 17:02:07 by ataboada          #+#    #+#             */
-/*   Updated: 2023/10/02 09:59:49 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/10/10 20:43:03 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,13 @@ void	ft_set_cmd_index(t_minishell *ms);
 
 int	ft_cmd_has_redir(t_cmd *cmd)
 {
-	if (cmd->file_in)
+	if (cmd->file_in[0])
 		return (YES);
-	if (cmd->file_tr)
+	if (cmd->file_tr[0])
 		return (YES);
 	if (cmd->heredoc[0])
 		return (YES);
-	if (cmd->file_ap)
+	if (cmd->file_ap[0])
 		return (YES);
 	return (NO);
 }
