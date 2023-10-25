@@ -1,29 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/08 09:34:24 by ataboada          #+#    #+#             */
-/*   Updated: 2023/10/25 16:10:35 by ataboada         ###   ########.fr       */
+/*   Created: 2023/10/06 15:57:17 by jmarinho          #+#    #+#             */
+/*   Updated: 2023/10/25 15:23:55 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-void	ft_pwd(t_minishell *ms)
+void	ft_signals_heredoc(void)
 {
-	char	cwd[200];
+	signal(SIGINT, ft_handler_heredoc);
+	signal(SIGQUIT, SIG_IGN);
+}
 
-	(void) ms;
-	if (!is_option_valid(ms))
-	{
-		g_exit_status = 2;
-		exit(g_exit_status);
-	}
-	if (getcwd(cwd, sizeof(cwd)))
-		printf("%s\n", cwd);
-	g_exit_status = 0;
-	exit(g_exit_status);
+void	ft_signals_child(char *cmd)
+{
+	signal(SIGINT, ft_handler_child);
+	if(ft_strncmp(cmd, "cat", 4) == 0)
+		signal(SIGQUIT, ft_handler_child);
+	else
+		signal(SIGQUIT, SIG_IGN);
+}
+
+void	ft_signals(void)
+{
+	signal(SIGINT, ft_handler_sigint);
+	signal(SIGQUIT, SIG_IGN);
 }

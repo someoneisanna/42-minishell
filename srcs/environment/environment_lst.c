@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 11:25:15 by ataboada          #+#    #+#             */
-/*   Updated: 2023/10/24 19:43:58 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/10/25 14:35:53 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void	ft_init_env_lst(t_env **env, char **envp)
 		free(key);
 		i++;
 	}
+	envp[i] = NULL;
 }
 
 t_env	*ft_new_env(char *key, char *value)

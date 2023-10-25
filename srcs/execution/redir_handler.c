@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 13:50:25 by ataboada          #+#    #+#             */
-/*   Updated: 2023/10/23 10:23:21 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/10/25 16:11:07 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,6 @@ void	ft_close_fds(t_cmd *curr);
 int		ft_handle_heredoc(t_minishell *ms, char *delimiter);
 void	ft_create_heredoc(t_minishell *ms, char *delimiter);
 char	*ft_expand_heredoc(t_minishell *ms, char *line);
-
-/*
-	This is where we keep the functions that handle redirections and heredocs.
-	We have:
-		- ft_redir_handler: this function will open the redirection files.
-		- ft_close_fds: this function will close the file descriptors that were
-			opened in ft_redir_handler.
-		- ft_heredoc_handler: this function will handle the heredocs.
-		- ft_heredoc_creator: this function will create the heredoc file.
-		- ft_heredoc_expander: this function will expand the env variables that
-			were in the heredoc.
-*/
 
 void	ft_handle_redir(t_minishell *ms, t_cmd *curr)
 {
@@ -113,7 +101,7 @@ char	*ft_expand_heredoc(t_minishell *ms, char *line)
 	{
 		key = ft_get_key(heredoc_expanded);
 		if (ft_strncmp(key, "$?", 3) == 0)
-			value = ft_itoa(42); //create a exit status variable
+			value = ft_itoa(g_exit_status);
 		else
 			value = ft_get_env_value(&ms->env_lst, key);
 		tmp = heredoc_expanded;

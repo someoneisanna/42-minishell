@@ -6,12 +6,22 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 09:30:28 by ataboada          #+#    #+#             */
-/*   Updated: 2023/10/25 11:06:53 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/10/25 15:49:46 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # ifndef MINISHELL_H
 # define MINISHELL_H
+
+// ---------------------------------- COLORS ----------------------------------
+
+# define RED 	"\033[1;31m"
+# define GREEN 	"\033[1;32m"
+# define YELLOW 	"\033[1;33m"
+# define BLUE 	"\033[1;34m"
+# define PURPLE 	"\033[0;35m"
+# define WHITE 	"\033[1;37m"
+# define RESET 	"\033[0m"
 
 // ---------------------------------- INCLUDES ---------------------------------
 
@@ -35,11 +45,11 @@
 
 // ---------------------------------- DEFINES ----------------------------------
 
-# define FALSE			0
 # define TRUE			1
+# define FALSE			0
 
-# define NO				0
 # define YES			1
+# define NO				0
 
 # define EXIT_SUCCESS	0
 # define EXIT_FAILURE	1
@@ -55,6 +65,10 @@
 # define E_DUP2			"dup2 error"
 # define E_FORK			"fork error"
 # define E_HEREDOC		"warning: here-document at line 1 delimited by end-of-file"
+
+// ------------------------------ GLOBAL VARIABLES -----------------------------
+
+extern int	g_exit_status;
 
 // ---------------------------------- STRUCTS ----------------------------------
 
@@ -193,13 +207,14 @@ void	ft_close_pipes(t_minishell *ms);
 
 // BUILTINS _____________________________________________________________________
 
-void	ft_cd(t_minishell *ms, t_cmd *curr);
-void	ft_echo(t_minishell *ms, t_cmd *curr);
-void	ft_env(t_minishell *ms, t_cmd *curr);
-void	ft_exit(t_minishell *ms, t_cmd *curr);
-void	ft_export(t_minishell *ms, t_cmd *curr);
-void	ft_pwd(t_minishell *ms, t_cmd *curr);
-void	ft_unset(t_minishell *ms, t_cmd *curr);
+void	ft_cd(t_minishell *ms);
+void	ft_echo(t_minishell *ms);
+void	ft_env(t_minishell *ms);
+void	ft_exit(t_minishell *ms);
+void	ft_export(t_minishell *ms);
+void	ft_export_red(t_minishell *ms);
+void	ft_pwd(t_minishell *ms);
+int		ft_unset(t_minishell *ms);
 
 // UTILS ________________________________________________________________________
 
@@ -226,5 +241,27 @@ void	ft_free_cmd_lst(t_cmd **cmd_table);
 void	ft_free_env_lst(t_env **env_lst);
 void	ft_free_str_array(char **str_array);
 void	ft_free_pipes(t_minishell *ms);
+
+// builtins_utils.c
+char	*ft_find_env(t_env *env_lst, char *find);
+void	ft_update_env(t_env **env_lst, char *key, char *update);
+char	ft_strchr2(const char *str, char c);
+void	ft_lstadd_back2(t_env *env_lst, t_env *new_envi);
+bool	ft_not_forkable(t_minishell *ms);
+bool	is_there_redirections(t_minishell *ms);
+bool	is_option_valid(t_minishell *ms);
+void	ft_unsetable(t_minishell *ms, char *cmd);
+
+// SIGNALS ________________________________________________________________________
+
+// signals.c
+void	ft_signals(void);
+void	ft_signals_heredoc(void);
+void	ft_signals_child(char *cmd);
+
+// handlers.c
+void	ft_handler_sigint(int signum);
+void	ft_handler_heredoc(int signum);
+void	ft_handler_child(int signum);
 
 # endif

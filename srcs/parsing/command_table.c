@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 10:49:32 by ataboada          #+#    #+#             */
-/*   Updated: 2023/10/24 19:42:56 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/10/25 14:51:50 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	ft_command_table_creator(t_minishell *ms)
 	t_token	*curr;
 
 	curr = ms->token_lst;
-		while (curr)
+	while (curr)
 	{
 		if (curr->type == T_OTHER)
 			curr->type = T_COMMAND;
