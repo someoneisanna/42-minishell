@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 17:56:24 by ataboada          #+#    #+#             */
-/*   Updated: 2023/10/02 10:18:57 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/10/25 10:21:19 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 int		ft_is_space(char c);
 int		ft_len_until_match(char *input, char *match);
-int		ft_is_cmd_or_file(t_type type);
+int		ft_count_quotes(char *s);
+int		ft_in_squote(char *cmd, char *stop);
 int		ft_count_redir(t_token *first, t_type type);
 
 int	ft_is_space(char c)
@@ -34,11 +35,59 @@ int	ft_len_until_match(char *input, char *match)
 	return (i);
 }
 
-int	ft_is_cmd_or_file(t_type type)
+int	ft_count_quotes(char *s)
 {
-	if (type == T_OTHER || type == T_QUOTE || type == T_DQUOTE)
-		return (YES);
-	return (NO);
+	int		i;
+	int		n_quotes;
+	int		in_squote;
+	int		in_dquote;
+
+	i = 0;
+	n_quotes = 0;
+	in_squote = 0;
+	in_dquote = 0;
+	while (s[i])
+	{
+		if (s[i] == '\'' && in_dquote == 0)
+		{
+			in_squote = 1 - in_squote;
+			n_quotes++;
+		}
+		else if (s[i] == '"' && in_squote == 0)
+		{
+			in_dquote = 1 - in_dquote;
+			n_quotes++;
+		}
+		i++;
+	}
+	return (n_quotes);
+}
+
+int	ft_in_squote(char *cmd, char *stop)
+{
+	int		i;
+	int		n_squotes;
+	int		in_squote;
+	int		in_dquote;
+
+	i = 0;
+	n_squotes = 0;
+	in_squote = 0;
+	in_dquote = 0;
+	while (cmd[i] && &cmd[i] != stop)
+	{
+		if (cmd[i] == '\'' && in_dquote == 0)
+		{
+			in_squote = 1 - in_squote;
+			n_squotes++;
+		}
+		else if (cmd[i] == '"' && in_squote == 0)
+			in_dquote = 1 - in_dquote;
+		i++;
+	}
+	if (n_squotes % 2 == 0)
+		return (NO);
+	return (YES);
 }
 
 int	ft_count_redir(t_token *first, t_type type)

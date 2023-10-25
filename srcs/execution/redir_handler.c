@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 13:50:25 by ataboada          #+#    #+#             */
-/*   Updated: 2023/10/02 10:25:18 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/10/23 10:23:21 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,13 @@ void	ft_handle_redir(t_minishell *ms, t_cmd *curr)
 
 	i = 0;
 	while (curr->file_in[i])
-		curr->fd_in = ft_perror_fd(ms, curr->file_in[i++], T_FILE_IN);
+		curr->fd_in = ft_open_fd(ms, curr->file_in[i++], T_FILE_IN);
 	i = 0;
 	while (curr->file_tr[i])
-		curr->fd_out = ft_perror_fd(ms, curr->file_tr[i++], T_FILE_TRUNC);
+		curr->fd_out = ft_open_fd(ms, curr->file_tr[i++], T_FILE_TR);
 	i = 0;
 	while (curr->file_ap[i])
-		curr->fd_out = ft_perror_fd(ms, curr->file_ap[i++], T_FILE_APPEND);
+		curr->fd_out = ft_open_fd(ms, curr->file_ap[i++], T_FILE_AP);
 	i = 0;
 	while (curr->heredoc[i])
 		curr->fd_in = ft_handle_heredoc(ms, curr->heredoc[i++]);

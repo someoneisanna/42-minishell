@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 10:49:32 by ataboada          #+#    #+#             */
-/*   Updated: 2023/10/02 10:04:26 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/10/24 19:42:56 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,58 +15,23 @@
 int		ft_command_table_creator(t_minishell *ms);
 int		ft_command_table_helper(t_minishell *ms);
 
-/*
-	Here is where we build the final step of the parser, the command table. The command table was created thinking about the execution of the program, so it has a format that will help us use the execve function later.
-
-	First step: update the tokenizer, separating the T_OTHER tokens into T_COMMAND, T_FILE_IN, T_FILE_TRUNC, T_FILE_APPEND and T_DELIMITER.
-	For example:
-		input: ls -l | wc -l > a.txt
-		|--------------------------------|
-		| token | content |     type     |
-		|-------|---------|--------------|
-		|   1   |   ls    | T_COMMAND    |
-		|   2   |   -l    | T_COMMAND    |
-		|   3   |    |    | T_PIPE       |
-		|   4   |   wc    | T_COMMAND    |
-		|   5   |   -l    | T_COMMAND    |
-		|   6   |    >    | T_REDIR_OUT  |
-		|   7   |  a.txt  | T_FILE_TRUNC |
-		|_______|_________|______________|
-
-	Second step: separate it all into commands.
-	For example:
-		input: ls - l > a.txt | sort << A << B > b.txt
-		|--------------------------------|
-		| cmd_number |    1    |    2    |
-		|------------|---------|---------|
-		|    cmd     |    ls   |  sort   |
-		|    args    | ls, -l  |  sort   |
-		|  file_in   |   NULL  |  NULL   |
-		|  file_tr   |  a.txt  |  b.txt  |
-		|  file_ap   |   NULL  |  NULL   |
-		|  heredoc  |   NULL  |  A, B   |
-		|____________|_________|_________|
-
-	Remember: if the expanded variable doesn't exist, it will be called T_EMPTY, and it should be ignored.
-*/
-
 int	ft_command_table_creator(t_minishell *ms)
 {
 	t_token	*curr;
 
 	curr = ms->token_lst;
-	while (curr)
+		while (curr)
 	{
-		if (ft_is_cmd_or_file(curr->type) == YES)
+		if (curr->type == T_OTHER)
 			curr->type = T_COMMAND;
 		else if (curr->type == T_REDIR_IN)
 			curr->next->type = T_FILE_IN;
 		else if (curr->type == T_REDIR_OUT)
-			curr->next->type = T_FILE_TRUNC;
+			curr->next->type = T_FILE_TR;
 		else if (curr->type == T_REDIR2_OUT)
-			curr->next->type = T_FILE_APPEND;
+			curr->next->type = T_FILE_AP;
 		else if (curr->type == T_REDIR2_IN)
-			curr->next->type = T_DELIMITER;
+			curr->next->type = T_HEREDOC;
 		else if (curr->type == T_PIPE)
 			curr->next->type = T_COMMAND;
 		curr = curr->next;

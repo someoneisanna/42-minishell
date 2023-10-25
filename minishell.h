@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 09:30:28 by ataboada          #+#    #+#             */
-/*   Updated: 2023/10/02 10:19:18 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/10/25 11:06:53 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,11 @@
 
 // ---------------------------------- DEFINES ----------------------------------
 
-# define TRUE			1
 # define FALSE			0
+# define TRUE			1
 
-# define YES			1
 # define NO				0
+# define YES			1
 
 # define EXIT_SUCCESS	0
 # define EXIT_FAILURE	1
@@ -48,13 +48,13 @@
 
 # define E_QUOTES		"syntax error: unclosed quotes"
 # define E_SYNTAX		"syntax error near unexpected token"
-# define E_CMD			"error: command not found"
-# define E_FILE			"error: no such file or directory"
-# define E_MALLOC		"error: malloc"
-# define E_PIPE			"error: pipe"
-# define E_DUP2			"error: dup2"
-# define E_FORK			"error: fork"
-# define E_HEREDOC		"error: heredoc"
+# define E_CMD			"command not found"
+# define E_FILE			"no such file or directory"
+# define E_MALLOC		"malloc error"
+# define E_PIPE			"pipe error"
+# define E_DUP2			"dup2 error"
+# define E_FORK			"fork error"
+# define E_HEREDOC		"warning: here-document at line 1 delimited by end-of-file"
 
 // ---------------------------------- STRUCTS ----------------------------------
 
@@ -65,14 +65,12 @@ typedef enum e_type
 	T_REDIR_OUT,
 	T_REDIR2_IN,
 	T_REDIR2_OUT,
-	T_QUOTE,
-	T_DQUOTE,
 	T_OTHER,
 	T_COMMAND,
 	T_FILE_IN,
-	T_FILE_TRUNC,
-	T_DELIMITER,
-	T_FILE_APPEND,
+	T_FILE_TR,
+	T_HEREDOC,
+	T_FILE_AP,
 	T_EMPTY,
 }	t_type;
 
@@ -112,7 +110,6 @@ typedef struct s_minishell
 	char			**paths;
 	int				**pipe_fd;
 	int				n_pipes;
-	int				file_error;
 	pid_t			pid_heredoc;
 	pid_t			*pid;
 	t_env			*env_lst;
@@ -133,6 +130,8 @@ void	ft_free_all(t_minishell *ms, int exit_flag);
 // parser.c
 int		ft_parser(t_minishell *ms, char *input);
 int		ft_quote_checker(char *input);
+void	ft_quote_remover(t_minishell *ms);
+char	*ft_remove_quotes(char *cmd, int new_len, int i);
 
 // tokenizer.c
 void	ft_tokenizer(t_minishell *ms, char *input);
@@ -206,17 +205,18 @@ void	ft_unset(t_minishell *ms, t_cmd *curr);
 
 // main_utils.c
 int		ft_perror(t_minishell *ms, char *error, int free_flag);
-int		ft_perror_fd(t_minishell *ms, char *filename, t_type file_type);
 int		ft_everything_is_space(char *str);
 
 // parsing_utils.c
 int		ft_is_space(char c);
 int		ft_len_until_match(char *input, char *match);
-int		ft_is_cmd_or_file(t_type type);
+int		ft_count_quotes(char *s);
+int		ft_in_squote(char *cmd, char *stop);
 int		ft_count_redir(t_token *first, t_type type);
 
 // execution_utils.c
 int		ft_cmd_has_redir(t_cmd *cmd);
+int		ft_open_fd(t_minishell *ms, char *filename, t_type file_type);
 int		ft_count_pipes(t_cmd *cmd_lst);
 void	ft_set_cmd_index(t_minishell *ms);
 

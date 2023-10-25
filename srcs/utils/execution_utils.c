@@ -6,13 +6,14 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 17:02:07 by ataboada          #+#    #+#             */
-/*   Updated: 2023/10/10 20:43:03 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/10/23 10:24:25 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
 int		ft_cmd_has_redir(t_cmd *cmd);
+int		ft_open_fd(t_minishell *ms, char *filename, t_type file_type);
 int		ft_count_pipes(t_cmd *cmd_lst);
 void	ft_set_cmd_index(t_minishell *ms);
 
@@ -27,6 +28,22 @@ int	ft_cmd_has_redir(t_cmd *cmd)
 	if (cmd->file_ap[0])
 		return (YES);
 	return (NO);
+}
+
+int	ft_open_fd(t_minishell *ms, char *filename, t_type file_type)
+{
+	int	fd;
+
+	fd = 0;
+	if (file_type == T_FILE_IN)
+		fd = open(filename, O_RDONLY);
+	else if (file_type == T_FILE_TR)
+		fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	else if (file_type == T_FILE_AP)
+		fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	if (fd < 0)
+		ft_perror(ms, E_FILE, YES);
+	return (fd);
 }
 
 int	ft_count_pipes(t_cmd *cmd_lst)

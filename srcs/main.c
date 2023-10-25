@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 11:26:27 by ataboada          #+#    #+#             */
-/*   Updated: 2023/09/30 17:19:52 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/10/24 19:41:01 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,29 +14,6 @@
 
 void	ft_main_loop(t_minishell *ms);
 void	ft_free_all(t_minishell *ms, int exit_flag);
-
-/*
-	This is the beginning of the program.
-	We initialize the main structure and start the main loop.
-	Cronologically, minishell uses the files/folders in this order:
-		1) main.c
-		2) environment
-			- environment_lst.c
-		3) parsing
-			- parser.c
-			- tokenizer.c
-			- tokenizer_utils.c
-			- syntax_checker.c
-			- expander.c
-			- command_table.c
-			- command_table_utils.c
-		4) execution
-			- executer.c
-			- redir_handler.c
-			- pipes_handler.c
-		5) builtins
-			- cd.c, echo.c, env.c, exit.c, export.c, pwd.c, unset.c
-*/
 
 int	main(int ac, char **av, char **envp)
 {
@@ -61,7 +38,6 @@ void	ft_main_loop(t_minishell *ms)
 		add_history(ms->input);
 		if (ft_everything_is_space(ms->input) == FALSE)
 		{
-			ms->file_error = NO;
 			ms->n_pipes = 0;
 			if (ft_parser(ms, ms->input) == EXIT_SUCCESS)
 			{

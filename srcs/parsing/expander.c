@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 15:51:46 by ataboada          #+#    #+#             */
-/*   Updated: 2023/10/01 16:09:32 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/10/25 10:13:31 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,25 +18,6 @@ char	*ft_get_key(char *cmd);
 char	*ft_get_env_value(t_env **env_lst, char *key);
 char	*ft_replace_content(char *cmd, char *key, char *value);
 
-/*
-	This is where we will check if the command has a variable that needs to be expanded.
-	We will only expand variables that are followed by $, and won't handle $().
-	Reminders:
-		When a command has single quotes, we don't expand anything (we will only expand when the token is T_DQUOTE or T_OTHER)
-		$? is a special variable that expands to the exit status of the last command.
-	Example:
-		input: env | grep $USER
-		|-------------------------------|
-		| token | content |    type     |
-		|-------|---------|-------------|
-		|   1   |   env   | T_OTHER		|
-		|   2   |    |    | T_PIPE		|
-		|   3   |  grep   | T_OTHER		|
-		|   5   |  anna   | T_OTHER		|
-		|_______|_________|_____________|
-		note: $USER expands to my user, int his case, anna
-*/
-
 void	ft_expander(t_minishell *ms, t_token *token)
 {
 	t_token	*curr;
@@ -45,9 +26,9 @@ void	ft_expander(t_minishell *ms, t_token *token)
 	while (curr)
 	{
 		if (curr->content[0] == '$' &&
-			(curr->content[1] == '\0' || curr->content[1] == ' '))
+			(!curr->content[1] || curr->content[1] == ' '))
 			return ;
-		if (curr->type == T_DQUOTE || curr->type == T_OTHER)
+		if (curr->type == T_OTHER)
 			ft_expand_command(ms, curr);
 		if (ft_strlen(curr->content) == 0)
 			curr->type = T_EMPTY;
@@ -63,6 +44,8 @@ void	ft_expand_command(t_minishell *ms, t_token *token)
 
 	while (ft_strchr(token->content, '$') != NULL)
 	{
+		if (ft_in_squote(token->content, ft_strchr(token->content, '$')) == YES)
+			return ;
 		key = ft_get_key(token->content);
 		if (ft_strncmp(key, "$?", 3) == 0)
 			value = ft_itoa(42); //create a exit status variable

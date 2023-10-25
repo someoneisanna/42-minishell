@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 11:25:15 by ataboada          #+#    #+#             */
-/*   Updated: 2023/10/01 15:51:18 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/10/24 19:43:58 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,23 +16,6 @@ void	ft_init_env_lst(t_env **env, char **envp);
 t_env	*ft_new_env(char *key, char *value);
 void	ft_add_env_back(t_env **env_lst, t_env *new_env);
 char	**ft_get_paths(t_env *env_lst);
-
-/*
-	In this file, we will create a linked list of environment variables.
-	The values in this list are basically the same as the ones you get when you run the command "env" in the terminal.
-
-	When you run 'env' in the terminal, you get a list of environment variables in the format:
-		HOME=/home/anna
-
-	The linked list that is being created is organized in a way that:
-		key: HOME
-		value: /home/anna
-		
-	There are a few uses for this list in minishell:
-		1) Expansions: When we expand a environment variable, we will need to get the value from this list.
-		2) Execution: we need to get the PATH variable from this list to be able to execute commands.
-		3) Builtins: we will need some values from this list to execute a few builtins.
-*/
 
 void	ft_init_env_lst(t_env **env, char **envp)
 {
