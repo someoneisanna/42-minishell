@@ -33,19 +33,19 @@ B_OBJS = $(BONUS:.c=.o)
 all: $(NAME)
 
 %.o : %.c
-	$(CC) $(CFLAGS) -c $< -o $@ -I.
+	@$(CC) $(CFLAGS) -c $< -o $@ -I.
 
 $(NAME): $(S_OBJS)
-	$(AR) $(NAME) $(S_OBJS)
+	@$(AR) $(NAME) $(S_OBJS)
 
 bonus: $(S_OBJS) $(B_OBJS)
-	$(AR) $(NAME) $(S_OBJS) $(B_OBJS)
+	@$(AR) $(NAME) $(S_OBJS) $(B_OBJS)
 
 clean:
-	$(RM) $(S_OBJS) $(B_OBJS)
+	@$(RM) $(S_OBJS) $(B_OBJS)
 
 fclean: clean
-	$(RM) $(NAME)
+	@$(RM) $(NAME)
 
 re: fclean all
 
