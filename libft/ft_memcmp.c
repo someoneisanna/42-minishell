@@ -3,45 +3,37 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataboada <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 13:56:39 by ataboada          #+#    #+#             */
-/*   Updated: 2023/05/10 13:56:40 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/10/06 17:36:24 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-/*
-#include <stdio.h>
-
-int ft_memcmp(const void *str1, const void *str2, size_t n);
-
-int main(void)
-{
-	char s1[] = "zyxbcdefgh";
-	char s2[] = "abcdefgxyz";
-
-	size_t n = 0;
-	int a = ft_memcmp(s1, s2, n);
-	printf("%i\n", a);
-}
-*/
-
-int	ft_memcmp(const void *str1, const void *str2, size_t n)
+/**
+ * @brief Compares byte string s1 against byte string s2 up to n bytes.
+ * @param s1 First string to be compared.
+ * @param s2 Second string to be compared.
+ * @param n Number of bytes to be compared.
+ * @return [0] if the two strings are identical, otherwise the difference
+ * between the first two differing bytes.
+ */
+int	ft_memcmp(const void *s1, const void *s2, size_t n)
 {
 	size_t			i;
-	unsigned char	*s1;
-	unsigned char	*s2;
+	unsigned char	*str1;
+	unsigned char	*str2;
 
-	s1 = (unsigned char *)str1;
-	s2 = (unsigned char *)str2;
+	str1 = (unsigned char *)s1;
+	str2 = (unsigned char *)s2;
 	i = 0;
 	if (n == 0)
 		return (0);
-	while (s1[i] == s2[i] && (i < n - 1))
+	while (str1[i] == str2[i] && (i < n - 1))
 	{
 		i++;
 	}
-	return (s1[i] - s2[i]);
+	return (str1[i] - str2[i]);
 }

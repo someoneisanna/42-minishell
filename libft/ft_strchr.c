@@ -6,44 +6,37 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 13:56:55 by ataboada          #+#    #+#             */
-/*   Updated: 2023/06/20 14:50:05 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/10/06 17:37:16 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-/*
-#include <stdio.h>
-
-char *ft_strchr(const char *str, int c);
-
-int main(void)
-{
-    char s1[] = "teste";
-	char a = '\0';
-
-    printf("string: %s\nletter: %c\nresult: %s\n", s1, a, ft_strchr(s1, a));
-}
-*/
-
-char	*ft_strchr(const char *str, int c)
+/**
+ * @brief Locates the first occurrence of ’c’ in the string pointed to by ’str’.
+ * @param s String to be scanned.
+ * @param c Character to be searched.
+ * @return Pointer to the located character, or NULL if the character does not
+ * appear in the string.
+ */
+char	*ft_strchr(const char *s, int c)
 {
 	int		i;
 	char	c1;
 
 	i = 0;
 	c1 = c;
-	while (str[i])
+	while (s[i])
 	{
-		if (str[i] == c1)
+		if (s[i] == c1)
 		{
-			return ((char *)(str + i));
+			return ((char *)(s + i));
 		}
 		i++;
 	}
-	if (str[i] == c1)
+	if (s[i] == c1)
 	{
-		return ((char *)(str + i));
+		return ((char *)(s + i));
 	}
-	return (0);
+	return (NULL);
 }

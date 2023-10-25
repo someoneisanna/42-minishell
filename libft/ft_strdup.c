@@ -3,31 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataboada <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 18:59:21 by ataboada          #+#    #+#             */
-/*   Updated: 2023/05/08 18:59:23 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/10/06 17:37:21 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-/*
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-
-char *ft_strdup(const char *s);
-
-int main(void)
-{
-    char src[] = "Hey there mate, how you doin'?";
-    char *dup = ft_strdup(src);
-    printf("%s\n", dup);
-    free(dup);
-}
-*/
-
+/**
+ * @brief Allocates sufficient memory for a copy of the string s1, does the copy,
+ * and returns a pointer to it. A NULL pointer is placed in the end of the copied
+ * string.
+ * @param s String to be copied.
+ * @return Pointer to the copy of s.
+ */
 char	*ft_strdup(const char *s)
 {
 	int		i;

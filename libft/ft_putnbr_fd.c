@@ -3,33 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataboada <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 18:58:08 by ataboada          #+#    #+#             */
-/*   Updated: 2023/05/08 18:58:09 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/10/06 17:36:51 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-/*
-#include <unistd.h>
-
-void ft_putnbr_fd(int n, int fd);
-
-int	main(void)
-{
-	int a = 2147483647;
-	int b = -10;
-	int c = 10;
-	int d = -2147483648;
-	ft_putnbr_fd(a, 1);
-	ft_putnbr_fd(b, 1);
-	ft_putnbr_fd(c, 1);
-	ft_putnbr_fd(d, 1);
-}
-*/
-
+/**
+ * @brief Outputs the integer ’n’ to the given file descriptor.
+ * @param n The integer to output.
+ * @param fd The file descriptor on which to write.
+ * @return Nothing.
+ */
 void	ft_putnbr_fd(int n, int fd)
 {
 	long	nb;

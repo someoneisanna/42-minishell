@@ -6,31 +6,16 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 12:40:24 by ataboada          #+#    #+#             */
-/*   Updated: 2023/06/20 14:40:40 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/10/06 17:33:41 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <stdio.h>
-#include <fcntl.h>
 
-char		*get_next_line(int fd);
-static char	*read_file(int fd, char *storage);
-static char	*get_current_line(char *storage);
-static char	*update_storage(char *storage);
-
-/*
-int main(void)
-{
-	int fd;
-	fd = open("read_error.txt", O_RDONLY);
-	printf("1: %s", get_next_line(fd));
-	printf("2: %s", get_next_line(fd));
-	printf("3: %s", get_next_line(fd));
-	printf("4: %s", get_next_line(fd));
-	close(fd);
-}
-*/
+char	*get_next_line(int fd);
+char	*gnl_read_file(int fd, char *storage);
+char	*gnl_get_current_line(char *storage);
+char	*gnl_update_storage(char *storage);
 
 char	*get_next_line(int fd)
 {
@@ -39,11 +24,11 @@ char	*get_next_line(int fd)
 
 	if (fd < 0 || BUFFER_SIZE < 1)
 		return (NULL);
-	storage = read_file(fd, storage);
+	storage = gnl_read_file(fd, storage);
 	if (!storage)
 		return (NULL);
-	line = get_current_line(storage);
-	storage = update_storage(storage);
+	line = gnl_get_current_line(storage);
+	storage = gnl_update_storage(storage);
 	if (!*storage)
 	{
 		free(storage);
@@ -52,7 +37,7 @@ char	*get_next_line(int fd)
 	return (line);
 }
 
-static char	*read_file(int fd, char *storage)
+char	*gnl_read_file(int fd, char *storage)
 {
 	char	*buffer;
 	int		bytes_read;
@@ -81,7 +66,7 @@ static char	*read_file(int fd, char *storage)
 	return (NULL);
 }
 
-static char	*get_current_line(char *storage)
+char	*gnl_get_current_line(char *storage)
 {
 	char	*line;
 	size_t	l_nwl;
@@ -95,7 +80,7 @@ static char	*get_current_line(char *storage)
 	return (line);
 }
 
-static char	*update_storage(char *storage)
+char	*gnl_update_storage(char *storage)
 {
 	char	*upd_storage;
 	size_t	l_nwl;

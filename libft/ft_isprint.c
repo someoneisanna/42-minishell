@@ -3,32 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   ft_isprint.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataboada <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 18:51:50 by ataboada          #+#    #+#             */
-/*   Updated: 2023/05/08 18:51:52 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/10/06 17:35:14 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-/*
-#include <stdio.h>
-#include <ctype.h>
-
-int ft_isprint(int arg);
-
-int main(void)
+/**
+ * @brief Checks for any printable character including space.
+ * @param c The character to be checked.
+ * @return [1] if the character tests true, [0] otherwise.
+ */
+int	ft_isprint(int c)
 {
-    char c = '4';
-    printf("%i\n", ft_isprint(c));
-    printf("%d\n", isprint(c));
-}
-*/
-
-int	ft_isprint(int arg)
-{
-	if ((arg < 32 || arg > 126))
+	if ((c < 32 || c > 126))
 	{
 		return (0);
 	}

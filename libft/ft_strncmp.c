@@ -3,41 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strncmp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataboada <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 19:01:30 by ataboada          #+#    #+#             */
-/*   Updated: 2023/05/08 19:01:32 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/10/06 17:37:50 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-/*
-#include <stdio.h>
-
-int ft_strncmp(const char *str1, const char *str2, size_t n);
-
-int main(void)
-{
-    char s1[] = "ABCF";
-	char s2[] = "ABCG";
-
-	size_t n = 0;
-	int a = ft_strncmp(s1, s2, n);
-	printf("%i\n", a);
-}
-*/
-
-int	ft_strncmp(const char *str1, const char *str2, size_t n)
+/**
+ * @brief Compares the two strings s1 and s2 until n characters or until a '\0'
+ * is reached. Returns 0 if the strings are identical, otherwise returns the
+ * difference between the first two differing bytes.
+ * @param s1 String to be compared.
+ * @param s2 String to be compared.
+ * @param n Number of characters to be compared.
+ * @return [0] if the strings are identical, otherwise returns the difference
+ * between the first two differing bytes.
+ */
+int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {
 	size_t	i;
 
 	i = 0;
-	while ((str1[i] || str2[i]) && i < n)
+	while ((s1[i] || s2[i]) && i < n)
 	{
-		if (str1[i] != str2[i])
+		if (s1[i] != s2[i])
 		{
-			return ((unsigned char)str1[i] - (unsigned char)str2[i]);
+			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
 		}
 		i++;
 	}

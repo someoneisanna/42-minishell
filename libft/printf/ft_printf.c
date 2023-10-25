@@ -6,52 +6,15 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/14 11:54:38 by ataboada          #+#    #+#             */
-/*   Updated: 2023/05/19 13:10:21 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/10/06 17:34:26 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-//#include <stdio.h>
-//#include <limits.h>
-
 int			ft_printf(const char *data, ...);
 static char	ft_is_type(char c);
 static int	ft_call_print(va_list ptr, char data_type);
-
-/*
-int main(void)
-{
-	int i1 = INT_MIN;
-	int i2 = INT_MAX;
-	long l1 = LONG_MAX;
-	long l2 = LONG_MIN;
-	unsigned int u1= UINT_MAX;
-	unsigned int u2= 444;
-	char c1 = '1';
-	char c2 = 'a';
-	char *s1 = "anna";
-	char *s2 = "how are you?";
-	unsigned int *ptr1 = &u1;
-	unsigned int *ptr2 = &u2;
-	printf("%c, %c\n", c1, c2);
-	ft_printf("%c, %c\n", c1, c2);
-	printf("%s, %s\n", s1, s2);
-	ft_printf("%s, %s\n", s1, s2);
-	printf("%p, %p\n", ptr1, ptr2);
-	ft_printf("%p, %p\n", ptr1, ptr2);
-	printf("%d, %d\n", i1, i2);
-	ft_printf("%d, %d\n", i1, i2);
-	printf("%i, %i\n", i1, i2);
-	ft_printf("%i, %i\n", i1, i2);
-	printf("%u, %u\n", u1, u2);
-	ft_printf("%u, %u\n", u1, u2);
-	printf("%x, %x\n", u1, u2);
-	ft_printf("%x, %x\n", u1, u2);
-	printf("%X, %X\n", u1, u2);
-	ft_printf("%X, %X\n", u1, u2);
-}
-*/
 
 int	ft_printf(const char *data, ...)
 {

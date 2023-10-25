@@ -6,17 +6,21 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/14 11:54:42 by ataboada          #+#    #+#             */
-/*   Updated: 2023/05/14 15:16:31 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/10/06 17:31:40 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_PRINTF_H
 # define FT_PRINTF_H
 
+// --------------------------------- INCLUDES ----------------------------------
+
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdarg.h>
 //# include <limits.h>
+
+// -------------------------------- PROTOTYPES ---------------------------------
 
 int	ft_printf(const char *data, ...);
 int	ft_print_c(char c);

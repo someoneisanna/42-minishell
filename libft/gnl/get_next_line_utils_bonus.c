@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 12:40:37 by ataboada          #+#    #+#             */
-/*   Updated: 2023/06/20 14:44:32 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/10/06 17:20:46 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,14 +71,14 @@ char	*gnl_merge_strs(char *s1, char const *s2)
 
 	len_1 = 0;
 	if (s1)
-		len_1 = gnl_strclen(s1, '\0');
-	len_2 = gnl_strclen(s2, '\0');
+		len_1 = ft_strclen(s1, '\0');
+	len_2 = ft_strclen(s2, '\0');
 	merged = (char *)malloc(sizeof(char) * (len_1 + len_2 + 1));
 	if (!merged)
 		return (NULL);
 	if (s1)
-		gnl_memcpy(merged, s1, len_1);
-	gnl_memcpy(merged + len_1, s2, len_2);
+		ft_memcpy(merged, s1, len_1);
+	ft_memcpy(merged + len_1, s2, len_2);
 	merged[len_1 + len_2] = '\0';
 	if (s1)
 		free(s1);

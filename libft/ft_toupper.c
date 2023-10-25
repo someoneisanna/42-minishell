@@ -3,34 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   ft_toupper.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataboada <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 19:03:18 by ataboada          #+#    #+#             */
-/*   Updated: 2023/05/08 19:03:20 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/10/06 17:38:13 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-/*
-#include <stdio.h>
-
-int ft_toupper(int c);
-
-int main(void)
-{
-    char a = 'a';
-    char b = 'L';
-    char c = '2';
-    char d = 'z';
-
-    printf("%c\n", ft_toupper(a));
-    printf("%c\n", ft_toupper(b));
-    printf("%c\n", ft_toupper(c));
-    printf("%c\n", ft_toupper(d));
-}
-*/
-
+/**
+ * @brief Converts the letter c to upper case, if possible.
+ * @param c The character to be converted.
+ * @return The uppercase equivalent of the character, if possible.
+ */
 int	ft_toupper(int c)
 {
 	if (c >= 97 && c <= 122)

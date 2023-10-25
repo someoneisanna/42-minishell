@@ -3,30 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strnstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataboada <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 19:01:48 by ataboada          #+#    #+#             */
-/*   Updated: 2023/05/08 19:01:49 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/10/06 17:37:54 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-/*
-#include <stdio.h>
-#include <string.h>
-
-char *ft_strnstr(const char *haystack, const char *needle, size_t len);
-
-int main(void)
-{
-    char n[] = "n";
-	char h[] = "How are you doing?";
-	printf("Needle: '%s'\nHaystack: '%s'\nPointer: '%s'\n", n, h,
-		ft_strnstr(h, n, 9));
-}
-*/
-
+/**
+ * @brief Locates the first occurrence of the null-terminated string needle in
+ * the string haystack, where not more than len characters are searched.
+ * @param haystack String to be scanned.
+ * @param needle String to be searched for.
+ * @param len Number of characters to be scanned.
+ * @return A pointer to the first occurrence in haystack of any of the entire
+ * sequence of characters specified in needle, or a null pointer if the sequence
+ * is not present in haystack.
+ */
 char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
 {
 	size_t	i;

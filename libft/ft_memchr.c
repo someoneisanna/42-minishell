@@ -3,49 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataboada <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 18:56:20 by ataboada          #+#    #+#             */
-/*   Updated: 2023/05/08 18:56:22 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/10/06 17:36:19 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-/*
-#include <stdio.h>
-#include <string.h>
-
-void *ft_memchr(const void *str, int c, size_t n);
-
-int main(void)
+/**
+ * @brief Locates the first occurrence of c in string s.
+ * @param s The string to be scanned.
+ * @param c The character to be searched.
+ * @param n The number of bytes to be scanned.
+ * @return Pointer to the first occurrence of c in s, NULL otherwise.
+ */
+void	*ft_memchr(const void *s, int c, size_t n)
 {
-    char str[] = "Hello There";
-    char c = 'o';
-    char *s;
-    char *t;
-
-    s = ft_memchr(str, c, 4);
-    t = ft_memchr(str, c, 5);
-
-    printf("String after '%c' is '%s'\n", c, s);
-    printf("String after '%c' is '%s'\n", c, t);
-
-}
-*/
-
-void	*ft_memchr(const void *str, int c, size_t n)
-{
-	char		*s;
+	char		*str;
 	size_t		i;
 
-	s = (char *)str;
+	str = (char *)s;
 	i = 0;
 	while (i < n)
 	{
-		if (s[i] == (char)c)
+		if (str[i] == (char)c)
 		{
-			return (&s[i]);
+			return (&str[i]);
 		}
 		i++;
 	}

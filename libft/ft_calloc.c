@@ -3,46 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataboada <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 18:50:45 by ataboada          #+#    #+#             */
-/*   Updated: 2023/05/08 18:50:47 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/10/06 17:34:52 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-/*
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-
-void *ft_calloc(size_t nitems, size_t size);
-
-int main(void)
-{
-    int i, n;
-    int *a;
-
-    printf("Number of elements to be entered:");
-    scanf("%d",&n);
-
-    a = (int*)ft_calloc(n, sizeof(int));
-    printf("Enter %d numbers:\n",n);
-    for( i=0 ; i < n ; i++ )
-    {
-        scanf("%d",&a[i]);
-    }
-
-    printf("The numbers entered are: ");
-    for( i=0 ; i < n ; i++ )
-    {
-        printf("%d ",a[i]);
-    }
-    free(a);
-}
-*/
-
+/**
+ * @brief Allocates memory for an array of nmemb elements of size bytes each.
+ * Each element of the array is initialized to 0.
+ * @param nitems Number of elements to be allocated in memory.
+ * @param size Size of the elements to be allocated in memory.
+ * @return A pointer to the allocated memory.
+ */
 void	*ft_calloc(size_t nitems, size_t size)
 {
 	void	*mem;

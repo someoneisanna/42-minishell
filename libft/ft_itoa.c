@@ -3,40 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataboada <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 18:52:01 by ataboada          #+#    #+#             */
-/*   Updated: 2023/05/08 18:52:02 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/10/06 17:35:22 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-
-/*
-#include <stdio.h>
-#include <stdlib.h>
-#include <limits.h>
-
-static int ft_nlen(long n);
-char *ft_itoa(int n);
-
-int main(void)
-{
-    char *a, *b, *c, *d, *e, *f;
-    printf("%s\n", a = ft_itoa(0));
-    printf("%s\n", b = ft_itoa(INT_MAX));
-    printf("%s\n", c = ft_itoa(INT_MIN));
-    printf("%s\n", d = ft_itoa(10));
-    printf("%s\n", e = ft_itoa(987654321));
-    printf("%s\n", f = ft_itoa(-10));
-    free(a);
-    free(b);
-    free(c);
-    free(d);
-    free(e);
-    free(f);
-}
-*/
 
 static int	ft_nlen(long n)
 {
@@ -60,6 +34,12 @@ static int	ft_nlen(long n)
 	return (len);
 }
 
+/**
+ * @brief Allocates (with malloc(3)) and returns a string representing the
+ * integer received as an argument. Negative numbers must be handled.
+ * @param n The integer to convert.
+ * @return The string representing the integer. NULL if the allocation fails.
+ */
 char	*ft_itoa(int n)
 {
 	int		len;
