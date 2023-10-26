@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ride-sou <ride-sou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 09:36:01 by ataboada          #+#    #+#             */
-/*   Updated: 2023/10/26 16:52:28 by jmarinho         ###   ########.fr       */
+/*   Updated: 2023/10/26 18:17:47 by ride-sou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	ft_unset(t_minishell *ms)
 		return (g_exit_status); 
 	}
 	i = 0;
-	while(ms->cmd_lst->args[1][i] != '=' && ms->cmd_lst->args[1][i])
+	while(ms->cmd_lst->args[i] && ms->cmd_lst->args[1][i] != '=' && ms->cmd_lst->args[1][i])
 	{
 		if (!ft_test_args(ms->cmd_lst->args[i]))
 			break ;
