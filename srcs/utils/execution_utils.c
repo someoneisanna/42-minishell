@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 17:02:07 by ataboada          #+#    #+#             */
-/*   Updated: 2023/10/25 15:24:35 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/10/26 15:24:28 by jmarinho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	ft_open_fd(t_minishell *ms, char *filename, t_type file_type)
 	else if (file_type == T_FILE_AP)
 		fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (fd < 0)
-		ft_perror(ms, E_FILE, YES);
+		ft_perror(ms, E_FILE, YES, filename);
 	return (fd);
 }
 

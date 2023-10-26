@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes_handler.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 18:58:27 by ataboada          #+#    #+#             */
-/*   Updated: 2023/10/25 14:42:36 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/10/26 15:18:08 by jmarinho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,19 +25,19 @@ void	ft_open_pipes(t_minishell *ms)
 		return ;
 	ms->pid = (pid_t *)ft_calloc(sizeof(pid_t), ms->n_pipes + 1);
 	if (!ms->pid)
-		ft_perror(ms, E_MALLOC, NO);
+		ft_perror(ms, E_MALLOC, NO, NULL);
 	if (ms->n_pipes == 0)
 		return ;
 	ms->pipe_fd = (int **)ft_calloc(sizeof(int *), ms->n_pipes);
 	if (!ms->pipe_fd)
-		ft_perror(ms, E_MALLOC, NO);
+		ft_perror(ms, E_MALLOC, NO, NULL);
 	while (i < ms->n_pipes)
 	{
 		ms->pipe_fd[i] = (int *)ft_calloc(sizeof(int), 2);
 		if (!ms->pipe_fd[i])
-			ft_perror(ms, E_MALLOC, NO);
+			ft_perror(ms, E_MALLOC, NO, NULL);
 		if (pipe(ms->pipe_fd[i]) < 0)
-			ft_perror(ms, E_PIPE, NO);
+			ft_perror(ms, E_PIPE, NO, NULL);
 		i++;
 	}
 }

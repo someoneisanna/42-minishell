@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 09:32:41 by ataboada          #+#    #+#             */
-/*   Updated: 2023/10/25 18:12:27 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/10/26 15:31:28 by jmarinho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	ft_echo(t_minishell *ms)
 {
 	int	i;
 	int	newline_flag;
+	char *value;
 
 	i = 0;
 	if (ms->cmd_lst->args[1] == NULL)
@@ -35,10 +36,11 @@ void	ft_echo(t_minishell *ms)
 		ft_free_all(ms, YES);
 		exit(g_exit_status);
 	}
-	if (ms->cmd_lst->args[1][0] == '~' && ms->cmd_lst->args[1][1] == '/')
+	if (ms->cmd_lst->args[1][0] == '~')
 	{
-		printf("%s", ft_get_env_value(&ms->env_lst, "HOME"));
-		if(ms->cmd_lst->args[1][1])
+		value = ft_get_env_value(&ms->env_lst, "HOME");
+		printf("%s", value);
+		if (ms->cmd_lst->args[1][1] == '/')
 		{
 			i++;
 			while(ms->cmd_lst->args[1][i])
@@ -46,9 +48,10 @@ void	ft_echo(t_minishell *ms)
 		}
 		printf("\n");
 		g_exit_status = 0;
+		free(value);
 		exit(g_exit_status);
 	}
-	if (ft_quote_checker(ms->input) == ERROR_FOUND)
+	if (ft_quote_checker(ms->input) == 0)
 	{
 		printf("%s\n", ms->cmd_lst->args[1]);
 		g_exit_status = 0;

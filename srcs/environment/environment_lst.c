@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   environment_lst.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 11:25:15 by ataboada          #+#    #+#             */
-/*   Updated: 2023/10/25 14:35:53 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/10/26 14:37:50 by jmarinho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ char	**ft_get_paths(t_env *env_lst)
 	env = env_lst;
 	while (env)
 	{
-		if (ft_strncmp(env->key, "PATH", 4) == 0)
+		if (ft_strncmp(env->key, "PATH", 5) == 0)
 		{
 			path_array = ft_split(env->value, ':');
 			return (path_array);

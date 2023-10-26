@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 14:33:14 by jmarinho          #+#    #+#             */
-/*   Updated: 2023/10/25 18:04:54 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/10/26 17:20:09 by jmarinho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,6 +146,8 @@ bool is_option_valid(t_minishell *ms)
 
 void ft_unsetable(t_minishell *ms, char *cmd)
 {
+	char **path_array;
+
 	if (ft_strncmp(cmd, "echo", 5) == 0)
 		return ;
 	else if (ft_strncmp(cmd, "pwd", 4) == 0)
@@ -158,9 +160,30 @@ void ft_unsetable(t_minishell *ms, char *cmd)
 		return ;
 	else if (ft_strncmp(cmd, "exit", 5) == 0)
 		return ;
-	else if(!ft_get_paths(ms->env_lst))
+	path_array = ft_get_paths(ms->env_lst);
+	if(!path_array)
 	{
 		printf("minishel: %s: No such file or directory\n", cmd);
 		g_exit_status = 127;
 	}
+	ft_free_str_array(path_array);
 }
+
+bool ft_test_args(char *arg)
+{
+	int i;
+
+	i = 0;
+	while (arg[i] && arg[i] != '=')
+	{
+		if(!ft_isalpha(arg[0]) || (!ft_isalnum(arg[i]) && arg[i] != '_'))
+		{
+			printf("minishell: %s: not a valid identifier\n", arg);
+			g_exit_status = 1;
+			return (FALSE);
+		}
+		i++;
+	}
+	return (TRUE);
+}
+ 

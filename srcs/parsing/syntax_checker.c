@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_checker.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 11:03:52 by ataboada          #+#    #+#             */
-/*   Updated: 2023/10/25 15:23:07 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/10/26 15:18:51 by jmarinho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,18 +20,18 @@ int	ft_syntax_checker(t_minishell *ms, t_token *token)
 
 	curr = token;
 	if (curr->type != T_OTHER)
-		return (ft_perror(ms, E_SYNTAX, NO));
+		return (ft_perror(ms, E_SYNTAX, NO, NULL));
 	while (curr && curr->next)
 	{
 		prev = curr->prev;
 		next = curr->next;
 		if (curr->type != T_OTHER && next->type != T_OTHER)
-			return (ft_perror(ms, E_SYNTAX, NO));
+			return (ft_perror(ms, E_SYNTAX, NO, NULL));
 		if (curr->type != T_OTHER && prev->type != T_OTHER)
-			return (ft_perror(ms, E_SYNTAX, NO));
+			return (ft_perror(ms, E_SYNTAX, NO, NULL));
 		curr = curr->next;
 	}
 	if (curr->type != T_OTHER)
-		return (ft_perror(ms, E_SYNTAX, NO));
+		return (ft_perror(ms, E_SYNTAX, NO, NULL));
 	return (EXIT_SUCCESS);
 }

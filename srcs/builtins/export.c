@@ -6,7 +6,7 @@
 /*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 09:34:03 by ataboada          #+#    #+#             */
-/*   Updated: 2023/10/18 16:43:57 by jmarinho         ###   ########.fr       */
+/*   Updated: 2023/10/26 17:22:52 by jmarinho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,24 +56,29 @@ void	ft_export(t_minishell *ms)
 		return ;
 	i = 0;
 	j = 2;
-	while(ms->cmd_lst->args[++i])
+	while(ms->cmd_lst->args[i])
 	{
-		equal_ptr = ft_strchr(ms->cmd_lst->args[i], '=');
-		if(!equal_ptr)
-			break ;
-		key = ft_substr(ms->cmd_lst->args[i], 0, equal_ptr - ms->cmd_lst->args[i]);
-		value = equal_ptr + 1;
-		if (!ft_quote_checker(ms->input) && ms->cmd_lst->args[2])
-			while(ms->cmd_lst->args[j])
-				value = ft_strjoin(value, ms->cmd_lst->args[j++]);
-		if (!*key)
+		while(ms->cmd_lst->args[++i])
 		{
-			printf("minishell: export: `%s': not a valid identifier\n", equal_ptr);
-			g_exit_status = 1;
-			return ;
+			if (!ft_test_args(ms->cmd_lst->args[i]))
+				break;
+			equal_ptr = ft_strchr(ms->cmd_lst->args[i], '=');
+			if(!equal_ptr)
+				break ;
+			key = ft_substr(ms->cmd_lst->args[i], 0, equal_ptr - ms->cmd_lst->args[i]);
+			value = equal_ptr + 1;
+			// if (!ft_quote_checker(ms->input) && ms->cmd_lst->args[2])
+			// 	while(ms->cmd_lst->args[j])
+			// 		value = ft_strjoin(value, ms->cmd_lst->args[j++]);
+			if (!*key)
+			{
+				printf("minishell: export: `%s': not a valid identifier\n", equal_ptr);
+				g_exit_status = 1;
+				break ;
+			}
+			ft_add_env_back(&ms->env_lst, ft_new_env(key, value));
+			free(key);
 		}
-		ft_add_env_back(&ms->env_lst, ft_new_env(key, value));
-		free(key);
 	}
 	if (ms->n_pipes != 0)
 		exit(0);

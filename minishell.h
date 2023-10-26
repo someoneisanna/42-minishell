@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 09:30:28 by ataboada          #+#    #+#             */
-/*   Updated: 2023/10/25 15:49:46 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/10/26 16:32:40 by jmarinho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,7 +219,7 @@ int		ft_unset(t_minishell *ms);
 // UTILS ________________________________________________________________________
 
 // main_utils.c
-int		ft_perror(t_minishell *ms, char *error, int free_flag);
+int		ft_perror(t_minishell *ms, char *error, int free_flag, char *file);
 int		ft_everything_is_space(char *str);
 
 // parsing_utils.c
@@ -251,6 +251,7 @@ bool	ft_not_forkable(t_minishell *ms);
 bool	is_there_redirections(t_minishell *ms);
 bool	is_option_valid(t_minishell *ms);
 void	ft_unsetable(t_minishell *ms, char *cmd);
+bool 	ft_test_args(char *arg);
 
 // SIGNALS ________________________________________________________________________
 

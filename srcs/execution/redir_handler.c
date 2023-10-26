@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir_handler.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 13:50:25 by ataboada          #+#    #+#             */
-/*   Updated: 2023/10/25 16:11:07 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/10/26 15:18:33 by jmarinho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	ft_handle_heredoc(t_minishell *ms, char *delimiter)
 {
 	ms->pid_heredoc = fork();
 	if (ms->pid_heredoc < 0)
-		ft_perror(ms, E_FORK, YES);
+		ft_perror(ms, E_FORK, YES, NULL);
 	else if (ms->pid_heredoc == 0)
 		ft_create_heredoc(ms, delimiter);
 	else
@@ -71,7 +71,7 @@ void	ft_create_heredoc(t_minishell *ms, char *delimiter)
 		line = readline("heredoc> ");
 		if (!line)
 		{
-			ft_perror(ms, E_HEREDOC, YES);
+			ft_perror(ms, E_HEREDOC, YES, NULL);
 			break ;
 		}
 		if (line && ft_strncmp(line, delimiter, ft_strlen(line) + 1) == 0)
