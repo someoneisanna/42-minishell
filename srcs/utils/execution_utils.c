@@ -3,67 +3,38 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cacarval <cacarval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 17:02:07 by ataboada          #+#    #+#             */
-/*   Updated: 2023/10/26 15:24:28 by jmarinho         ###   ########.fr       */
+/*   Updated: 2023/11/02 13:06:00 by cacarval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-int		ft_cmd_has_redir(t_cmd *cmd);
-int		ft_open_fd(t_minishell *ms, char *filename, t_type file_type);
-int		ft_count_pipes(t_cmd *cmd_lst);
+int		ft_is_forkable(t_minishell *ms, int execution_flag);
 void	ft_set_cmd_index(t_minishell *ms);
+void	ft_waitpid_handler(t_minishell *ms, int i, pid_t pid, int exec_flag);
+void	ft_unsetable(t_minishell *ms, char *cmd);
+char	*ft_find_path(char *cmd, char *possible_paths);
 
-int	ft_cmd_has_redir(t_cmd *cmd)
+int	ft_is_forkable(t_minishell *ms, int execution_flag)
 {
-	if (cmd->file_in[0])
-		return (YES);
-	if (cmd->file_tr[0])
-		return (YES);
-	if (cmd->heredoc[0])
-		return (YES);
-	if (cmd->file_ap[0])
-		return (YES);
-	return (NO);
-}
-
-int	ft_open_fd(t_minishell *ms, char *filename, t_type file_type)
-{
-	int	fd;
-
-	fd = 0;
-	if (file_type == T_FILE_IN)
-		fd = open(filename, O_RDONLY);
-	else if (file_type == T_FILE_TR)
-		fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	else if (file_type == T_FILE_AP)
-		fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
-	if (fd < 0)
-		ft_perror(ms, E_FILE, YES, filename);
-	return (fd);
-}
-
-int	ft_count_pipes(t_cmd *cmd_lst)
-{
-	int		n_cmds;
-	int		n_pipes;
-	t_cmd	*curr;
-
-	n_cmds = 0;
-	curr = cmd_lst;
-	while (curr)
+	if (!ft_strcmp(ms->cmd_lst->cmd, "cd")
+		|| !ft_strcmp(ms->cmd_lst->cmd, "exit")
+		|| !ft_strcmp(ms->cmd_lst->cmd, "export")
+		|| !ft_strcmp(ms->cmd_lst->cmd, "unset"))
 	{
-		n_cmds++;
-		curr = curr->next;
+		if (execution_flag == YES)
+		{
+			ft_handle_redir(ms, ms->cmd_lst);
+			if (g_exit_status == 0)
+				ft_execute_cmd(ms, ms->cmd_lst, ms->cmd_lst->cmd);
+		}
+		return (FALSE);
 	}
-	if (n_cmds < 2)
-		n_pipes = 0;
 	else
-		n_pipes = n_cmds - 1;
-	return (n_pipes);
+		return (TRUE);
 }
 
 void	ft_set_cmd_index(t_minishell *ms)
@@ -79,4 +50,64 @@ void	ft_set_cmd_index(t_minishell *ms)
 		i++;
 		curr = curr->next;
 	}
+}
+
+void	ft_waitpid_handler(t_minishell *ms, int i, pid_t pid, int exec_flag)
+{
+	int	status;
+
+	status = 0;
+	if (exec_flag == YES)
+		waitpid(ms->pid[i++], &status, 0);
+	else if (exec_flag == NO)
+		waitpid(pid, &status, 0);
+	ft_signals();
+	if (WIFEXITED(status))
+		g_exit_status = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
+		g_exit_status = 128 + WTERMSIG(status);
+}
+
+void	ft_unsetable(t_minishell *ms, char *cmd)
+{
+	char	**path_array;
+
+	if (ft_strncmp(cmd, "echo", 5) == 0)
+		return ;
+	else if (ft_strncmp(cmd, "pwd", 4) == 0)
+		return ;
+	else if (ft_strncmp(cmd, "export", 7) == 0)
+		return ;
+	else if (ft_strncmp(cmd, "unset", 6) == 0)
+		return ;
+	else if (ft_strncmp(cmd, "cd", 3) == 0)
+		return ;
+	else if (ft_strncmp(cmd, "exit", 5) == 0)
+		return ;
+	path_array = ft_get_paths(ms->env_lst);
+	if (!path_array)
+	{
+		printf("minishel: %s: no such file or directory\n", cmd);
+		g_exit_status = 127;
+	}
+	ft_free_str_array(path_array);
+}
+
+char	*ft_find_path(char *cmd, char *possible_paths)
+{
+	char	*tmp;
+	char	*possible_path;
+
+	tmp = NULL;
+	if (!ft_strncmp(cmd, "/", 1) || !ft_strncmp(cmd, "./", 2))
+		possible_path = ft_strdup(cmd);
+	else
+	{
+		tmp = ft_strjoin(possible_paths, "/");
+		possible_path = ft_strjoin(tmp, cmd);
+		free(tmp);
+		if (!tmp)
+			return (NULL);
+	}
+	return (possible_path);
 }

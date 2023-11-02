@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 11:51:17 by ataboada          #+#    #+#             */
-/*   Updated: 2023/10/25 15:29:26 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/10/30 15:59:07 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	ft_parser(t_minishell *ms, char *input)
 	return (EXIT_SUCCESS);
 }
 
-int		ft_quote_checker(char *input)
+int	ft_quote_checker(char *input)
 {
 	int		n_quotes;
 
@@ -67,7 +67,7 @@ void	ft_quote_remover(t_minishell *ms)
 
 char	*ft_remove_quotes(char *cmd, int new_len, int i)
 {
-						int		in_squote;
+	int		in_squote;
 	int		in_dquote;
 	char	*new_cmd;
 
@@ -78,11 +78,11 @@ char	*ft_remove_quotes(char *cmd, int new_len, int i)
 		return (NULL);
 	while (i < new_len)
 	{
-				if ((*cmd == '\'' && in_dquote == 0) || (*cmd == '\"' && in_squote == 0))
-				{
-					if (*cmd == '\'' && in_dquote == 0)
+		if ((*cmd == '\'' && !in_dquote) || (*cmd == '\"' && !in_squote))
+		{
+			if (*cmd == '\'' && in_dquote == 0)
 				in_squote = 1 - in_squote;
-					else if (*cmd == '\"' && in_squote == 0)
+			else if (*cmd == '\"' && in_squote == 0)
 				in_dquote = 1 - in_dquote;
 			cmd++;
 		}

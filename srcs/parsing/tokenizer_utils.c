@@ -6,16 +6,16 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 11:14:28 by ataboada          #+#    #+#             */
-/*   Updated: 2023/10/25 15:23:04 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/10/30 15:59:29 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-t_token *ft_new_token(char *input, t_type type);
+t_token	*ft_new_token(char *input, t_type type);
 void	ft_add_token_back(t_token **token, t_token *new_token);
 
-t_token *ft_new_token(char *input, t_type type)
+t_token	*ft_new_token(char *input, t_type type)
 {
 	t_token	*new_token;
 

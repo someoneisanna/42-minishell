@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 11:06:37 by ataboada          #+#    #+#             */
-/*   Updated: 2023/10/25 15:23:38 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/10/30 16:02:02 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int		ft_add_command_token(t_token **token_lst, char *input, t_type type);
 
 void	ft_tokenizer(t_minishell *ms, char *input)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (input[i])
@@ -53,20 +53,23 @@ int	ft_add_token(t_token **token_lst, char *input, t_type type)
 
 int	ft_add_command_token(t_token **token_lst, char *input, t_type type)
 {
-	int i = 0;
-	char *cmd;
-	int in_squote = 0;
-	int in_dquote = 0;
+	int		i;
+	char	*cmd;
+	int		in_squote;
+	int		in_dquote;
 
+	i = 0;
+	in_squote = 0;
+	in_dquote = 0;
 	while (input[i])
 	{
 		if (input[i] == '\'' && in_dquote == 0)
 			in_squote = 1 - in_squote;
 		else if (input[i] == '"' && in_squote == 0)
 			in_dquote = 1 - in_dquote;
-		else if ((input[i] == ' ' || input[i] == '>' || input[i] == '<' || input[i] == '|')
-			&& in_squote == 0 && in_dquote == 0)
-			break;
+		else if ((input[i] == ' ' || input[i] == '>' || input[i] == '<'
+				|| input[i] == '|') && in_squote == 0 && in_dquote == 0)
+			break ;
 		i++;
 	}
 	cmd = ft_substr(input, 0, i);

@@ -6,36 +6,73 @@
 /*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 13:50:25 by ataboada          #+#    #+#             */
-/*   Updated: 2023/10/26 15:18:33 by jmarinho         ###   ########.fr       */
+/*   Updated: 2023/11/02 17:03:31 by jmarinho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-void	ft_handle_redir(t_minishell *ms, t_cmd *curr);
+int		ft_cmd_has_redir(t_cmd *curr);
+void	ft_handle_redir(t_minishell *m, t_cmd *c);
+int		ft_open_fd(t_minishell *m, t_cmd *c, char *filename, t_type filetype);
 void	ft_close_fds(t_cmd *curr);
-int		ft_handle_heredoc(t_minishell *ms, char *delimiter);
-void	ft_create_heredoc(t_minishell *ms, char *delimiter);
-char	*ft_expand_heredoc(t_minishell *ms, char *line);
 
-void	ft_handle_redir(t_minishell *ms, t_cmd *curr)
+int	ft_cmd_has_redir(t_cmd *curr)
+{
+	if (curr->f_redin[0])
+		return (YES);
+	if (curr->f_redout[0])
+		return (YES);
+	return (NO);
+}
+
+void	ft_handle_redir(t_minishell *m, t_cmd *c)
 {
 	int	i;
 
 	i = 0;
-	while (curr->file_in[i])
-		curr->fd_in = ft_open_fd(ms, curr->file_in[i++], T_FILE_IN);
+	while (c->f_redin[i])
+	{
+		if (c->t_redin[i] == T_FILE_IN)
+			c->fd_in = ft_open_fd(m, c, c->f_redin[i], c->t_redin[i]);
+		else if (c->t_redin[i] == T_HEREDOC)
+			c->fd_in = ft_handle_heredoc(m, c->f_redin[i]);
+		i++;
+	}
 	i = 0;
-	while (curr->file_tr[i])
-		curr->fd_out = ft_open_fd(ms, curr->file_tr[i++], T_FILE_TR);
-	i = 0;
-	while (curr->file_ap[i])
-		curr->fd_out = ft_open_fd(ms, curr->file_ap[i++], T_FILE_AP);
-	i = 0;
-	while (curr->heredoc[i])
-		curr->fd_in = ft_handle_heredoc(ms, curr->heredoc[i++]);
-	dup2(curr->fd_in, STDIN_FILENO);
-	dup2(curr->fd_out, STDOUT_FILENO);
+	while (c->f_redout[i])
+	{
+		c->fd_out = ft_open_fd(m, c, c->f_redout[i], c->t_redout[i]);
+		i++;
+	}
+	if (ft_is_forkable(m, NO) == TRUE)
+	{
+		dup2(c->fd_in, STDIN_FILENO);
+		dup2(c->fd_out, STDOUT_FILENO);
+	}
+}
+
+int	ft_open_fd(t_minishell *m, t_cmd *c, char *filename, t_type filetype)
+{
+	int		fd;
+
+	fd = 0;
+	if (filetype == T_FILE_IN)
+		fd = open(filename, O_RDONLY);
+	else if (filetype == T_FILE_TR)
+		fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	else if (filetype == T_FILE_AP)
+		fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	if (fd < 0)
+	{
+		g_exit_status = 1;
+		printf("minishell: %s: %s: %s\n", c->cmd, filename, E_FILE);
+		if (ft_is_forkable(m, NO) == TRUE)
+			ft_perror(m, NULL, YES, NULL);
+		else if (ft_is_forkable(m, NO) == FALSE)
+			ft_perror(m, NULL, NO, NULL);
+	}
+	return (fd);
 }
 
 void	ft_close_fds(t_cmd *curr)
@@ -46,69 +83,4 @@ void	ft_close_fds(t_cmd *curr)
 		close(curr->fd_out);
 	curr->fd_in = STDIN_FILENO;
 	curr->fd_out = STDOUT_FILENO;
-}
-
-int	ft_handle_heredoc(t_minishell *ms, char *delimiter)
-{
-	ms->pid_heredoc = fork();
-	if (ms->pid_heredoc < 0)
-		ft_perror(ms, E_FORK, YES, NULL);
-	else if (ms->pid_heredoc == 0)
-		ft_create_heredoc(ms, delimiter);
-	else
-		waitpid(ms->pid_heredoc, NULL, 0);
-	return (open(".heredoc", O_RDONLY));
-}
-
-void	ft_create_heredoc(t_minishell *ms, char *delimiter)
-{
-	int		fd;
-	char	*line;
-
-	fd = open(".heredoc", O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	while (42)
-	{
-		line = readline("heredoc> ");
-		if (!line)
-		{
-			ft_perror(ms, E_HEREDOC, YES, NULL);
-			break ;
-		}
-		if (line && ft_strncmp(line, delimiter, ft_strlen(line) + 1) == 0)
-		{
-			free(line);
-			break ;
-		}
-		line = ft_expand_heredoc(ms, line);
-		ft_putendl_fd(line, fd);
-		free(line);
-	}
-	close(fd);
-	if (ms->n_pipes > 0)
-		ft_free_pipes(ms);
-	ft_free_all(ms, YES);
-}
-
-char	*ft_expand_heredoc(t_minishell *ms, char *line)
-{
-	char	*tmp;
-	char	*key;
-	char	*value;
-	char	*heredoc_expanded;
-
-	heredoc_expanded = ft_strdup(line);
-	while (ft_strchr(heredoc_expanded, '$') != NULL)
-	{
-		key = ft_get_key(heredoc_expanded);
-		if (ft_strncmp(key, "$?", 3) == 0)
-			value = ft_itoa(g_exit_status);
-		else
-			value = ft_get_env_value(&ms->env_lst, key);
-		tmp = heredoc_expanded;
-		heredoc_expanded = ft_replace_content(heredoc_expanded, key, value);
-		free(tmp);
-		free(key);
-		free(value);
-	}
-	return (heredoc_expanded);
 }

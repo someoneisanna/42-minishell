@@ -6,22 +6,18 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 09:34:24 by ataboada          #+#    #+#             */
-/*   Updated: 2023/10/25 16:10:35 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/10/31 15:03:44 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-void	ft_pwd(t_minishell *ms)
+void	ft_pwd(t_cmd *curr)
 {
-	char	cwd[200];
+	char	cwd[4096];
 
-	(void) ms;
-	if (!is_option_valid(ms))
-	{
-		g_exit_status = 2;
+	if (ft_cmd_has_valid_option(curr->args) == FALSE)
 		exit(g_exit_status);
-	}
 	if (getcwd(cwd, sizeof(cwd)))
 		printf("%s\n", cwd);
 	g_exit_status = 0;

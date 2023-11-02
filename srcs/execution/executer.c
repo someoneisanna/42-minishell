@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executer.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ride-sou <ride-sou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 11:28:01 by ataboada          #+#    #+#             */
-/*   Updated: 2023/10/26 18:17:55 by ride-sou         ###   ########.fr       */
+/*   Updated: 2023/11/02 16:46:32 by jmarinho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,22 +18,18 @@ void	ft_execute_mult_cmd(t_minishell *ms, t_cmd *curr, char *cmd);
 void	ft_execute_cmd(t_minishell *ms, t_cmd *curr, char *cmd);
 void	ft_execute_external(t_minishell *ms, t_cmd *curr, char *cmd);
 
-void ft_executer(t_minishell *ms)
+void	ft_executer(t_minishell *ms)
 {
 	int		i;
-	int		status;
 	t_cmd	*curr;
 
 	i = 0;
-	status = 0;
 	curr = ms->cmd_lst;
 	ms->n_pipes = ft_count_pipes(ms->cmd_lst);
 	if (ms->n_pipes == 0)
 	{
-		if (ft_not_forkable(ms) == FALSE)
+		if (ft_is_forkable(ms, YES) == TRUE)
 			ft_execute_only_cmd(ms, curr, curr->cmd);
-		if (ft_strncmp(ms->cmd_lst->cmd, "exit", 5) == 0 && is_there_redirections(ms) == TRUE)//PORQUE E QUE ISTO ESTA AQUI??? :D
-			exit(0); // alterar para g_exit_status???
 	}
 	else
 	{
@@ -46,24 +42,15 @@ void ft_executer(t_minishell *ms)
 		}
 		ft_close_pipes(ms);
 		while (i < ms->n_pipes + 1)
-		{
-			waitpid(ms->pid[i++], &status, 0);
-			ft_signals();
-			if (WIFEXITED(status))
-				g_exit_status = WEXITSTATUS(status);
-			else if (WIFSIGNALED(status))
-				g_exit_status = 128 + WTERMSIG(status);
-		}
+			ft_waitpid_handler(ms, i++, 0, YES);
 	}
 }
 
-void ft_execute_only_cmd(t_minishell *ms, t_cmd *curr, char *cmd)
+void	ft_execute_only_cmd(t_minishell *ms, t_cmd *curr, char *cmd)
 {
 	pid_t	pid;
-	int		status;
 
-	status = 0;
-	if (ft_strncmp(cmd, "cat", 4) == 0)
+	if (ft_strcmp(cmd, "cat") == 0)
 		ft_signals_child(cmd);
 	pid = fork();
 	if (pid < 0)
@@ -77,19 +64,12 @@ void ft_execute_only_cmd(t_minishell *ms, t_cmd *curr, char *cmd)
 		ft_close_fds(curr);
 	}
 	else
-	{
-		waitpid(pid, &status, 0);
-		ft_signals();
-		if (WIFEXITED(status))
-			g_exit_status = WEXITSTATUS(status);
-		else if (WIFSIGNALED(status))
-			g_exit_status = 128 + WTERMSIG(status);
-	}
+		ft_waitpid_handler(ms, 0, pid, NO);
 }
 
-void ft_execute_mult_cmd(t_minishell *ms, t_cmd *curr, char *cmd)
+void	ft_execute_mult_cmd(t_minishell *ms, t_cmd *curr, char *cmd)
 {
-	if (curr->heredoc[0])
+	if (curr->has_heredoc == YES)
 	{
 		ft_signals_heredoc();
 		waitpid(ms->pid_heredoc, NULL, 0);
@@ -111,55 +91,45 @@ void ft_execute_mult_cmd(t_minishell *ms, t_cmd *curr, char *cmd)
 	}
 }
 
-void ft_execute_cmd(t_minishell *ms, t_cmd *curr, char *cmd)
+void	ft_execute_cmd(t_minishell *ms, t_cmd *curr, char *cmd)
 {
-	char **path_array;
+	char	**path_array;
 
 	path_array = ft_get_paths(ms->env_lst);
 	if (ft_strncmp(cmd, "echo", 5) == 0)
-		ft_echo(ms);
+		ft_echo(ms, curr);
 	else if (ft_strncmp(cmd, "pwd", 4) == 0)
-		ft_pwd(ms);
+		ft_pwd(curr);
 	else if (ft_strncmp(cmd, "env", 4) == 0 && path_array)
-	{
-		ft_free_str_array(path_array);
-		ft_env(ms);
-	}
+		ft_env(ms, curr);
 	else if (ft_strncmp(cmd, "export", 7) == 0)
-		ft_export(ms);
+		ft_export(ms, curr);
 	else if (ft_strncmp(cmd, "unset", 6) == 0)
 		ft_unset(ms);
 	else if (ft_strncmp(cmd, "cd", 3) == 0)
-		ft_cd(ms);
+		ft_cd(ms, curr);
 	else if (ft_strncmp(cmd, "exit", 5) == 0)
-		ft_exit(ms);
+		ft_exit(ms, curr);
 	else
 		ft_execute_external(ms, curr, cmd);
+	ft_free_str_array(path_array);
 }
 
-void ft_execute_external(t_minishell *ms, t_cmd *curr, char *cmd)
+void	ft_execute_external(t_minishell *ms, t_cmd *curr, char *cmd)
 {
 	int		i;
-	char	*tmp;
 	char	*possible_path;
 	char	**possible_paths;
 
 	i = 0;
 	possible_paths = ft_get_paths(ms->env_lst);
-	if(!possible_paths)
+	if (!possible_paths)
 		ft_perror(ms, NULL, YES, NULL);
 	while (possible_paths[i])
 	{
-		if (ft_strncmp(cmd, "/", 1) == 0 || ft_strncmp(cmd, "./", 2) == 0)
-			possible_path = ft_strdup(cmd);
-		else
-		{
-			tmp = ft_strjoin(possible_paths[i], "/");
-			possible_path = ft_strjoin(tmp, cmd);
-			free(tmp);
-			if (!tmp || !possible_path)
-				break ;
-		}
+		possible_path = ft_find_path(cmd, possible_paths[i]);
+		if (!possible_path)
+			ft_perror(ms, E_CMD, YES, cmd);
 		if (access(possible_path, F_OK | X_OK) == 0)
 			execve(possible_path, curr->args, ms->envp);
 		else
@@ -167,5 +137,5 @@ void ft_execute_external(t_minishell *ms, t_cmd *curr, char *cmd)
 		free(possible_path);
 		i++;
 	}
-	ft_perror(ms, E_CMD, YES, NULL);
+	ft_perror(ms, E_CMD, YES, cmd);
 }

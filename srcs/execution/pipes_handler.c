@@ -3,18 +3,39 @@
 /*                                                        :::      ::::::::   */
 /*   pipes_handler.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 18:58:27 by ataboada          #+#    #+#             */
-/*   Updated: 2023/10/26 15:18:08 by jmarinho         ###   ########.fr       */
+/*   Updated: 2023/10/29 18:08:27 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
+int		ft_count_pipes(t_cmd *cmd_lst);
 void	ft_open_pipes(t_minishell *ms);
 void	ft_handle_pipes(t_minishell *ms, t_cmd *curr);
 void	ft_close_pipes(t_minishell *ms);
+
+int	ft_count_pipes(t_cmd *cmd_lst)
+{
+	int		n_cmds;
+	int		n_pipes;
+	t_cmd	*curr;
+
+	n_cmds = 0;
+	curr = cmd_lst;
+	while (curr)
+	{
+		n_cmds++;
+		curr = curr->next;
+	}
+	if (n_cmds < 2)
+		n_pipes = 0;
+	else
+		n_pipes = n_cmds - 1;
+	return (n_pipes);
+}
 
 void	ft_open_pipes(t_minishell *ms)
 {

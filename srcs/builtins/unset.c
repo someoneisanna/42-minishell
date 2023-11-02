@@ -3,83 +3,94 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ride-sou <ride-sou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 09:36:01 by ataboada          #+#    #+#             */
-/*   Updated: 2023/10/26 18:17:47 by ride-sou         ###   ########.fr       */
+/*   Updated: 2023/11/02 17:08:28 by jmarinho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-int	ft_strcmp2(t_minishell *ms, t_env *envi)
-{
-	int i;
-	
-	i = 0;
-
-	while (ms->cmd_lst->args[1][i] && envi->key[i] && (ms->cmd_lst->args[1][i] == envi->key[i]))
-		i++;
-	if(i > 0 && ms->cmd_lst->args[1][i] == '=')
-	 	i--;
-	return((unsigned char)ms->cmd_lst->args[1][i] - (unsigned char)envi->key[i]);
-} 
+int		ft_unset(t_minishell *ms);
+void	ft_unset_helper(t_minishell *ms, t_env *curr, t_env *prev);
+bool	ft_unset_cicle(t_minishell *ms);
+int		ft_strcmp2(t_minishell *ms, t_env *envi);
 
 int	ft_unset(t_minishell *ms)
 {
-	int i;
-	t_env	*envi;
+	t_env	*curr;
 	t_env	*prev;
 
-	if(ms->cmd_lst->args[1] == NULL)
+	curr = NULL;
+	prev = NULL;
+	if (ms->cmd_lst->args[1] == NULL)
 	{
 		g_exit_status = 0;
 		return (g_exit_status);
 	}
-	if(is_there_redirections(ms) == TRUE)
-		exit(0);
-	if (!is_option_valid(ms))
+	if (!ft_cmd_has_valid_option(ms->cmd_lst->args))
 	{
 		g_exit_status = 2;
-		return (g_exit_status); 
+		return (g_exit_status);
 	}
-	i = 0;
-	while(ms->cmd_lst->args[i] && ms->cmd_lst->args[1][i] != '=' && ms->cmd_lst->args[1][i])
-	{
-		if (!ft_test_args(ms->cmd_lst->args[i]))
-			break ;
-		i++;
-	}
-	// 	if((!ft_isalpha(ms->cmd_lst->args[1][0]) || !ft_isalnum(ms->cmd_lst->args[1][i]))
-	// 		&& !ft_strchr(ms->cmd_lst->args[1], '_'))
-	// 	{
-	// 		printf("minishell: %s: %s: not a valid identifier\n", ms->cmd_lst->args[0], ms->cmd_lst->args[1]);
-	// 		g_exit_status = 1;
-	// 		return (g_exit_status);
-	// 	}
-	// 	i++;
-	// }
-	i = 0;
-	envi = ms->env_lst;
+	if (ft_unset_cicle(ms) == FALSE)
+		return (g_exit_status);
+	ft_unset_helper(ms, curr, prev);
+	return (g_exit_status);
+}
+
+void	ft_unset_helper(t_minishell *ms, t_env *curr, t_env *prev)
+{
+	curr = ms->env_lst;
 	prev = NULL;
-	while(envi)
+	while (curr)
 	{
-		if (ft_strcmp2(ms, envi) == 0)
-		{	
-			 if (prev == NULL)
-                ms->env_lst = envi->next;
-            else
-                prev->next = envi->next;
-			free(envi->key);
-			free(envi->value);
-			free(envi);
-			break;
+		if (ft_strcmp2(ms, curr) == 0)
+		{
+			if (prev == NULL)
+				ms->env_lst = curr->next;
+			else
+				prev->next = curr->next;
+			free(curr->key);
+			free(curr->value);
+			free(curr);
+			break ;
 		}
-		prev = envi;
-        envi = envi->next;
+		prev = curr;
+		curr = curr->next;
 	}
 	g_exit_status = 0;
 	if (ms->n_pipes != 0)
 		exit(0);
-	return (g_exit_status);
+}
+
+bool	ft_unset_cicle(t_minishell *ms)
+{
+	int	i;
+
+	i = 0;
+	while (ms->cmd_lst->args[++i])
+	{
+		if (ft_strchr(ms->cmd_lst->args[i], '='))
+		{
+			if (ft_args_are_valid(ms->cmd_lst->args[i]) == FALSE)
+				return (FALSE);
+		}
+	}
+	return (TRUE);
+}
+
+int	ft_strcmp2(t_minishell *ms, t_env *envi)
+{
+	int	i;
+
+	i = 0;
+	while (ms->cmd_lst->args[1][i] && envi->key[i]
+		&& (ms->cmd_lst->args[1][i] == envi->key[i]))
+		i++;
+	if (i > 0 && ms->cmd_lst->args[1][i] == '=')
+		i--;
+	return ((unsigned char)ms->cmd_lst->args[1][i]
+		- (unsigned char)envi->key[i]);
 }

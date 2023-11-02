@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handlers.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 16:01:57 by jmarinho          #+#    #+#             */
-/*   Updated: 2023/10/17 14:39:04 by jmarinho         ###   ########.fr       */
+/*   Updated: 2023/10/30 16:03:02 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,5 +42,5 @@ void	ft_handler_child(int signum)
 	{
 		g_exit_status = 128 + signum;
 		printf("Quit (core dumped)\n");
-	}	
+	}
 }

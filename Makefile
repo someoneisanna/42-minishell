@@ -1,17 +1,17 @@
-# ----------------------------------- COLORS -----------------------------------
+# ---------------------------------- COLORS ------------------------------------
 
 RED = \033[0;31m
 GREEN = \033[0;32m
 PURPLE = \033[1;35m
 RESET = \033[0m
 
-# ---------------------------------- VARIABLES ---------------------------------
+# --------------------------------- VARIABLES ----------------------------------
 
 NAME = minishell
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
 LFLAGS = -lreadline
 
 RM = rm -f
@@ -31,6 +31,7 @@ SRCS = srcs/main.c \
 		srcs/environment/environment_lst.c \
 		srcs/execution/executer.c \
 		srcs/execution/redir_handler.c \
+		srcs/execution/heredoc_handler.c \
 		srcs/execution/pipes_handler.c \
 		srcs/builtins/cd.c \
 		srcs/builtins/echo.c \
@@ -44,12 +45,13 @@ SRCS = srcs/main.c \
 		srcs/utils/execution_utils.c \
 		srcs/utils/free_utils.c \
 		srcs/utils/builtins_utils.c \
+		srcs/utils/builtins_utils_2.c \
 		srcs/signals/signal.c \
 		srcs/signals/handlers.c \
 
 S_OBJS = $(SRCS:.c=.o)
 
-# ------------------------------------ RULES -----------------------------------
+# ----------------------------------- RULES ------------------------------------
 
 all: $(NAME)
 

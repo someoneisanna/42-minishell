@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/01 12:00:25 by ataboada          #+#    #+#             */
-/*   Updated: 2023/10/02 09:58:40 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/10/30 16:05:06 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,10 @@ void	ft_free_cmd_lst(t_cmd **cmd_table)
 		next = current->next;
 		ft_free_str_array(current->args);
 		free(current->cmd);
-		ft_free_str_array(current->file_in);
-		ft_free_str_array(current->file_tr);
-		ft_free_str_array(current->file_ap);
-		ft_free_str_array(current->heredoc);
+		ft_free_str_array(current->f_redin);
+		ft_free_str_array(current->f_redout);
+		free(current->t_redin);
+		free(current->t_redout);
 		free(current);
 		current = next;
 	}
@@ -109,5 +109,3 @@ void	ft_free_pipes(t_minishell *ms)
 	if (ms->pid)
 		free(ms->pid);
 }
-
-

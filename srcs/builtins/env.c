@@ -6,35 +6,30 @@
 /*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 09:33:11 by ataboada          #+#    #+#             */
-/*   Updated: 2023/10/26 14:29:10 by jmarinho         ###   ########.fr       */
+/*   Updated: 2023/11/02 16:41:15 by jmarinho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-int	g_exit_status;
-
-void	ft_env(t_minishell *ms)
+void	ft_env(t_minishell *ms, t_cmd *cur)
 {
-	t_env	*envi;
+	t_env	*env;
 
-	envi = ms->env_lst;
-	if (!is_option_valid(ms))
+	env = ms->env_lst;
+	if (ft_cmd_has_valid_option(cur->args) == FALSE)
 		g_exit_status = 125;
-	else if (ms->cmd_lst->args[1])
-	{
-		printf("minishell: env: %s: No such file or directory\n", ms->cmd_lst->args[1]);
-		g_exit_status = 127;
-	}
+	else if (cur->args[1])
+		ft_builtin_error(ms, cur, E_FILE, 127);
 	else
 	{
-		while (envi)
+		while (env)
 		{
-			printf("%s=%s\n", envi->key, envi->value);
-			envi = envi->next;
+			printf("%s=%s\n", env->key, env->value);
+			env = env->next;
 		}
 		g_exit_status = 0;
-		if(ms->n_pipes > 0)
+		if (ms->n_pipes > 0)
 			ft_free_pipes(ms);
 	}
 	ft_free_all(ms, YES);

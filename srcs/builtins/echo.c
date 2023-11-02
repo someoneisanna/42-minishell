@@ -6,91 +6,79 @@
 /*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 09:32:41 by ataboada          #+#    #+#             */
-/*   Updated: 2023/10/26 15:31:28 by jmarinho         ###   ########.fr       */
+/*   Updated: 2023/11/02 16:56:42 by jmarinho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-int	ft_find_n(char **args)
-{
-	int		newline_flag;
+void	ft_echo(t_minishell *ms, t_cmd *curr);
+int		ft_tilde_expander(t_minishell *ms, t_cmd *curr, int i);
+void	ft_print_argument(char *s);
 
-	newline_flag = 1;
-	if (args[1][0] == '-' && args[1][1] == 'n')
-		newline_flag = 0;
-	return (newline_flag);
-}
-
-void	ft_echo(t_minishell *ms)
+void	ft_echo(t_minishell *ms, t_cmd *curr)
 {
 	int	i;
-	int	newline_flag;
-	char *value;
 
 	i = 0;
-	if (ms->cmd_lst->args[1] == NULL)
+	g_exit_status = 0;
+	if (curr->args[1] == NULL)
 	{
 		printf("\n");
-		g_exit_status = 0;
 		ft_free_all(ms, YES);
 		exit(g_exit_status);
 	}
-	if (ms->cmd_lst->args[1][0] == '~')
-	{
-		value = ft_get_env_value(&ms->env_lst, "HOME");
-		printf("%s", value);
-		if (ms->cmd_lst->args[1][1] == '/')
-		{
-			i++;
-			while(ms->cmd_lst->args[1][i])
-				printf("%c", ms->cmd_lst->args[1][i++]);
-		}
-		printf("\n");
-		g_exit_status = 0;
-		free(value);
+	if (ft_cmd_has_valid_option(curr->args) == FALSE)
 		exit(g_exit_status);
-	}
-	if (ft_quote_checker(ms->input) == 0)
-	{
-		printf("%s\n", ms->cmd_lst->args[1]);
-		g_exit_status = 0;
-		exit(g_exit_status);
-	}
-	if((ms->cmd_lst->args[1][1] == 'e' || ms->cmd_lst->args[1][1] == 'E') && ms->cmd_lst->args[1][2] == '\0')
-	{
-		if (!is_option_valid(ms))
-		{
-			g_exit_status = 1;
-			ft_free_all(ms, YES);
-			exit(g_exit_status);
-		}
-		exit(g_exit_status);
-	}
-	newline_flag = ft_find_n(ms->cmd_lst->args);
-	if (newline_flag)
+	if (curr->args[1][0] == '-' && curr->args[1][1] == 'n')
 		i = 1;
-	else
+	while (curr->args[++i])
 	{
-		i = 2;
-		while(ms->cmd_lst->args[i] && (ms->cmd_lst->args[i][0] == '-' && ms->cmd_lst->args[i][1] == 'n'))
-			i++;
+		i += ft_tilde_expander(ms, curr, i);
+		if (curr->args[i][0] != '~')
+			ft_print_argument(curr->args[i]);
+		if (curr->args[i + 1])
+			printf(" ");
 	}
-	if(ms->cmd_lst->args[1][0] == '$')
-		i++;
-	while (ms->cmd_lst->args[i])
-	{
-		if (ms->cmd_lst->args[i][0] == '\0')
-			i++;
-		if (!ms->cmd_lst->args[i + 1] && ms->cmd_lst->args[i])
-			printf("%s", ms->cmd_lst->args[i]);
-		else if (ms->cmd_lst->args[i])
-			printf("%s ", ms->cmd_lst->args[i]);
-		i++;
-	}
-	if (newline_flag == 1)
+	if (curr->args[1][0] != '-' || curr->args[1][1] != 'n')
 		printf("\n");
-	g_exit_status = 0;
 	ft_free_all(ms, YES);
-	exit(g_exit_status);
+}
+
+int	ft_tilde_expander(t_minishell *ms, t_cmd *curr, int i)
+{
+	char	*home;
+	char	**args;
+
+	home = ft_find_env(ms->env_lst, "HOME");
+	args = curr->args;
+	if (args[i][0] != '~')
+		return (0);
+	if (args[i][1] == '\0')
+		printf("%s", home);
+	else if (args[i][1] == '-' && (args[i][2] == '\0' || args[i][2] == '/'))
+		printf("%s%s", ft_find_env(ms->env_lst, "OLDPWD"), args[i] + 2);
+	else if (args[i][1] == '+' && (args[i][2] == '\0' || args[i][2] == '/'))
+		printf("%s%s", ft_find_env(ms->env_lst, "PWD"), args[i] + 2);
+	else if (args[i][1] == '/')
+		printf("%s%s", home, args[i] + 1);
+	else
+		printf("%s", args[i]);
+	if (args[i + 1])
+		return (1);
+	return (0);
+}
+
+void	ft_print_argument(char *s)
+{
+	int	i;
+
+	i = 0;
+	while (s[i])
+	{
+		if (s[i] == '\\' && s[i + 1] == '\\')
+			i++;
+		printf("%c", s[i]);
+		i++;
+	}
 }
