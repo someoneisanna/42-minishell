@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 14:33:14 by jmarinho          #+#    #+#             */
-/*   Updated: 2023/11/02 17:02:56 by jmarinho         ###   ########.fr       */
+/*   Updated: 2023/11/02 18:41:57 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,12 @@ void	ft_builtin_error(t_minishell *ms, t_cmd *curr, char *err, int ex_code)
 {
 	dup2(STDERR_FILENO, STDOUT_FILENO);
 	if (err)
-		printf("minishell: %s: %s\n", curr->cmd, err);
+	{
+		if (!ft_strcmp(err, E_FILE))
+			printf("minishell: %s: %s: %s\n", curr->cmd, curr->args[1], err);
+		else
+			printf("minishell: %s: %s\n", curr->cmd, err);
+	}
 	g_exit_status = ex_code;
 	if (ms->n_pipes > 0)
 		exit(g_exit_status);

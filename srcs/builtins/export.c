@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 09:34:03 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/02 16:46:42 by jmarinho         ###   ########.fr       */
+/*   Updated: 2023/11/02 18:33:38 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,7 @@ void	ft_export(t_minishell *ms, t_cmd *curr)
 	if (curr->args[1] == NULL)
 		return (ft_export_list(ms, curr));
 	if (!ft_cmd_has_valid_option(curr->args))
-	{
-		g_exit_status = 2;
 		return ;
-	}
 	ft_unset(ms);
 	if (g_exit_status == 1)
 		return ;
@@ -56,7 +53,7 @@ int	ft_export_loop(t_minishell *ms, t_cmd *curr, int i)
 	key = ft_substr(curr->args[i], 0, equal_ptr - curr->args[i]);
 	if (!*key)
 	{
-		printf("minishell: export: `%s': not a valid identifier\n", equal_ptr);
+		printf("minishell: export: '%s': not a valid identifier\n", equal_ptr);
 		g_exit_status = 1;
 		return (ERROR_FOUND);
 	}
