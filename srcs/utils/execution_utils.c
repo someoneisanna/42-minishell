@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cacarval <cacarval@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 17:02:07 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/03 14:57:47 by cacarval         ###   ########.fr       */
+/*   Updated: 2023/11/03 18:54:50 by jmarinho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ void	ft_unsetable(t_minishell *ms, char *cmd)
 	path_array = ft_get_paths(ms->env_lst);
 	if (!path_array)
 	{
-		printf("minishel: %s: no such file or directory\n", cmd);
+		printf("minishell: %s: no such file or directory\n", cmd);
 		g_exit_status = 127;
 	}
 	ft_free_str_array(path_array);

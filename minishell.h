@@ -6,7 +6,7 @@
 /*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 09:30:28 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/02 17:02:26 by jmarinho         ###   ########.fr       */
+/*   Updated: 2023/11/03 17:46:00 by jmarinho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,7 @@ typedef struct s_minishell
 	char			**paths;
 	int				**pipe_fd;
 	int				n_pipes;
+	int				heredoc_signal;
 	pid_t			pid_heredoc;
 	pid_t			*pid;
 	t_env			*env_lst;

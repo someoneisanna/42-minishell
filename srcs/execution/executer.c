@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executer.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cacarval <cacarval@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 11:28:01 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/03 15:25:55 by cacarval         ###   ########.fr       */
+/*   Updated: 2023/11/03 20:00:00 by jmarinho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,7 @@ void	ft_execute_only_cmd(t_minishell *ms, t_cmd *curr, char *cmd)
 {
 	pid_t	pid;
 
-	if (curr->has_heredoc == YES)
-	{
-		ft_signals_heredoc();
-		waitpid(ms->pid_heredoc, NULL, 0);
-	}
-	else if (ft_strcmp(cmd, "cat") == 0)
+	if (ft_strcmp(cmd, "cat") == 0)
 		ft_signals_child(cmd);
 	pid = fork();
 	if (pid < 0)
@@ -74,11 +69,6 @@ void	ft_execute_only_cmd(t_minishell *ms, t_cmd *curr, char *cmd)
 
 void	ft_execute_mult_cmd(t_minishell *ms, t_cmd *curr, char *cmd)
 {
-	if (curr->has_heredoc == YES)
-	{
-		ft_signals_heredoc();
-		waitpid(ms->pid_heredoc, NULL, 0);
-	}
 	if (ft_strncmp(cmd, "cat", 4) == 0)
 		ft_signals_child(cmd);
 	ms->pid[curr->index] = fork();
@@ -94,12 +84,23 @@ void	ft_execute_mult_cmd(t_minishell *ms, t_cmd *curr, char *cmd)
 		ft_close_fds(curr);
 		ft_execute_cmd(ms, curr, cmd);
 	}
+	if (curr->has_heredoc == YES)
+	{
+		ft_signals_heredoc();
+		waitpid(-1, NULL, 0);
+	}
 }
 
 void	ft_execute_cmd(t_minishell *ms, t_cmd *curr, char *cmd)
 {
 	char	**path_array;
-
+	
+	if (ms->heredoc_signal == YES)
+	{
+		printf("ola\n");
+		g_exit_status = 130;
+		exit(g_exit_status);
+	}
 	path_array = ft_get_paths(ms->env_lst);
 	if (ft_strncmp(cmd, "echo", 5) == 0)
 		ft_echo(ms, curr);

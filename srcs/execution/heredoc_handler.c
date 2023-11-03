@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_handler.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cacarval <cacarval@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 18:02:44 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/03 15:42:51 by cacarval         ###   ########.fr       */
+/*   Updated: 2023/11/03 19:54:01 by jmarinho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,18 @@ char	*ft_expand_heredoc(t_minishell *ms, char *line);
 
 int	ft_handle_heredoc(t_minishell *ms, char *delimiter)
 {
+	int	status;
+	
+	status = 0;
 	ms->pid_heredoc = fork();
 	if (ms->pid_heredoc < 0)
 		ft_perror(ms, E_FORK, YES, NULL);
 	else if (ms->pid_heredoc == 0)
 		ft_create_heredoc(ms, delimiter);
 	else
-		waitpid(ms->pid_heredoc, NULL, 0);
+		waitpid(ms->pid_heredoc, &status, 0);
+	if (WIFSIGNALED(status))
+		ft_free_all(ms, YES);
 	return (open(".heredoc", O_RDONLY));
 }
 
@@ -33,6 +38,7 @@ void	ft_create_heredoc(t_minishell *ms, char *delimiter)
 	int		fd;
 	char	*line;
 
+	signal(SIGINT, SIG_DFL);
 	fd = open(".heredoc", O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	while (42)
 	{

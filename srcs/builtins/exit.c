@@ -6,7 +6,7 @@
 /*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 09:33:31 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/02 16:40:10 by jmarinho         ###   ########.fr       */
+/*   Updated: 2023/11/03 18:54:42 by jmarinho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	ft_exit_helper(t_minishell *ms)
 {
 	if (ms->cmd_lst->args[1] && ft_isnum(ms->cmd_lst->args[1]))
 	{
-		printf("minishel: exit: %s: numeric argument required\n",
+		printf("minishell: exit: %s: numeric argument required\n",
 			ms->cmd_lst->args[1]);
 		g_exit_status = 2;
 	}
