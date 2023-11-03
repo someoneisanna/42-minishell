@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cacarval <cacarval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 09:31:45 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/03 14:12:41 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/11/03 15:00:32 by cacarval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	ft_cd(t_minishell *ms, t_cmd *curr)
 	char	cur_dir[200];
 	char	*old_dir;
 	int		arg_flag;
+	char	*free_dir;
 
 	arg_flag = 0;
 	old_dir = ft_find_env(ms->env_lst, "OLDPWD");
@@ -31,10 +32,13 @@ void	ft_cd(t_minishell *ms, t_cmd *curr)
 	arg_flag = ft_cd_helper(ms, curr, old_dir, arg_flag);
 	if (arg_flag == -1)
 		return (ft_builtin_error(ms, curr, E_FILE, 1));
-	ft_update_env(&ms->env_lst, "OLDPWD", ft_strdup(cur_dir));
+	free_dir = ft_strdup(cur_dir);
+	ft_update_env(&ms->env_lst, "OLDPWD", free_dir);
 	getcwd(cur_dir, sizeof(cur_dir));
-	ft_update_env(&ms->env_lst, "PWD", ft_strdup(cur_dir));
-	g_exit_status = 0;
+	free_dir = ft_strdup(cur_dir);
+	ft_update_env(&ms->env_lst, "PWD", free_dir);
+	if (!ft_find_env(ms->env_lst, "PWD"))
+		free(free_dir);
 	if (ms->n_pipes != 0)
 		exit(g_exit_status);
 }
@@ -45,10 +49,10 @@ int	ft_cd_helper(t_minishell *ms, t_cmd *curr, char *old_dir, int arg_flag)
 	{
 		if (ft_strlen(curr->args[1]) == 1 && curr->args[1][0] == '-')
 		{
-			printf("%s\n", old_dir);
+						printf("%s\n", old_dir);
 			arg_flag = chdir(old_dir);
 		}
-		else if (curr->args[1][0] == '-' && curr->args[1][1] == '-')
+else if (curr->args[1][0] == '-' && curr->args[1][1] == '-')
 			arg_flag = chdir(ft_find_env(ms->env_lst, "HOME"));
 		else if (ft_strlen(curr->args[1]) == 1 && curr->args[1][0] == '~')
 			arg_flag = chdir(ft_find_env(ms->env_lst, "HOME"));

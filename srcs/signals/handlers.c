@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handlers.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cacarval <cacarval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 16:01:57 by jmarinho          #+#    #+#             */
-/*   Updated: 2023/10/30 16:03:02 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/11/03 15:37:14 by cacarval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void	ft_handler_heredoc(int signum)
 		return ;
 	printf("\n");
 	g_exit_status = 130;
+	return ;
 }
 
 void	ft_handler_child(int signum)

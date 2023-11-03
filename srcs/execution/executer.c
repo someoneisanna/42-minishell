@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executer.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cacarval <cacarval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 11:28:01 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/02 16:46:32 by jmarinho         ###   ########.fr       */
+/*   Updated: 2023/11/03 15:25:55 by cacarval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,12 @@ void	ft_execute_only_cmd(t_minishell *ms, t_cmd *curr, char *cmd)
 {
 	pid_t	pid;
 
-	if (ft_strcmp(cmd, "cat") == 0)
+	if (curr->has_heredoc == YES)
+	{
+		ft_signals_heredoc();
+		waitpid(ms->pid_heredoc, NULL, 0);
+	}
+	else if (ft_strcmp(cmd, "cat") == 0)
 		ft_signals_child(cmd);
 	pid = fork();
 	if (pid < 0)

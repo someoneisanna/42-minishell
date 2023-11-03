@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir_handler.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cacarval <cacarval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 13:50:25 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/02 17:03:31 by jmarinho         ###   ########.fr       */
+/*   Updated: 2023/11/03 14:46:30 by cacarval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void	ft_handle_redir(t_minishell *m, t_cmd *c)
 	int	i;
 
 	i = 0;
+	g_exit_status = 0;
 	while (c->f_redin[i])
 	{
 		if (c->t_redin[i] == T_FILE_IN)
