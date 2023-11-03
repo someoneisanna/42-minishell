@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cacarval <cacarval@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 17:44:16 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/02 12:56:15 by cacarval         ###   ########.fr       */
+/*   Updated: 2023/11/03 14:22:56 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,15 @@ int	ft_perror(t_minishell *ms, char *error, int free_flag, char *cmd)
 	if (error && !ft_strcmp(error, E_CMD))
 		printf("%s: %s\n", cmd, error);
 	else if (error)
-		printf("minishell: %s\n", error);
+	{
+		g_exit_status = 1;
+		if (!ft_strcmp(error, E_HEREDOC))
+			printf("minishell: %s (wanted '%s')\n", E_HEREDOC, cmd);
+		else
+			printf("minishell: %s\n", error);
+		if (!ft_strcmp(error, E_SYNTAX))
+			g_exit_status = 2;
+	}
 	if (free_flag == YES)
 		ft_free_all(ms, YES);
 	return (EXIT_FAILURE);

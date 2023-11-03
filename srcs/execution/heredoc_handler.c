@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 18:02:44 by ataboada          #+#    #+#             */
-/*   Updated: 2023/10/30 15:46:53 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/11/03 14:18:36 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	ft_create_heredoc(t_minishell *ms, char *delimiter)
 		line = readline("heredoc> ");
 		if (!line)
 		{
-			ft_perror(ms, E_HEREDOC, YES, NULL);
+			ft_perror(ms, E_HEREDOC, YES, delimiter);
 			break ;
 		}
 		if (line && ft_strncmp(line, delimiter, ft_strlen(line) + 1) == 0)

@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 09:31:45 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/02 18:43:39 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/11/03 14:12:41 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ int	ft_cd_helper(t_minishell *ms, t_cmd *curr, char *old_dir, int arg_flag)
 			printf("%s\n", old_dir);
 			arg_flag = chdir(old_dir);
 		}
+		else if (curr->args[1][0] == '-' && curr->args[1][1] == '-')
+			arg_flag = chdir(ft_find_env(ms->env_lst, "HOME"));
 		else if (ft_strlen(curr->args[1]) == 1 && curr->args[1][0] == '~')
 			arg_flag = chdir(ft_find_env(ms->env_lst, "HOME"));
 		else

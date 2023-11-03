@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 09:32:41 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/02 16:56:42 by jmarinho         ###   ########.fr       */
+/*   Updated: 2023/11/03 14:08:48 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
 void	ft_echo(t_minishell *ms, t_cmd *curr);
+int		ft_get_start_index(char **args);
 int		ft_tilde_expander(t_minishell *ms, t_cmd *curr, int i);
 void	ft_print_argument(char *s);
 
@@ -30,8 +31,7 @@ void	ft_echo(t_minishell *ms, t_cmd *curr)
 	}
 	if (ft_cmd_has_valid_option(curr->args) == FALSE)
 		exit(g_exit_status);
-	if (curr->args[1][0] == '-' && curr->args[1][1] == 'n')
-		i = 1;
+	i = ft_get_start_index(curr->args);
 	while (curr->args[++i])
 	{
 		i += ft_tilde_expander(ms, curr, i);
@@ -40,9 +40,35 @@ void	ft_echo(t_minishell *ms, t_cmd *curr)
 		if (curr->args[i + 1])
 			printf(" ");
 	}
-	if (curr->args[1][0] != '-' || curr->args[1][1] != 'n')
+	if (ft_get_start_index(curr->args) == 0)
 		printf("\n");
 	ft_free_all(ms, YES);
+}
+
+int	ft_get_start_index(char **args)
+{
+	int	i;
+	int	j;
+
+	i = 1;
+	j = 0;
+	while (args[i])
+	{
+		if (args[i][0] != '-' || args[i][1] != 'n')
+			break ;
+		else if (args[i][0] == '-' && args[i][1] == 'n')
+		{
+			j = 2;
+			while (args[i][j])
+			{
+				if (args[i][j] != 'n')
+					return (i - 1);
+				j++;
+			}
+		}
+		i++;
+	}
+	return (i - 1);
 }
 
 int	ft_tilde_expander(t_minishell *ms, t_cmd *curr, int i)
