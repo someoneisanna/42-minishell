@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 09:30:28 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/05 17:00:11 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/11/05 17:58:55 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@
 # define E_HEREDOC	"warning: here-document at line 1 delimited by end-of-file"
 # define E_HOME		"HOME not set"
 # define E_ARGS		"too many arguments"
+# define E_NUM		"numeric argument required"
 # define E_EXPORT	"not a valid identifier"
 
 // ---------------------------- GLOBAL VARIABLES -------------------------------

@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 14:33:14 by jmarinho          #+#    #+#             */
-/*   Updated: 2023/11/05 14:53:50 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/11/05 18:13:03 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,10 @@ void	ft_builtin_error(t_minishell *ms, t_cmd *curr, char *err, int ex_code)
 			printf("minishell: %s: %s: %s\n", curr->cmd, curr->args[1], err);
 		else if (!ft_strcmp(curr->cmd, "export"))
 			printf("minishell: %s: '%s': %s\n", curr->cmd, err, E_EXPORT);
+		else if (!ft_strcmp(curr->cmd, "exit") && ex_code == 1)
+			printf("minishell: %s: %s\n", curr->cmd, err);
+		else if (!ft_strcmp(curr->cmd, "exit") && ex_code == 2)
+			printf("minishell: %s: %s: %s\n", curr->cmd, err, E_NUM);
 		else
 			printf("minishell: %s: %s\n", curr->cmd, err);
 	}

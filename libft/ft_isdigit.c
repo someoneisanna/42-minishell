@@ -6,14 +6,14 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 18:51:39 by ataboada          #+#    #+#             */
-/*   Updated: 2023/10/06 17:35:10 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/11/05 17:53:45 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
 /**
- * @brief Checks if the passed character is a digit.
+ * @brief Checks if the passed character is a numeric character (0-9).
  * @param c Character to be checked.
  * @return [1] if c is a digit, [0] otherwise.
  */
