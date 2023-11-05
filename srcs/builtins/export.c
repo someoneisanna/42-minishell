@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 09:34:03 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/03 19:00:02 by jmarinho         ###   ########.fr       */
+/*   Updated: 2023/11/05 16:49:58 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
 void	ft_export(t_minishell *ms, t_cmd *curr);
-int		ft_export_loop(t_minishell *ms, t_cmd *curr, int i);
+int		ft_export_variable(t_minishell *ms, t_cmd *curr, int i);
 void	ft_export_list(t_minishell *ms, t_cmd *curr);
 void	ft_sort_env(t_env *env);
 void	ft_swap_env(t_env *curr, t_env *next);
@@ -26,39 +26,48 @@ void	ft_export(t_minishell *ms, t_cmd *curr)
 	if (curr->args[1] == NULL)
 		return (ft_export_list(ms, curr));
 	if (!ft_cmd_has_valid_option(curr->args))
-		return ;
-	ft_unset(ms);
+		return (ft_builtin_error(ms, curr, NULL, 2));
 	if (g_exit_status == 1)
 		return ;
-	while(ms->cmd_lst->args[i])
+	while(curr->args[i])
 	{
 		while (curr->args[++i])
 		{
-			if (ft_export_loop(ms, curr, i) == ERROR_FOUND)
+			if (ft_strlen(curr->args[i]) == 0)
+			{
+				ft_builtin_error(ms, curr, "", 1);
+				break ;
+			}
+			ft_export_unset(ms, curr->args[i]);
+			if (ft_export_variable(ms, curr, i) == ERROR_FOUND)
 				break ;
 		}
 	}
-	if (ms->n_pipes != 0)
-		exit(0);
+	if (ms->n_pipes > 0)
+		exit (g_exit_status);
 }
 
-int	ft_export_loop(t_minishell *ms, t_cmd *curr, int i)
+int	ft_export_variable(t_minishell *ms, t_cmd *cur, int i)
 {
 	char	*key;
 	char	*value;
 	char	*equal_ptr;
 
-	if (!ft_args_are_valid(curr->args[i]))
+	if (!ft_args_are_valid(cur->args[i], YES) || ms->n_pipes > 0)
 		return (ERROR_FOUND);
-	equal_ptr = ft_strchr(curr->args[i], '=');
+	if (!ft_strchr(cur->args[i], '=') && ft_find_env(ms->env_lst, cur->args[i]))
+		return (ERROR_FOUND);
+	equal_ptr = ft_strchr(cur->args[i], '=');
 	if (!equal_ptr)
-		return (ERROR_FOUND);
-	key = ft_substr(curr->args[i], 0, equal_ptr - curr->args[i]);
+	{
+		ft_add_env_back(&ms->env_lst, ft_new_env(cur->args[i], NULL));
+		return (EXIT_SUCCESS);
+	}
+	key = ft_substr(cur->args[i], 0, equal_ptr - cur->args[i]);
 	if (!*key)
 	{
-		printf("minishell: export: '%s': not a valid identifier\n", equal_ptr);
 		free(key);
-		g_exit_status = 1;
+		ft_builtin_error(ms, cur, equal_ptr, 1);
 		return (ERROR_FOUND);
 	}
 	value = equal_ptr + 1;
@@ -77,9 +86,13 @@ void	ft_export_list(t_minishell *ms, t_cmd *curr)
 	{
 		ft_putstr_fd("declare -x ", curr->fd_out);
 		ft_putstr_fd(sorted_env->key, curr->fd_out);
-		ft_putstr_fd("=\"", curr->fd_out);
-		ft_putstr_fd(sorted_env->value, curr->fd_out);
-		ft_putstr_fd("\"\n", curr->fd_out);
+		if (sorted_env->value)
+		{
+			ft_putstr_fd("=\"", curr->fd_out);
+			ft_putstr_fd(sorted_env->value, curr->fd_out);
+			ft_putstr_fd("\"", curr->fd_out);
+		}
+		ft_putstr_fd("\n", curr->fd_out);
 		sorted_env = sorted_env->next;
 	}
 	g_exit_status = 0;

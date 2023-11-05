@@ -6,14 +6,14 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 17:56:24 by ataboada          #+#    #+#             */
-/*   Updated: 2023/10/30 11:35:51 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/11/05 15:19:34 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
 int		ft_is_space(char c);
-int		ft_len_until_match(char *input, char *match);
+int		ft_is_symbol(char c);
 int		ft_count_quotes(char *s);
 int		ft_in_squote(char *cmd, char *stop);
 int		ft_count_redir(t_token *first, t_type type, t_type type2);
@@ -25,14 +25,15 @@ int	ft_is_space(char c)
 	return (NO);
 }
 
-int	ft_len_until_match(char *input, char *match)
+int	ft_is_symbol(char c)
 {
-	int	i;
-
-	i = 0;
-	while (input[i] && ft_strchr(match, input[i]) == NULL)
-		i++;
-	return (i);
+	if (c == '\"' || c == '\'' || c == '@' || c == '*')
+		return (1);
+	else if (c == '.' || c == ',' || c == '+'  || c == '%' || c == '='
+		|| c == '~' || c == '^' || c == '/')
+		return (2);
+	else
+		return (0);
 }
 
 int	ft_count_quotes(char *s)

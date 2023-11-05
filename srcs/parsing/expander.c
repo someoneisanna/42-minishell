@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 15:51:46 by ataboada          #+#    #+#             */
-/*   Updated: 2023/10/30 15:56:52 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/11/05 15:27:46 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ void	ft_expander(t_minishell *ms, t_token *token)
 		if (curr->content[0] == '$'
 			&& (!curr->content[1] || curr->content[1] == ' '))
 			return ;
+		if (curr->content[0] == '$' && ft_is_symbol(curr->content[1]) == 2)
+			return ;
 		if (curr->type == T_OTHER)
 			ft_expand_command(ms, curr);
 		if (ft_strlen(curr->content) == 0)
@@ -47,7 +49,7 @@ void	ft_expand_command(t_minishell *ms, t_token *token)
 		if (ft_in_squote(token->content, ft_strchr(token->content, '$')) == YES)
 			return ;
 		key = ft_get_key(token->content);
-		if (ft_strncmp(key, "$?", 3) == 0)
+		if (ft_strncmp(key, "$?", 2) == 0)
 			value = ft_itoa(g_exit_status);
 		else
 			value = ft_get_env_value(&ms->env_lst, key);
@@ -70,7 +72,9 @@ char	*ft_get_key(char *cmd)
 		return (NULL);
 	if (tmp[1] == '?')
 		return (ft_strdup("$?"));
-	while (tmp[len + 1] == '_' || ft_isalnum(tmp[len + 1]) == YES)
+	if (ft_is_symbol(tmp[1]) == 1)
+		len++;
+	while (ft_isalnum(tmp[len + 1]) != 0 || tmp[len + 1] == '_')
 		len++;
 	return (ft_substr(tmp, 0, len + 1));
 }
@@ -84,7 +88,7 @@ char	*ft_get_env_value(t_env **env_lst, char *key)
 		key++;
 	while (current)
 	{
-		if (ft_strncmp(current->key, key, ft_strlen(key)) == 0)
+		if (ft_strcmp(current->key, key) == 0)
 			return (ft_strdup(current->value));
 		current = current->next;
 	}
@@ -97,6 +101,8 @@ char	*ft_replace_content(char *cmd, char *key, char *value)
 	char	*new_cmd;
 	int		new_len;
 
+	if (ft_isalnum(key[1]) == 1 || ft_is_symbol(key[1]) == 1)
+		return (ft_strdup(key + 2));
 	if (!cmd || !key || !value)
 		return (NULL);
 	new_len = ft_strlen(cmd) - ft_strlen(key) + ft_strlen(value);

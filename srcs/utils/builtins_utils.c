@@ -6,17 +6,42 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 14:33:14 by jmarinho          #+#    #+#             */
-/*   Updated: 2023/11/02 18:41:57 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/11/05 14:53:50 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
+bool	ft_cmd_has_valid_option(char **args);
 void	ft_builtin_error(t_minishell *ms, t_cmd *curr, char *err, int ex_code);
 char	*ft_find_env(t_env *env_lst, char *find);
 void	ft_update_env(t_env **env_lst, char *key, char *update);
-char	ft_strchr2(const char *str, char c);
-void	ft_lstadd_back2(t_env *env_lst, t_env *new_envi);
+int		ft_strmlen(char *s, char match);
+
+bool	ft_cmd_has_valid_option(char **args)
+{
+	if (args[1] && args[1][0] == '-')
+	{
+		if (!ft_strcmp(args[0], "cd"))
+		{
+			if (ft_strlen(args[1]) == 1)
+				return (TRUE);
+			if (ft_strlen(args[1]) == 2 && args[1][1] == '-')
+				return (TRUE);
+		}
+		if (!ft_strcmp(args[0], "echo")
+			&& (args[1][1] != 'e' && args[1][1] != 'E'))
+			return (TRUE);
+		g_exit_status = 2;
+		dup2(STDERR_FILENO, STDOUT_FILENO);
+		if (!ft_strcmp(args[0], "env"))
+			printf("env: invalid option -- '%c'\n", args[1][1]);
+		else
+			printf("minishell: %s: -%c: invalid option\n", args[0], args[1][1]);
+		return (FALSE);
+	}
+	return (TRUE);
+}
 
 void	ft_builtin_error(t_minishell *ms, t_cmd *curr, char *err, int ex_code)
 {
@@ -25,6 +50,8 @@ void	ft_builtin_error(t_minishell *ms, t_cmd *curr, char *err, int ex_code)
 	{
 		if (!ft_strcmp(err, E_FILE))
 			printf("minishell: %s: %s: %s\n", curr->cmd, curr->args[1], err);
+		else if (!ft_strcmp(curr->cmd, "export"))
+			printf("minishell: %s: '%s': %s\n", curr->cmd, err, E_EXPORT);
 		else
 			printf("minishell: %s: %s\n", curr->cmd, err);
 	}
@@ -61,42 +88,5 @@ void	ft_update_env(t_env **env_lst, char *key, char *update)
 			break ;
 		}
 		current = current->next;
-	}
-}
-
-char	ft_strchr2(const char *str, char c)
-{
-	int		i;
-
-	i = -1;
-	while (str[++i])
-	{
-		if (str[i] == c)
-			return (str[i]);
-	}
-	if (str[i] == c)
-		return (str[i]);
-	return (0);
-}
-
-void	ft_lstadd_back2(t_env *env_lst, t_env *new_envi)
-{
-	t_env	*ptr;
-
-	ptr = env_lst;
-	if (env_lst)
-	{
-		if (!(env_lst))
-		{
-			env_lst = new_envi;
-		}
-		else
-		{
-			while (ptr->next != NULL)
-			{
-				ptr = ptr->next;
-			}
-			ptr->next = new_envi;
-		}
 	}
 }

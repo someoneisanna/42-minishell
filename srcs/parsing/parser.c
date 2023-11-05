@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 11:51:17 by ataboada          #+#    #+#             */
-/*   Updated: 2023/10/30 15:59:07 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/11/04 20:35:00 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,10 @@ int	ft_quote_checker(char *input)
 
 	n_quotes = ft_count_quotes(input);
 	if (n_quotes % 2 != 0)
+	{
+		g_exit_status = 2;
 		return (printf("%s\n", E_QUOTES) && ERROR_FOUND);
+	}
 	return (EXIT_SUCCESS);
 }
 

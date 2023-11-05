@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   environment_lst.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 11:25:15 by ataboada          #+#    #+#             */
-/*   Updated: 2023/10/26 14:37:50 by jmarinho         ###   ########.fr       */
+/*   Updated: 2023/11/04 15:49:42 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,11 @@ t_env	*ft_new_env(char *key, char *value)
 	if (!new_node)
 		return (NULL);
 	new_node->key = ft_strdup(key);
-	new_node->value = ft_strdup(value);
-	if (!new_node->key || !new_node->value)
+	if (value)
+		new_node->value = ft_strdup(value);
+	else
+		new_node->value = NULL;
+	if (!new_node->key)
 	{
 		free(new_node);
 		return (NULL);

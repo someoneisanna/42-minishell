@@ -3,14 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 15:57:17 by jmarinho          #+#    #+#             */
-/*   Updated: 2023/11/03 20:00:05 by jmarinho         ###   ########.fr       */
+/*   Updated: 2023/11/05 17:04:09 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+
+void	ft_signals(void)
+{
+	signal(SIGINT, ft_handler_sigint);
+	signal(SIGQUIT, SIG_IGN);
+}
 
 void	ft_signals_heredoc(void)
 {
@@ -27,8 +33,3 @@ void	ft_signals_child(char *cmd)
 		signal(SIGQUIT, SIG_IGN);
 }
 
-void	ft_signals(void)
-{
-	signal(SIGINT, ft_handler_sigint);
-	signal(SIGQUIT, SIG_IGN);
-}

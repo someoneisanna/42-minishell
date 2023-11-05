@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 09:33:11 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/02 16:41:15 by jmarinho         ###   ########.fr       */
+/*   Updated: 2023/11/04 15:51:06 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ void	ft_env(t_minishell *ms, t_cmd *cur)
 	{
 		while (env)
 		{
-			printf("%s=%s\n", env->key, env->value);
+			if (env->value)
+				printf("%s=%s\n", env->key, env->value);
 			env = env->next;
 		}
 		g_exit_status = 0;

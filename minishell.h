@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 09:30:28 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/03 17:46:00 by jmarinho         ###   ########.fr       */
+/*   Updated: 2023/11/05 17:00:11 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,9 @@
 # define E_DUP2		"dup2 error"
 # define E_FORK		"fork error"
 # define E_HEREDOC	"warning: here-document at line 1 delimited by end-of-file"
+# define E_HOME		"HOME not set"
+# define E_ARGS		"too many arguments"
+# define E_EXPORT	"not a valid identifier"
 
 // ---------------------------- GLOBAL VARIABLES -------------------------------
 
@@ -144,6 +147,7 @@ typedef struct s_minishell
 
 // main.c
 void	ft_main_loop(t_minishell *ms);
+void	ft_special_handler(char *input);
 void	ft_free_all(t_minishell *ms, int exit_flag);
 
 // PARSING _____________________________________________________________________
@@ -221,12 +225,28 @@ void	ft_close_pipes(t_minishell *ms);
 // BUILTINS ____________________________________________________________________
 
 void	ft_cd(t_minishell *ms, t_cmd *curr);
+int		ft_cd_helper(t_minishell *ms, t_cmd *curr, int arg_flag);
+
 void	ft_echo(t_minishell *ms, t_cmd *curr);
-void	ft_env(t_minishell *ms, t_cmd *curr);
+int		ft_get_start_index(char **args);
+int		ft_tilde_expander(t_minishell *ms, t_cmd *curr, int i);
+void	ft_print_argument(char *s);
+
+void	ft_env(t_minishell *ms, t_cmd *cur);
+
 void	ft_exit(t_minishell *ms, t_cmd *curr);
+
 void	ft_export(t_minishell *ms, t_cmd *curr);
+int		ft_export_variable(t_minishell *ms, t_cmd *curr, int i);
+void	ft_export_list(t_minishell *ms, t_cmd *curr);
+void	ft_sort_env(t_env *env);
+void	ft_swap_env(t_env *curr, t_env *next);
+
 void	ft_pwd(t_cmd *curr);
-int		ft_unset(t_minishell *ms);
+
+void	ft_unset(t_minishell *ms, t_cmd *curr);
+void	ft_export_unset(t_minishell *ms, char *arg);
+void	ft_unset_unset(t_minishell *m, t_cmd *c, t_env *e, t_env *p);
 
 // UTILS _______________________________________________________________________
 
@@ -236,7 +256,7 @@ int		ft_everything_is_space(char *str);
 
 // parsing_utils.c
 int		ft_is_space(char c);
-int		ft_len_until_match(char *input, char *match);
+int		ft_is_symbol(char c);
 int		ft_count_quotes(char *s);
 int		ft_in_squote(char *cmd, char *stop);
 int		ft_count_redir(t_token *first, t_type type1, t_type type2);
@@ -256,16 +276,16 @@ void	ft_free_str_array(char **str_array);
 void	ft_free_pipes(t_minishell *ms);
 
 // builtins_utils.c
+bool	ft_cmd_has_valid_option(char **args);
 void	ft_builtin_error(t_minishell *ms, t_cmd *curr, char *err, int ex_code);
 char	*ft_find_env(t_env *env_lst, char *find);
 void	ft_update_env(t_env **env_lst, char *key, char *update);
-char	ft_strchr2(const char *str, char c);
-void	ft_lstadd_back2(t_env *env_lst, t_env *new_envi);
+int		ft_strmlen(char *s, char match);
 
 // builtins_utils_2.c
 bool	ft_input_has_heredoc(t_minishell *ms);
-bool	ft_cmd_has_valid_option(char **args);
-bool	ft_args_are_valid(char *arg);
+bool	ft_args_are_valid(char *arg, int export_flag);
+int		ft_strmlen(char *s, char match);
 
 // SIGNALS _____________________________________________________________________
 

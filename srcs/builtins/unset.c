@@ -3,101 +3,96 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 09:36:01 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/03 18:57:00 by jmarinho         ###   ########.fr       */
+/*   Updated: 2023/11/05 15:52:47 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-int		ft_unset(t_minishell *ms);
-void	ft_unset_helper(t_minishell *ms, t_env *curr, t_env *prev);
-bool	ft_unset_cicle(t_minishell *ms);
-int		ft_strcmp2(char *arg, char *key);
+void	ft_unset(t_minishell *ms, t_cmd *curr);
+void	ft_export_unset(t_minishell *ms, char *arg);
+void	ft_unset_unset(t_minishell *m, t_cmd *c, t_env *e, t_env *p);
 
-// int	ft_strcmp2(char *arg, char *key)
-// {
-// 	int i;
-	
-// 	i = 0;
-// 	while (arg[i] && key[i] && (arg[i] == key[i]))
-// 		i++;
-// 	if(i > 0 && arg[i] == '=')
-// 	 	i--;
-// 	return((unsigned char)arg[i] - (unsigned char)key[i]);
-// } 
-
-// int	ft_strcmp(char *s1, char *s2)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	if (!s1 && !s2)
-// 		return (0);
-// 	if (!s1 || !s2)
-// 		return (1);
-// 	while (s1[i] && s2[i])
-// 	{
-// 		if (s1[i] != s2[i])
-// 			break ;
-// 		i++;
-// 	}
-// 	return (s1[i] - s2[i]);
-// }
-
-int	ft_unset(t_minishell *ms)
+void	ft_unset(t_minishell *ms, t_cmd *curr)
 {
-	int i;
-	t_env	*envi;
-	t_env	*prev;
+	int		i;
+	t_env	*e;
+	t_env	*p;
 
-	if(ms->cmd_lst->args[1] == NULL)
-	{
-		g_exit_status = 0;
-		return (g_exit_status);
-	}
-	if (!ft_cmd_has_valid_option(ms->cmd_lst->args))
-	{
-		g_exit_status = 2;
-		return (g_exit_status); 
-	}
 	i = 0;
-	while(ms->cmd_lst->args[i] && ms->cmd_lst->args[1][i] != '=' && ms->cmd_lst->args[1][i])
+	e = ms->env_lst;
+	p = NULL;
+	if(curr->args[1] == NULL)
+		return (ft_builtin_error(ms, curr, NULL, 0));
+	if (!ft_cmd_has_valid_option(curr->args))
+		return (ft_builtin_error(ms, curr, NULL, 2));
+	while(curr->args[i])
 	{
-		if (!ft_args_are_valid(ms->cmd_lst->args[i]))
+		if (!ft_args_are_valid(curr->args[i], NO))
 			break ;
 		i++;
 	}
-	i = 1;
-	envi = ms->env_lst;
-	prev = NULL;
-	while(ms->cmd_lst->args[i])
-	{
-		envi = ms->env_lst;
-		while(envi)
-		{
-			if (ft_strncmp(ms->cmd_lst->args[i], envi->key, ft_len_until_match(ms->cmd_lst->args[i], "=")) == 0)
-			{	
-				if (ms->cmd_lst->args[i][0] == '=')
-					break ;
-				if (prev == NULL)
-					ms->env_lst = envi->next;
-				else
-					prev->next = envi->next;
-				free(envi->key);
-				free(envi->value);
-				free(envi);
-				break;
-			}
-			prev = envi;
-			envi = envi->next;
-		}
-		i++;
-	}
+	ft_unset_unset(ms, curr, e, p);
 	g_exit_status = 0;
 	if (ms->n_pipes != 0)
 		exit(0);
-	return (g_exit_status);
+}
+
+void	ft_unset_unset(t_minishell *m, t_cmd *c, t_env *e, t_env *p)
+{
+	int i;
+
+	i = 0;
+	while(c->args[++i])
+	{
+		e = m->env_lst;
+		while(e)
+		{
+			if (!ft_strcmp(c->args[i], e->key))
+			{
+				if (c->args[i][0] == '=')
+					break ;
+				if (p == NULL)
+					m->env_lst = e->next;
+				else
+					p->next = e->next;
+				free(e->key);
+				free(e->value);
+				free(e);
+				break;
+			}
+			p = e;
+			e = e->next;
+		}
+	}
+}
+
+void	ft_export_unset(t_minishell *ms, char *arg)
+{
+	t_env	*e;
+	t_env	*p;
+
+	e = ms->env_lst;
+	p = NULL;
+	while (e)
+	{
+		if (!strncmp(e->key, arg, ft_strmlen(arg, '=')))
+		{
+			if (ft_strchr(arg, '=') == NULL && e->value)
+				break ;
+			if (p == NULL)
+				ms->env_lst = e->next;
+			else
+				p->next = e->next;
+			free(e->key);
+			free(e->value);
+			free(e);
+			break ;
+		}
+		p = e;
+		e = e->next;
+	}
 }

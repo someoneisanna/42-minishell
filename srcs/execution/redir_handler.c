@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir_handler.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cacarval <cacarval@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 13:50:25 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/03 14:46:30 by cacarval         ###   ########.fr       */
+/*   Updated: 2023/11/05 16:54:24 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,10 @@ int	ft_open_fd(t_minishell *m, t_cmd *c, char *filename, t_type filetype)
 	if (fd < 0)
 	{
 		g_exit_status = 1;
-		printf("minishell: %s: %s: %s\n", c->cmd, filename, E_FILE);
+		if (ft_strlen(filename) > 0)
+			printf("minishell: %s: %s: %s\n", c->cmd, filename, E_FILE);
+		else
+			printf("minishell: ambiguous redirect\n");
 		if (ft_is_forkable(m, NO) == TRUE)
 			ft_perror(m, NULL, YES, NULL);
 		else if (ft_is_forkable(m, NO) == FALSE)
