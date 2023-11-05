@@ -6,29 +6,14 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 16:58:00 by jmarinho          #+#    #+#             */
-/*   Updated: 2023/11/05 15:36:01 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/11/05 19:07:53 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-bool	ft_input_has_heredoc(t_minishell *ms);
 bool	ft_args_are_valid(char *arg, int export_flag);
 int		ft_strmlen(char *s, char match);
-
-bool	ft_input_has_heredoc(t_minishell *ms)
-{
-	t_token	*token;
-
-	token = ms->token_lst;
-	while (token)
-	{
-		if (ft_strncmp(token->content, "<<", 3) == 0)
-			return (TRUE);
-		token = token->next;
-	}
-	return (FALSE);
-}
 
 bool	ft_args_are_valid(char *arg, int export_flag)
 {

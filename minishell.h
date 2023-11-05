@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 09:30:28 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/05 17:58:55 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/11/05 19:07:38 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -225,26 +225,34 @@ void	ft_close_pipes(t_minishell *ms);
 
 // BUILTINS ____________________________________________________________________
 
+// cd.c
 void	ft_cd(t_minishell *ms, t_cmd *curr);
 int		ft_cd_helper(t_minishell *ms, t_cmd *curr, int arg_flag);
 
+// echo.c
 void	ft_echo(t_minishell *ms, t_cmd *curr);
 int		ft_get_start_index(char **args);
 int		ft_tilde_expander(t_minishell *ms, t_cmd *curr, int i);
 void	ft_print_argument(char *s);
 
+// env.c
 void	ft_env(t_minishell *ms, t_cmd *cur);
 
+// exit.c
 void	ft_exit(t_minishell *ms, t_cmd *curr);
+int		ft_isnum(char *s);
 
+// export.c
 void	ft_export(t_minishell *ms, t_cmd *curr);
 int		ft_export_variable(t_minishell *ms, t_cmd *curr, int i);
 void	ft_export_list(t_minishell *ms, t_cmd *curr);
 void	ft_sort_env(t_env *env);
 void	ft_swap_env(t_env *curr, t_env *next);
 
+// pwd.c
 void	ft_pwd(t_cmd *curr);
 
+// unset.c
 void	ft_unset(t_minishell *ms, t_cmd *curr);
 void	ft_export_unset(t_minishell *ms, char *arg);
 void	ft_unset_unset(t_minishell *m, t_cmd *c, t_env *e, t_env *p);
@@ -284,7 +292,6 @@ void	ft_update_env(t_env **env_lst, char *key, char *update);
 int		ft_strmlen(char *s, char match);
 
 // builtins_utils_2.c
-bool	ft_input_has_heredoc(t_minishell *ms);
 bool	ft_args_are_valid(char *arg, int export_flag);
 int		ft_strmlen(char *s, char match);
 
