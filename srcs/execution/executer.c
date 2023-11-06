@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executer.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 11:28:01 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/06 18:43:40 by jmarinho         ###   ########.fr       */
+/*   Updated: 2023/11/06 21:07:47 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ void	ft_executer(t_minishell *ms)
 			curr = curr->next;
 		}
 		ft_close_pipes(ms);
-		ft_waitpid_handler(ms, (ms->n_pipes + 1), 0, YES);
+		while (i < ms->n_pipes + 1)
+			ft_waitpid_handler(ms, i++, 0, YES);
 	}
 }
 

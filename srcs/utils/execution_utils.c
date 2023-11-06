@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 17:02:07 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/06 18:29:28 by jmarinho         ###   ########.fr       */
+/*   Updated: 2023/11/06 21:12:39 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	ft_waitpid_handler(t_minishell *ms, int i, pid_t pid, int exec_flag)
 
 	status = 0;
 	if (exec_flag == YES)
-		waitpid(ms->pid[i], &status, 0);
+		waitpid(ms->pid[i++], &status, 0);
 	else if (exec_flag == NO)
 		waitpid(pid, &status, 0);
 	ft_signals();
@@ -66,11 +66,11 @@ void	ft_waitpid_handler(t_minishell *ms, int i, pid_t pid, int exec_flag)
 		g_exit_status = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))
 	{
-		if (WCOREDUMP(status)) 
+		if (WCOREDUMP(status) && !ms->core_dump)
 			printf("Quit (core dumped)\n");
-	}
-	if (status != 0)
+		ms->core_dump = YES;
 		g_exit_status = 128 + WTERMSIG(status);
+	}
 }
 
 char	*ft_find_path(char *cmd, char *possible_paths)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 11:26:27 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/06 18:25:08 by jmarinho         ###   ########.fr       */
+/*   Updated: 2023/11/06 21:13:09 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ void	ft_main_loop(t_minishell *ms)
 		if (ft_everything_is_space(ms->input) == FALSE)
 		{
 			ms->n_pipes = 0;
+			ms->core_dump = 0;
 			if (ft_parser(ms, ms->input) == EXIT_SUCCESS)
 			{
 				ft_signals_child();

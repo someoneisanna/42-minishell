@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 09:30:28 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/06 18:02:59 by jmarinho         ###   ########.fr       */
+/*   Updated: 2023/11/06 21:12:17 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,9 +134,10 @@ typedef struct s_minishell
 	char			**paths;
 	int				**pipe_fd;
 	int				n_pipes;
-	int				heredoc_signal;
 	pid_t			pid_heredoc;
 	pid_t			*pid;
+	int				core_dump;
+	int				heredoc_signal;
 	t_env			*env_lst;
 	t_token			*token_lst;
 	t_cmd			*cmd_lst;
