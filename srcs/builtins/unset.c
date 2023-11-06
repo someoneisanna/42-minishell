@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 09:36:01 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/05 15:52:47 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/11/06 14:02:26 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,11 @@ void	ft_unset(t_minishell *ms, t_cmd *curr)
 	i = 0;
 	e = ms->env_lst;
 	p = NULL;
-	if(curr->args[1] == NULL)
+	if (curr->args[1] == NULL)
 		return (ft_builtin_error(ms, curr, NULL, 0));
 	if (!ft_cmd_has_valid_option(curr->args))
 		return (ft_builtin_error(ms, curr, NULL, 2));
-	while(curr->args[i])
+	while (curr->args[i])
 	{
 		if (!ft_args_are_valid(curr->args[i], NO))
 			break ;
@@ -43,13 +43,13 @@ void	ft_unset(t_minishell *ms, t_cmd *curr)
 
 void	ft_unset_unset(t_minishell *m, t_cmd *c, t_env *e, t_env *p)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	while(c->args[++i])
+	while (c->args[++i])
 	{
 		e = m->env_lst;
-		while(e)
+		while (e)
 		{
 			if (!ft_strcmp(c->args[i], e->key))
 			{
@@ -62,7 +62,7 @@ void	ft_unset_unset(t_minishell *m, t_cmd *c, t_env *e, t_env *p)
 				free(e->key);
 				free(e->value);
 				free(e);
-				break;
+				break ;
 			}
 			p = e;
 			e = e->next;

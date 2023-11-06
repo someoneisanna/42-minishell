@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 11:28:01 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/03 22:50:38 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/11/06 14:03:26 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,11 +95,6 @@ void	ft_execute_cmd(t_minishell *ms, t_cmd *curr, char *cmd)
 {
 	char	**path_array;
 
-	/*if (ms->heredoc_signal == YES)
-	{
-		g_exit_status = 130;
-		exit(g_exit_status);
-	}*/
 	path_array = ft_get_paths(ms->env_lst);
 	if (ft_strncmp(cmd, "echo", 5) == 0)
 		ft_echo(ms, curr);

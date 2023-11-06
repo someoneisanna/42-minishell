@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_handler.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 18:02:44 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/03 19:54:01 by jmarinho         ###   ########.fr       */
+/*   Updated: 2023/11/06 14:03:42 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ char	*ft_expand_heredoc(t_minishell *ms, char *line);
 int	ft_handle_heredoc(t_minishell *ms, char *delimiter)
 {
 	int	status;
-	
+
 	status = 0;
 	ms->pid_heredoc = fork();
 	if (ms->pid_heredoc < 0)

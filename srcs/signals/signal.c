@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 15:57:17 by jmarinho          #+#    #+#             */
-/*   Updated: 2023/11/05 17:04:09 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/11/06 14:02:34 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,4 +32,3 @@ void	ft_signals_child(char *cmd)
 	else
 		signal(SIGQUIT, SIG_IGN);
 }
-

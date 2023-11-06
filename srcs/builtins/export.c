@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 09:34:03 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/05 16:49:58 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/11/06 14:01:51 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	ft_export(t_minishell *ms, t_cmd *curr)
 		return (ft_builtin_error(ms, curr, NULL, 2));
 	if (g_exit_status == 1)
 		return ;
-	while(curr->args[i])
+	while (curr->args[i])
 	{
 		while (curr->args[++i])
 		{
