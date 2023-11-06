@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 09:30:28 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/05 19:07:38 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/11/06 18:02:59 by jmarinho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,7 +202,7 @@ char	**ft_get_paths(t_env *env_lst);
 // executer.c
 void	ft_executer(t_minishell *ms);
 void	ft_execute_only_cmd(t_minishell *ms, t_cmd *curr, char *cmd);
-void	ft_execute_mult_cmd(t_minishell *ms, t_cmd *curr, char *cmd);
+int		ft_execute_mult_cmd(t_minishell *ms, t_cmd *curr, char *cmd);
 void	ft_execute_cmd(t_minishell *ms, t_cmd *curr, char *cmd);
 void	ft_execute_external(t_minishell *ms, t_cmd *curr, char *cmd);
 
@@ -274,8 +274,8 @@ int		ft_count_redir(t_token *first, t_type type1, t_type type2);
 int		ft_is_forkable(t_minishell *ms, int execution_flag);
 void	ft_set_cmd_index(t_minishell *ms);
 void	ft_waitpid_handler(t_minishell *ms, int i, pid_t pid, int exec_flag);
-void	ft_unsetable(t_minishell *ms, char *cmd);
 char	*ft_find_path(char *cmd, char *possible_paths);
+void	ft_execute_mult_cmd_helper(t_minishell *ms, t_cmd *curr, int flag);
 
 // free_utils.c
 void	ft_free_token_lst(t_token **token_lst);
@@ -294,13 +294,14 @@ int		ft_strmlen(char *s, char match);
 // builtins_utils_2.c
 bool	ft_args_are_valid(char *arg, int export_flag);
 int		ft_strmlen(char *s, char match);
+void	ft_unsetable(t_minishell *ms, char *cmd);
 
 // SIGNALS _____________________________________________________________________
 
 // signals.c
 void	ft_signals(void);
 void	ft_signals_heredoc(void);
-void	ft_signals_child(char *cmd);
+void	ft_signals_child(void);
 
 // handlers.c
 void	ft_handler_sigint(int signum);

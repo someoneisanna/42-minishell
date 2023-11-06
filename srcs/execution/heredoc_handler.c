@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_handler.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 18:02:44 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/06 14:03:42 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/11/06 16:05:43 by jmarinho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ void	ft_create_heredoc(t_minishell *ms, char *delimiter)
 	int		fd;
 	char	*line;
 
-	signal(SIGINT, SIG_DFL);
 	fd = open(".heredoc", O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	while (42)
 	{

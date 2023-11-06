@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executer.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 11:28:01 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/06 14:03:26 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/11/06 18:43:40 by jmarinho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	ft_executer(t_minishell *ms);
 void	ft_execute_only_cmd(t_minishell *ms, t_cmd *curr, char *cmd);
-void	ft_execute_mult_cmd(t_minishell *ms, t_cmd *curr, char *cmd);
+int		ft_execute_mult_cmd(t_minishell *ms, t_cmd *curr, char *cmd);
 void	ft_execute_cmd(t_minishell *ms, t_cmd *curr, char *cmd);
 void	ft_execute_external(t_minishell *ms, t_cmd *curr, char *cmd);
 
@@ -37,12 +37,12 @@ void	ft_executer(t_minishell *ms)
 		ft_open_pipes(ms);
 		while (curr)
 		{
-			ft_execute_mult_cmd(ms, curr, curr->cmd);
+			if (ft_execute_mult_cmd(ms, curr, curr->cmd) == 1001)
+				return ;
 			curr = curr->next;
 		}
 		ft_close_pipes(ms);
-		while (i < ms->n_pipes + 1)
-			ft_waitpid_handler(ms, i++, 0, YES);
+		ft_waitpid_handler(ms, (ms->n_pipes + 1), 0, YES);
 	}
 }
 
@@ -50,13 +50,19 @@ void	ft_execute_only_cmd(t_minishell *ms, t_cmd *curr, char *cmd)
 {
 	pid_t	pid;
 
-	if (ft_strcmp(cmd, "cat") == 0)
-		ft_signals_child(cmd);
+	if (curr->has_heredoc == NO)
+		signal(SIGQUIT, ft_handler_child);
+	else
+		signal(SIGQUIT, SIG_IGN);
 	pid = fork();
 	if (pid < 0)
 		ft_perror(ms, E_FORK, YES, NULL);
 	else if (pid == 0)
 	{
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
+		if (curr->has_heredoc == YES)
+			signal(SIGQUIT, SIG_IGN);
 		ft_unsetable(ms, cmd);
 		if (ft_cmd_has_redir(curr) == TRUE)
 			ft_handle_redir(ms, curr);
@@ -67,16 +73,18 @@ void	ft_execute_only_cmd(t_minishell *ms, t_cmd *curr, char *cmd)
 		ft_waitpid_handler(ms, 0, pid, NO);
 }
 
-void	ft_execute_mult_cmd(t_minishell *ms, t_cmd *curr, char *cmd)
+int	ft_execute_mult_cmd(t_minishell *ms, t_cmd *curr, char *cmd)
 {
-	if (ft_strncmp(cmd, "cat", 4) == 0)
-		ft_signals_child(cmd);
+	int	status;
+
+	status = 0;
+	ft_execute_mult_cmd_helper(ms, curr, 0);
 	ms->pid[curr->index] = fork();
 	if (ms->pid[curr->index] < 0)
 		ft_perror(ms, E_FORK, YES, NULL);
 	else if (ms->pid[curr->index] == 0)
 	{
-		ft_unsetable(ms, cmd);
+		ft_execute_mult_cmd_helper(ms, curr, 1);
 		if (ft_cmd_has_redir(curr) == YES)
 			ft_handle_redir(ms, curr);
 		ft_handle_pipes(ms, curr);
@@ -86,9 +94,12 @@ void	ft_execute_mult_cmd(t_minishell *ms, t_cmd *curr, char *cmd)
 	}
 	if (curr->has_heredoc == YES)
 	{
-		ft_signals_heredoc();
-		waitpid(-1, NULL, 0);
+		while (waitpid(-1, &status, WNOHANG) == 0)
+			;
+		if (WIFSIGNALED(status))
+			return (1001);
 	}
+	return (0);
 }
 
 void	ft_execute_cmd(t_minishell *ms, t_cmd *curr, char *cmd)

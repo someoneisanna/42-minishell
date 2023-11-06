@@ -6,7 +6,7 @@
 /*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 17:02:07 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/03 18:54:50 by jmarinho         ###   ########.fr       */
+/*   Updated: 2023/11/06 18:29:28 by jmarinho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 int		ft_is_forkable(t_minishell *ms, int execution_flag);
 void	ft_set_cmd_index(t_minishell *ms);
 void	ft_waitpid_handler(t_minishell *ms, int i, pid_t pid, int exec_flag);
-void	ft_unsetable(t_minishell *ms, char *cmd);
 char	*ft_find_path(char *cmd, char *possible_paths);
+void	ft_execute_mult_cmd_helper(t_minishell *ms, t_cmd *curr, int flag);
 
 int	ft_is_forkable(t_minishell *ms, int execution_flag)
 {
@@ -58,39 +58,19 @@ void	ft_waitpid_handler(t_minishell *ms, int i, pid_t pid, int exec_flag)
 
 	status = 0;
 	if (exec_flag == YES)
-		waitpid(ms->pid[i++], &status, 0);
+		waitpid(ms->pid[i], &status, 0);
 	else if (exec_flag == NO)
 		waitpid(pid, &status, 0);
 	ft_signals();
 	if (WIFEXITED(status))
 		g_exit_status = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))
-		g_exit_status = 128 + WTERMSIG(status);
-}
-
-void	ft_unsetable(t_minishell *ms, char *cmd)
-{
-	char	**path_array;
-
-	if (ft_strncmp(cmd, "echo", 5) == 0)
-		return ;
-	else if (ft_strncmp(cmd, "pwd", 4) == 0)
-		return ;
-	else if (ft_strncmp(cmd, "export", 7) == 0)
-		return ;
-	else if (ft_strncmp(cmd, "unset", 6) == 0)
-		return ;
-	else if (ft_strncmp(cmd, "cd", 3) == 0)
-		return ;
-	else if (ft_strncmp(cmd, "exit", 5) == 0)
-		return ;
-	path_array = ft_get_paths(ms->env_lst);
-	if (!path_array)
 	{
-		printf("minishell: %s: no such file or directory\n", cmd);
-		g_exit_status = 127;
+		if (WCOREDUMP(status)) 
+			printf("Quit (core dumped)\n");
 	}
-	ft_free_str_array(path_array);
+	if (status != 0)
+		g_exit_status = 128 + WTERMSIG(status);
 }
 
 char	*ft_find_path(char *cmd, char *possible_paths)
@@ -110,4 +90,23 @@ char	*ft_find_path(char *cmd, char *possible_paths)
 			return (NULL);
 	}
 	return (possible_path);
+}
+
+void	ft_execute_mult_cmd_helper(t_minishell *ms, t_cmd *curr, int flag)
+{
+	if (flag == 0)
+	{
+		if (curr->has_heredoc == NO)
+			signal(SIGQUIT, ft_handler_child);
+		else
+			signal(SIGQUIT, SIG_IGN);
+	}
+	if (flag == 1)
+	{
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
+		if (curr->has_heredoc == YES)
+			signal(SIGQUIT, SIG_IGN);
+		ft_unsetable(ms, curr->cmd);
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 11:26:27 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/02 16:40:54 by jmarinho         ###   ########.fr       */
+/*   Updated: 2023/11/06 18:25:08 by jmarinho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ int	main(int ac, char **av, char **envp)
 	ms.envp = envp;
 	ft_init_env_lst(&ms.env_lst, ms.envp);
 	ms.paths = ft_get_paths(ms.env_lst);
-	ft_signals();
 	ft_main_loop(&ms);
 }
 
@@ -40,13 +39,10 @@ void	ft_main_loop(t_minishell *ms)
 {
 	while (42)
 	{
+		ft_signals();
 		ms->input = readline("minishell> ");
 		if (ms->input == NULL)
-		{
-			printf("exit\n");
-			g_exit_status = 0;
 			ft_free_all(ms, YES);
-		}
 		add_history(ms->input);
 		ft_special_handler(ms->input);
 		if (ft_everything_is_space(ms->input) == FALSE)
@@ -54,6 +50,7 @@ void	ft_main_loop(t_minishell *ms)
 			ms->n_pipes = 0;
 			if (ft_parser(ms, ms->input) == EXIT_SUCCESS)
 			{
+				ft_signals_child();
 				ft_executer(ms);
 				if (ms->n_pipes > 0)
 					ft_free_pipes(ms);
@@ -79,6 +76,8 @@ void	ft_special_handler(char *input)
 
 void	ft_free_all(t_minishell *ms, int exit_flag)
 {
+	if (ms->input == NULL)
+		printf("exit\n");
 	free(ms->input);
 	ft_free_token_lst(&ms->token_lst);
 	ft_free_cmd_lst(&ms->cmd_lst);

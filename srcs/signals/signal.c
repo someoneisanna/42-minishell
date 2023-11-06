@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 15:57:17 by jmarinho          #+#    #+#             */
-/*   Updated: 2023/11/06 14:02:34 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/11/06 16:04:41 by jmarinho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,12 @@ void	ft_signals(void)
 
 void	ft_signals_heredoc(void)
 {
-	signal(SIGINT, ft_handler_heredoc);
+	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_IGN);
 }
 
-void	ft_signals_child(char *cmd)
+void	ft_signals_child(void)
 {
 	signal(SIGINT, ft_handler_child);
-	if (ft_strncmp(cmd, "cat", 4) == 0)
-		signal(SIGQUIT, ft_handler_child);
-	else
-		signal(SIGQUIT, SIG_IGN);
+	signal(SIGQUIT, ft_handler_child);
 }
