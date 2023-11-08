@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 09:34:03 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/06 16:03:16 by jmarinho         ###   ########.fr       */
+/*   Updated: 2023/11/08 19:49:43 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	ft_export(t_minishell *ms, t_cmd *curr)
 		}
 	}
 	if (ms->n_pipes > 0)
-		exit (g_exit_status);
+		ft_free_all(ms, YES);
 }
 
 int	ft_export_variable(t_minishell *ms, t_cmd *cur, int i)
@@ -97,7 +97,7 @@ void	ft_export_list(t_minishell *ms, t_cmd *curr)
 	}
 	g_exit_status = 0;
 	if (ms->n_pipes > 0)
-		exit (g_exit_status);
+		ft_free_all(ms, YES);
 }
 
 void	ft_sort_env(t_env *env)

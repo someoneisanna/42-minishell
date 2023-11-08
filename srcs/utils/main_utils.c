@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cacarval <cacarval@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 17:44:16 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/03 14:57:43 by cacarval         ###   ########.fr       */
+/*   Updated: 2023/11/06 23:08:54 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,21 @@
 
 int	ft_perror(t_minishell *ms, char *error, int free_flag, char *cmd);
 int	ft_everything_is_space(char *str);
+
+/*
+	ft_perror: used to print some error messages along the project.
+		* first, we make sure that the message will be printed in the terminal,
+		and not in redirection files or pipes by selecting STDERR as standart
+		output.
+		* E_CMD and E_SYNTAX are errors that have 127 or 2 as exit_status,
+		respectively.
+		* other errors, unless modified, will have 1 as exit_status.
+		* after all that is done, we use ft_free_all to exit minishell, if the
+		free_flag is set to YES.
+
+	ft_everything_is_space: used to check if a string is composed only of spaces
+	and tabs.
+*/
 
 int	ft_perror(t_minishell *ms, char *error, int free_flag, char *cmd)
 {

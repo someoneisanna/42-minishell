@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 09:33:11 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/04 15:51:06 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/11/08 21:11:01 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,6 @@ void	ft_env(t_minishell *ms, t_cmd *cur)
 			env = env->next;
 		}
 		g_exit_status = 0;
-		if (ms->n_pipes > 0)
-			ft_free_pipes(ms);
 	}
 	ft_free_all(ms, YES);
-	exit(g_exit_status);
 }

@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 09:33:31 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/05 19:03:41 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/11/08 19:49:20 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	ft_exit(t_minishell *ms, t_cmd *curr)
 	if (curr->args[1] && ft_isnum(curr->args[1]) == NO)
 	{
 		ft_builtin_error(ms, curr, curr->args[1], 2);
-		exit (g_exit_status);
+		ft_free_all(ms, YES);
 	}
 	if (curr->args[1] && ft_isnum(curr->args[1]) == YES)
 	{
@@ -34,12 +34,12 @@ void	ft_exit(t_minishell *ms, t_cmd *curr)
 			g_exit_status = 256 - ft_atoi(curr->args[1] + 1);
 		else
 			g_exit_status = ft_atoi(curr->args[1]);
-		exit (g_exit_status);
+		ft_free_all(ms, YES);
 	}
 	g_exit_status = 0;
 	if (curr->has_heredoc == 1)
 		unlink(".heredoc");
-	exit (g_exit_status);
+	ft_free_all(ms, YES);
 }
 
 int	ft_isnum(char *s)

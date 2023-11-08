@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 11:14:28 by ataboada          #+#    #+#             */
-/*   Updated: 2023/10/30 15:59:29 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/11/06 23:29:16 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,14 @@
 
 t_token	*ft_new_token(char *input, t_type type);
 void	ft_add_token_back(t_token **token, t_token *new_token);
+
+/*
+	These are standart function to add nodes to a list.
+
+	ft_new_token allocates memory for a new token and everything inside it.
+
+	ft_add_token_back adds a new token to the end of the token list.
+*/
 
 t_token	*ft_new_token(char *input, t_type type)
 {

@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 09:30:28 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/06 21:12:17 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/11/08 19:43:21 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -251,7 +251,7 @@ void	ft_sort_env(t_env *env);
 void	ft_swap_env(t_env *curr, t_env *next);
 
 // pwd.c
-void	ft_pwd(t_cmd *curr);
+void	ft_pwd(t_minishell *ms, t_cmd *curr);
 
 // unset.c
 void	ft_unset(t_minishell *ms, t_cmd *curr);

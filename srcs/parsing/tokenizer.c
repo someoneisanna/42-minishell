@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 11:06:37 by ataboada          #+#    #+#             */
-/*   Updated: 2023/10/30 16:02:02 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/11/06 23:53:19 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,37 @@
 void	ft_tokenizer(t_minishell *ms, char *input);
 int		ft_add_token(t_token **token_lst, char *input, t_type type);
 int		ft_add_command_token(t_token **token_lst, char *input, t_type type);
+
+/*
+	This is where we will take the input and transform it into tokens.
+
+	ft_tokenizer:
+		* we will iterate through the input and add tokens to the token list,
+		separating the input into commands and operators.
+		* as separators, we will use the following characters:
+			'|' '<' '>' '<<' '>>' ' '
+		* we will separate the input in the following way:
+			cat < a.txt << a > b.txt | grep A | wc -l >> c.txt
+			|-----------------------------------------------|
+			| token		| type		  | content				|
+			|-----------------------------------------------|
+			| cat		| T_OTHER	  | cat					|
+			| <			| T_REDIR_IN  | <					|
+			| a.txt		| T_OTHER	  | a.txt				|
+			| <<		| T_REDIR2_IN | <<				 	|
+			| a			| T_OTHER	  | a			 		|
+			| >			| T_REDIR_OUT | >					|
+			| b.txt		| T_OTHER	  | b.txt				|
+			| |			| T_PIPE	  | |					|
+			| grep		| T_OTHER	  | grep				|
+			| A			| T_OTHER	  | A					|
+			| |			| T_PIPE	  | |					|
+			| wc		| T_OTHER	  | wc					|
+			| -l		| T_OTHER	  | -l					|
+			| >>		| T_REDIR2_OUT| >>					|
+			| c.txt		| T_OTHER	  | c.txt				|
+			|-----------------------------------------------|
+*/
 
 void	ft_tokenizer(t_minishell *ms, char *input)
 {
@@ -68,7 +99,7 @@ int	ft_add_command_token(t_token **token_lst, char *input, t_type type)
 		else if (input[i] == '"' && in_squote == 0)
 			in_dquote = 1 - in_dquote;
 		else if ((input[i] == ' ' || input[i] == '>' || input[i] == '<'
-				|| input[i] == '|') && in_squote == 0 && in_dquote == 0)
+			|| input[i] == '|') && in_squote == 0 && in_dquote == 0)
 			break ;
 		i++;
 	}

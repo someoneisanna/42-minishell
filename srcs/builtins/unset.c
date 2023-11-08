@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 09:36:01 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/06 16:04:16 by jmarinho         ###   ########.fr       */
+/*   Updated: 2023/11/08 19:46:00 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	ft_unset(t_minishell *ms, t_cmd *curr)
 	ft_unset_unset(ms, curr, e, p);
 	g_exit_status = 0;
 	if (ms->n_pipes != 0)
-		exit(0);
+		ft_free_all(ms, YES);
 }
 
 void	ft_unset_unset(t_minishell *m, t_cmd *c, t_env *e, t_env *p)

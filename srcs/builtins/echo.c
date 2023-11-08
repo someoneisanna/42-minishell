@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cacarval <cacarval@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 09:32:41 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/03 14:57:55 by cacarval         ###   ########.fr       */
+/*   Updated: 2023/11/08 19:48:21 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,9 @@ void	ft_echo(t_minishell *ms, t_cmd *curr)
 	{
 		printf("\n");
 		ft_free_all(ms, YES);
-		exit(g_exit_status);
 	}
 	if (ft_cmd_has_valid_option(curr->args) == FALSE)
-		exit(g_exit_status);
+		ft_free_all(ms, YES);
 	i = ft_get_start_index(curr->args);
 	while (curr->args[++i])
 	{
