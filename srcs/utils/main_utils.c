@@ -6,7 +6,7 @@
 /*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 17:44:16 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/09 12:36:58 by jmarinho         ###   ########.fr       */
+/*   Updated: 2023/11/09 12:56:29 by jmarinho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 int	ft_perror(t_minishell *ms, char *error, int free_flag, char *cmd);
 int	ft_everything_is_space(char *str);
+int	ft_count_redir(t_token *first, t_type type, t_type type2);
 
 int	ft_perror(t_minishell *ms, char *error, int free_flag, char *cmd)
 {
@@ -47,4 +48,20 @@ int	ft_everything_is_space(char *str)
 		i++;
 	}
 	return (TRUE);
+}
+
+int	ft_count_redir(t_token *first, t_type type1, t_type type2)
+{
+	int		n_redirs;
+	t_token	*curr;
+
+	n_redirs = 0;
+	curr = first;
+	while (curr && curr->type != T_PIPE)
+	{
+		if (curr->type == type1 || curr->type == type2)
+			n_redirs++;
+		curr = curr->next;
+	}
+	return (n_redirs);
 }

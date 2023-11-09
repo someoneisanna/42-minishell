@@ -6,7 +6,7 @@
 /*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 13:50:25 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/09 12:35:52 by jmarinho         ###   ########.fr       */
+/*   Updated: 2023/11/09 12:56:48 by jmarinho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,6 @@ int	ft_open_fd(t_minishell *m, t_cmd *c, char *filename, t_type filetype)
 	if (fd < 0)
 	{
 		g_exit_status = 1;
-		// if(m->n_pipes > 0)
-		// 	ft_free_pipes(m);
 		if (ft_strlen(filename) > 0)
 			printf("minishell: %s: %s: %s\n", c->cmd, filename, E_FILE);
 		else

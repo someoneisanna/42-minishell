@@ -6,7 +6,7 @@
 /*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 17:56:24 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/09 12:37:05 by jmarinho         ###   ########.fr       */
+/*   Updated: 2023/11/09 12:56:00 by jmarinho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ int		ft_is_symbol(char c);
 int		ft_count_quotes(char *s);
 int		ft_in_squote(char *cmd, char *stop);
 int		ft_in_dquote(char *cmd, char *stop);
-int		ft_count_redir(t_token *first, t_type type, t_type type2);
 
 int	ft_is_space(char c)
 {
@@ -117,20 +116,4 @@ int	ft_in_dquote(char *cmd, char *stop)
 	if (n_dquotes % 2 == 0)
 		return (NO);
 	return (YES);
-}
-
-int	ft_count_redir(t_token *first, t_type type1, t_type type2)
-{
-	int		n_redirs;
-	t_token	*curr;
-
-	n_redirs = 0;
-	curr = first;
-	while (curr && curr->type != T_PIPE)
-	{
-		if (curr->type == type1 || curr->type == type2)
-			n_redirs++;
-		curr = curr->next;
-	}
-	return (n_redirs);
 }

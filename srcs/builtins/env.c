@@ -6,7 +6,7 @@
 /*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 09:33:11 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/09 12:33:02 by jmarinho         ###   ########.fr       */
+/*   Updated: 2023/11/09 12:55:33 by jmarinho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,4 +32,4 @@ void	ft_env(t_minishell *ms, t_cmd *cur)
 		g_exit_status = 0;
 	}
 	ft_free_all(ms, YES);
-	}
+}

@@ -6,7 +6,7 @@
 /*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 11:28:01 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/09 12:34:11 by jmarinho         ###   ########.fr       */
+/*   Updated: 2023/11/09 12:57:06 by jmarinho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ int	ft_execute_mult_cmd(t_minishell *ms, t_cmd *curr, char *cmd)
 
 void	ft_execute_cmd(t_minishell *ms, t_cmd *curr, char *cmd)
 {
-		if (ft_strncmp(cmd, "echo", 5) == 0)
+	if (ft_strncmp(cmd, "echo", 5) == 0)
 		ft_echo(ms, curr);
 	else if (ft_strncmp(cmd, "pwd", 4) == 0)
 		ft_pwd(ms, curr);
@@ -121,7 +121,7 @@ void	ft_execute_cmd(t_minishell *ms, t_cmd *curr, char *cmd)
 		ft_exit(ms, curr);
 	else
 		ft_execute_external(ms, curr, cmd);
-	}
+}
 
 void	ft_execute_external(t_minishell *ms, t_cmd *curr, char *cmd)
 {

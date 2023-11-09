@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 09:30:28 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/09 12:50:11 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/11/09 12:56:18 by jmarinho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -265,6 +265,7 @@ void	ft_unset_unset(t_minishell *m, t_cmd *c, t_env *e, t_env *p);
 // main_utils.c
 int		ft_perror(t_minishell *ms, char *error, int free_flag, char *file);
 int		ft_everything_is_space(char *str);
+int		ft_count_redir(t_token *first, t_type type1, t_type type2);
 
 // parsing_utils.c
 int		ft_is_space(char c);
@@ -272,7 +273,6 @@ int		ft_is_symbol(char c);
 int		ft_count_quotes(char *s);
 int		ft_in_squote(char *cmd, char *stop);
 int		ft_in_dquote(char *cmd, char *stop);
-int		ft_count_redir(t_token *first, t_type type1, t_type type2);
 
 // execution_utils.c
 int		ft_is_forkable(t_minishell *ms, int execution_flag);

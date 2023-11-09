@@ -6,7 +6,7 @@
 /*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 18:02:44 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/09 12:34:24 by jmarinho         ###   ########.fr       */
+/*   Updated: 2023/11/09 12:57:22 by jmarinho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,8 @@ void	ft_create_heredoc(t_minishell *ms, char *delimiter)
 		free(line);
 	}
 	close(fd);
-	// if (ms->n_pipes > 0)
-	// 	ft_free_pipes(ms);
+	if (ms->n_pipes > 0)
+		ft_free_pipes(ms);
 	ft_free_all(ms, YES);
 }
 
