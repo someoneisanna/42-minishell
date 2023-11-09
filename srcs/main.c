@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 11:26:27 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/08 21:10:32 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/11/09 12:47:16 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,8 +105,6 @@ void	ft_free_all(t_minishell *ms, int exit_flag)
 	ft_free_cmd_lst(&ms->cmd_lst);
 	if (exit_flag == YES)
 	{
-		if (ms->n_pipes > 0)
-			ft_free_pipes(ms);
 		ft_free_env_lst(&ms->env_lst);
 		ft_free_str_array(ms->paths);
 		exit (g_exit_status);

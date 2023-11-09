@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 09:30:28 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/08 19:43:21 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/11/09 12:44:55 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,7 @@ typedef struct s_cmd
 	int				fd_out;
 	int				index;
 	struct s_cmd	*next;
+	struct s_cmd	*prev;
 }	t_cmd;
 
 typedef struct s_minishell
@@ -171,6 +172,7 @@ void	ft_add_token_back(t_token **token, t_token *new_token);
 
 // syntax_checker.c
 int		ft_syntax_checker(t_minishell *ms, t_token *token);
+int		ft_is_redir(t_type type);
 
 // expander.c
 void	ft_expander(t_minishell *ms, t_token *token);
