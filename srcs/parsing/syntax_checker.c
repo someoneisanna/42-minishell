@@ -6,14 +6,22 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 11:03:52 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/09 09:35:13 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/11/09 12:51:06 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-int	ft_syntax_checker(t_minishell *ms, t_token *token);
-int	ft_is_redir(t_type type);
+/*
+	Here we will check if the tokens are in the correct order.
+
+	We will return error if:
+		* the first token is an.
+		* there are two operators next to each other.
+		* the last token is an operator.
+
+	Operators: | < > << >>
+*/
 
 int	ft_syntax_checker(t_minishell *ms, t_token *token)
 {

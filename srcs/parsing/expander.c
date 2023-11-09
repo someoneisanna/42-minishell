@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 15:51:46 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/06 23:44:57 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/11/09 12:36:14 by jmarinho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,48 +17,6 @@ void	ft_expand_command(t_minishell *ms, t_token *token);
 char	*ft_get_key(char *cmd);
 char	*ft_get_env_value(t_env **env_lst, char *key);
 char	*ft_replace_content(char *cmd, char *key, char *value);
-
-/*
-	Here is where we will expand the environment variables.
-
-	We might need to expand a variable when we have a $ in the command.
-
-	ft_expander:
-		* we will not expand when:
-			- the token is a heredoc delimiter.
-			- the token is a single $.
-			- the token is a $ followed by one of these symbols:
-				'.' ',' '+' '%' '=' '~' '^' '/'
-		* if the token is not one of the above, we will expand it.
-		* after expanding, we will check if the token is empty (cases where we
-		have a $ followed by a variable that does not exist) -> $bwkfvw. if it's
-		the case, we will change the token type to T_EMPTY.
-
-	ft_expand_command:
-		* while we have $ in the token content, we will expand it.
-		* however, if the $ is inside single quotes, we will not expand it.
-		* after checking that it is not inside single quotes, we will get the
-		key and the value of the variable.
-		* what is after $ is the key, and what matches the key in the env_lst is
-		the value.
-
-	For example,
-		echo $USER -> USER is the key, and it matches the key USER in the
-		env_lst, so its value will be the same as the value of the key USER in
-		the env_lst.
-
-	We also deal with some specific cases in which, if we have the $ followed by
-	double quotes, sngle quotes, @, *, ! or a number, we will not expand it, but
-	print what is after it.
-
-	For example:
-		echo $"USER" -> USER will be printed.
-		echo $'USER' -> USER will be printed.
-		echo $@USER -> USER will be printed.
-		echo $*USER -> USER will be printed.
-		echo $!USER -> USER will be printed.
-		echo $1USER -> USER will be printed.
-*/
 
 void	ft_expander(t_minishell *ms, t_token *token)
 {
@@ -91,6 +49,9 @@ void	ft_expand_command(t_minishell *ms, t_token *token)
 	while (ft_strchr(token->content, '$') != NULL)
 	{
 		if (ft_in_squote(token->content, ft_strchr(token->content, '$')) == YES)
+			return ;
+		if ((ft_in_dquote(token->content, ft_strchr(token->content, '$')) == YES
+			) && (!(ft_strcmp(token->content, "\"$\""))))
 			return ;
 		key = ft_get_key(token->content);
 		if (ft_strncmp(key, "$?", 2) == 0)

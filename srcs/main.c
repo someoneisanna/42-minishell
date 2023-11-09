@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 11:26:27 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/09 12:47:16 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/11/09 12:50:30 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,27 +15,6 @@
 void	ft_main_loop(t_minishell *ms);
 void	ft_special_handler(char *input);
 void	ft_free_all(t_minishell *ms, int exit_flag);
-
-/*
-	This is where we start.
-
-	main: initializes the t_minishell struct (including the envp and paths
-	variables), initializes the env_lst struct, and calls the main loop.
-
-	main loop:
-		* calls the signals function that handles ctrl-c and ctrl-\.
-		* calls free all in case of ctrl-d.
-		* calls readline to print the minishell prompt, and stores its input to
-		the t_minishell struct.
-		* handles the $?+$? special case.
-		* calls the parser function, which will separate the input into tokens
-		and creates the command table.
-		* calls the signals function that will handle ctrl-c and ctrl-\ in the
-		child processes.
-		* calls the executer function, which will execute the commands.
-		* frees the pipes, deletes heredoc's auxiliar file, and calls free all
-		to free everything that needs to be freed to get a new working prompt.
-*/
 
 int	g_exit_status;
 

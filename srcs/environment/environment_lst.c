@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   environment_lst.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 11:25:15 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/06 22:57:28 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/11/09 12:33:36 by jmarinho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,30 +16,6 @@ void	ft_init_env_lst(t_env **env, char **envp);
 t_env	*ft_new_env(char *key, char *value);
 void	ft_add_env_back(t_env **env_lst, t_env *new_env);
 char	**ft_get_paths(t_env *env_lst);
-
-/*
-	This file contains the functions that initialize the env_lst struct, which
-	is a linked list that contains the environment variables.
-
-	Here, we take the envp variable from main, which is a char **, of the form
-	"KEY=VALUE", and we create a linked list of t_env structs, which contain two
-	variables of the sort char *: key and value.
-
-	Everything that is before '=' is stored in key, and everything that is after
-	it is stored in value.
-
-	For example, USERNAME=anna will become:
-		key: USERNAME
-		value: anna
-
-	We also have a function that returns a char **, which is the PATH variable
-	splitted by ':'.
-
-	For example, PATH=/usr/local/bin:/usr/bin:/bin will become:
-		path_array[0]: /usr/local/bin
-		path_array[1]: /usr/bin
-		path_array[2]: /bin
-*/
 
 void	ft_init_env_lst(t_env **env, char **envp)
 {

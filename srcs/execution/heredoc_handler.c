@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_handler.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 18:02:44 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/08 20:41:48 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/11/09 12:34:24 by jmarinho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,35 +15,6 @@
 int		ft_handle_heredoc(t_minishell *ms, char *delimiter);
 void	ft_create_heredoc(t_minishell *ms, char *delimiter);
 char	*ft_expand_heredoc(t_minishell *ms, char *line);
-
-/*
-	Here, we will deal with the heredoc.
-
-	ft_handle_heredoc:
-		* first, we fork the process.
-		* in the child process, we will:
-			- create the heredoc.
-		* in the parent process, we will:
-			- wait for the heredoc to finish.
-		* it will return the fd of the temporary file that was created to store
-		the heredoc's text.
-
-	ft_create_heredoc:
-		* first, we open the temporary file.
-		* then, we will iterate through the heredoc, and for each line, we will:
-			- expand the variables.
-			- write the line to the temporary file.
-		* we will leave that loop when we find the delimiter (which is the word
-		we are looking for) or when we do control + d.
-		* we will then close the temporary file and exit the fork, freeing the
-		memory that was used.
-
-	ft_expand_heredoc:
-		* heredoc doesn't deal with single quotes, so everything here is being
-		expanded.
-		* we basically look for $ and replace it with the value of the variable
-		that comes after it.
-*/
 
 int	ft_handle_heredoc(t_minishell *ms, char *delimiter)
 {
@@ -86,8 +57,8 @@ void	ft_create_heredoc(t_minishell *ms, char *delimiter)
 		free(line);
 	}
 	close(fd);
-	if (ms->n_pipes > 0)
-		ft_free_pipes(ms);
+	// if (ms->n_pipes > 0)
+	// 	ft_free_pipes(ms);
 	ft_free_all(ms, YES);
 }
 

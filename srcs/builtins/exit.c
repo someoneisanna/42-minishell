@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 09:33:31 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/08 19:49:20 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/11/09 12:29:03 by jmarinho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ void	ft_exit(t_minishell *ms, t_cmd *curr)
 			g_exit_status = ft_atoi(curr->args[1]);
 		ft_free_all(ms, YES);
 	}
-	g_exit_status = 0;
 	if (curr->has_heredoc == 1)
 		unlink(".heredoc");
 	ft_free_all(ms, YES);
@@ -49,8 +48,12 @@ int	ft_isnum(char *s)
 	i = 0;
 	while (s[i])
 	{
-		if (s[1] && (s[0] == '-' || s[0] == '+'))
+		if (s[1] && (s[i] == '-' || s[i] == '+'))
+		{
+			if (i != 0)
+				return (NO);
 			i++;
+		}
 		if (ft_isdigit(s[i]) == 0)
 			return (NO);
 		i++;
