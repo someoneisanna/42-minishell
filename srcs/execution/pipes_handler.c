@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 18:58:27 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/07 10:35:08 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/10/29 18:08:27 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,37 +16,6 @@ int		ft_count_pipes(t_cmd *cmd_lst);
 void	ft_open_pipes(t_minishell *ms);
 void	ft_handle_pipes(t_minishell *ms, t_cmd *curr);
 void	ft_close_pipes(t_minishell *ms);
-
-/*
-	Here, we will deal with the pipes.
-
-	ft_count_pipes:
-		* we will iterate through the command list and count the number of pipes
-		that are present (the number of pipes is the number of commands minus 1)
-
-	ft_open_pipes:
-		* we will allocate memory for the pid and pipe_fd variables.
-		* we will iterate through the number of pipes and for each one, we will:
-			- allocate memory for the pipe_fd[i] variable.
-			- open the pipe.
-			- remember: pipes have type int **, one for each side.
-			pipe[0] - READ, pipe[1] - WRITE.
-
-	ft_handle_pipes:
-		* if the command is the first one, we will:
-			- redirect the input to the command to the fd_in variable.
-			- redirect the output of the command to the pipe.
-		* if the command is the last one, we will:
-			- redirect the input of the command to the pipe.
-			- redirect the output of the command to the fd_out variable.
-		* if the command is neither the first nor the last one, we will:
-			- redirect the input of the command to the pipe.
-			- redirect the output of the command to the pipe.
-		* if the command has an input redirection, we will:
-			- redirect the input of the command to the fd_in variable.
-		* if the command has an output redirection, we will:
-			- redirect the output of the command to the fd_out variable.
-*/
 
 int	ft_count_pipes(t_cmd *cmd_lst)
 {

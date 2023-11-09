@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 11:51:17 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/06 23:20:19 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/11/04 20:35:00 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,39 +16,6 @@ int		ft_parser(t_minishell *ms, char *input);
 int		ft_quote_checker(char *input);
 void	ft_quote_remover(t_minishell *ms);
 char	*ft_remove_quotes(char *cmd, int new_len, int i);
-
-/*
-	This is where we will take the input and transform it into a command table.
-
-	The parser contains three main parts:
-		* lexycal analysis: we will take the input and transform it into tokens.
-		* syntax analysis: we will check if the tokens are in the correct order.
-		* cmd table creation: we will create a command table with the tokens.
-
-	In our parser, we will first check if there any unclosed quotes, then, we
-	will tokenize the input, separating the input into commands and operators.
-	After that, we will check if the tokens are in the correct order. If they
-	are, we will expand the tokens that have $... format. Then, we will remove
-	the quotes from the tokens that have quotes. Finally, we will create a table
-	of commands, where each command will have its arguments, files and types.
-
-	ft_quote_checker: we will count the quotes (that are not inside quotes) and
-	check if the number of quotes is even. If it is not, it means we have
-	unclosed quotes and will not continue the parsing.
-
-	ft_quote_remover: we will see which tokens have quotes and remove them.
-
-	ft_remove_quotes: we will pass as an argument the token that has quotes and
-	the new length of the token without the quotes. Then, we will create a new
-	token without the quotes and return it.
-
-	note: we have to be very careful with the quotes, because they can be inside
-	one another. For example, if we have the following input:
-		echo "hello 'world'"
-	we will have to remove the quotes from the token "hello 'world'" and not
-	from the token "world", so the end result would be:
-		echo hello 'world'
-*/
 
 int	ft_parser(t_minishell *ms, char *input)
 {

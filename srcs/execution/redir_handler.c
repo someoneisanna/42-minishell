@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir_handler.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 13:50:25 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/08 20:34:01 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/11/09 12:35:52 by jmarinho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,28 +16,6 @@ int		ft_cmd_has_redir(t_cmd *curr);
 void	ft_handle_redir(t_minishell *m, t_cmd *c);
 int		ft_open_fd(t_minishell *m, t_cmd *c, char *filename, t_type filetype);
 void	ft_close_fds(t_cmd *curr);
-
-/*
-	ft_cmd_has_redir:
-		* we will iterate through the command's redir table and see if we have
-		any redirections.
-		* if we do, we will return YES, otherwise, we will return NO.
-
-	ft_handle_redir:
-		* we will iterate through the command's redir table and for each one, we
-		will:
-			- open the file. in case of heredoc, we have a special function for
-			creating its file (ft_handle_heredoc).
-			- redirect the input and output to the file.
-
-	ft_open_fd:
-		* we will open the file and return its fd.
-		* if we can't open the file, we will print an error message and set the
-		exit status to 1.
-
-	ft_close_fds:
-		* we will close the input and output fds.
-*/
 
 int	ft_cmd_has_redir(t_cmd *curr)
 {
@@ -53,9 +31,9 @@ void	ft_handle_redir(t_minishell *m, t_cmd *c)
 	int	i;
 
 	i = 0;
-	g_exit_status = 0;
 	while (c->f_redin[i])
 	{
+		g_exit_status = 0;
 		if (c->t_redin[i] == T_FILE_IN)
 			c->fd_in = ft_open_fd(m, c, c->f_redin[i], c->t_redin[i]);
 		else if (c->t_redin[i] == T_HEREDOC)
@@ -65,6 +43,7 @@ void	ft_handle_redir(t_minishell *m, t_cmd *c)
 	i = 0;
 	while (c->f_redout[i])
 	{
+		g_exit_status = 0;
 		c->fd_out = ft_open_fd(m, c, c->f_redout[i], c->t_redout[i]);
 		i++;
 	}
@@ -89,8 +68,8 @@ int	ft_open_fd(t_minishell *m, t_cmd *c, char *filename, t_type filetype)
 	if (fd < 0)
 	{
 		g_exit_status = 1;
-		if(m->n_pipes > 0)
-			ft_free_pipes(m);
+		// if(m->n_pipes > 0)
+		// 	ft_free_pipes(m);
 		if (ft_strlen(filename) > 0)
 			printf("minishell: %s: %s: %s\n", c->cmd, filename, E_FILE);
 		else

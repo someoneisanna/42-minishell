@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_table_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 17:47:33 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/07 10:04:06 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/11/09 12:35:57 by jmarinho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,42 +17,6 @@ char	**ft_get_args(t_token *first, int n_args);
 char	**ft_add_files(t_token *first, t_type type1, t_type type2);
 int		*ft_add_types(t_token *first, t_type type1, t_type type2);
 void	ft_add_cmd_back(t_cmd **cmd_table, t_cmd *new_cmd);
-
-/*
-	Here we have the functions that will help us build the command table.
-
-	ft_new_command will allocate memory to each new command node and fill it
-	with the information we need to execute it.
-
-	ft_get_args will get the arguments of each command.
-
-	For example, ls -l -a will have as args: ["ls", "-l", "-a"].
-
-	ft_add_files will get the files of each command.
-
-	For example, cat < a.txt << a > b.txt | grep A | wc -l >> c.txt
-	will have as files: ["a.txt", "a", b.txt", "c.txt"].
-
-	They will be divided in two char **, one for input files and one for output
-	files.
-
-	So, for example, cat < a.txt << a > b.txt | grep A | wc -l >> c.txt will be:
-		* input files: f_redin: ["a.txt", "a"]
-		* output files: f_redout: ["b.txt", "c.txt"]
-
-	ft_add_types will get the types of each file, so that we know if we are
-	dealing with T_FILE_IN or T_HEREDOC in the case of input files, or with
-	T_FILE_TR or T_FILE_AP in the case of output files.
-
-	So, for example, cat < a.txt << a > b.txt | grep A | wc -l >> c.txt will be:
-		* input files: t_redin: [T_FILE_IN, T_HEREDOC]
-		* output files: t_redout: [T_FILE_TR, T_FILE_AP]
-
-	Now, we have all the information about redirections, and can work with them
-	in the execution part.
-
-	ft_add_cmd_back will add the new command to the back of the command table.
-*/
 
 t_cmd	*ft_new_cmd(t_token *first, int n_args)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 09:30:28 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/08 19:43:21 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/11/09 12:31:05 by jmarinho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -269,6 +269,7 @@ int		ft_is_space(char c);
 int		ft_is_symbol(char c);
 int		ft_count_quotes(char *s);
 int		ft_in_squote(char *cmd, char *stop);
+int		ft_in_dquote(char *cmd, char *stop);
 int		ft_count_redir(t_token *first, t_type type1, t_type type2);
 
 // execution_utils.c
