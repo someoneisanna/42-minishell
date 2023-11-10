@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executer.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 11:28:01 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/10 10:24:14 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/11/10 14:28:56 by jmarinho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,9 @@ void	ft_executer(t_minishell *ms)
 void	ft_execute_only_cmd(t_minishell *ms, t_cmd *curr, char *cmd)
 {
 	pid_t	pid;
+	int		status;
 
+	status = 0;
 	if (curr->has_heredoc == NO)
 		signal(SIGQUIT, ft_handler_child);
 	else
@@ -63,7 +65,11 @@ void	ft_execute_only_cmd(t_minishell *ms, t_cmd *curr, char *cmd)
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
 		if (curr->has_heredoc == YES)
+		{
+			ft_free_heredoc(0, ms);
+			signal(SIGINT, ft_handler_heredoc);
 			signal(SIGQUIT, SIG_IGN);
+		}
 		ft_unsetable(ms, cmd);
 		if (ft_cmd_has_redir(curr) == TRUE)
 			ft_handle_redir(ms, curr);
@@ -71,7 +77,7 @@ void	ft_execute_only_cmd(t_minishell *ms, t_cmd *curr, char *cmd)
 		ft_close_fds(curr);
 	}
 	else
-		ft_waitpid_handler(ms, 0, pid, NO);
+		ft_waitpid_handler(ms, status, pid, NO);
 }
 
 int	ft_execute_mult_cmd(t_minishell *ms, t_cmd *curr, char *cmd)

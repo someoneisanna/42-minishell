@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 09:30:28 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/10 10:34:33 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/11/10 14:29:14 by jmarinho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,7 @@ typedef struct s_minishell
 	int				core_dump;
 	int				file_error;
 	int				heredoc_signal;
+	int				heredoc_status;
 	t_env			*env_lst;
 	t_token			*token_lst;
 	t_cmd			*cmd_lst;
@@ -276,7 +277,7 @@ int		ft_in_dquote(char *cmd, char *stop);
 // execution_utils.c
 int		ft_is_forkable(t_minishell *ms, int execution_flag);
 void	ft_set_cmd_index(t_minishell *ms);
-void	ft_waitpid_handler(t_minishell *ms, int i, pid_t pid, int exec_flag);
+void	ft_waitpid_handler(t_minishell *ms, int status, pid_t pid, int exec_flag);
 char	*ft_find_path(char *cmd, char *possible_paths);
 void	ft_execute_mult_cmd_helper(t_minishell *ms, t_cmd *curr, int flag);
 
@@ -304,9 +305,10 @@ void	ft_unsetable(t_minishell *ms, char *cmd);
 // signals.c
 void	ft_signals(void);
 void	ft_signals_heredoc(void);
-void	ft_signals_child(void);
+void	ft_signals_child(t_minishell *ms);
 
 // handlers.c
+void	ft_free_heredoc(int signum, t_minishell *ms);
 void	ft_handler_sigint(int signum);
 void	ft_handler_heredoc(int signum);
 void	ft_handler_child(int signum);

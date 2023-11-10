@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 11:26:27 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/10 10:35:05 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/11/10 14:09:00 by jmarinho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void	ft_main_loop(t_minishell *ms)
 	while (42)
 	{
 		ft_signals();
+		printf("st main %i\n", ms->heredoc_status);
 		ms->input = readline("minishell> ");
 		if (ms->input == NULL)
 			ft_free_all(ms, NO, YES);
@@ -52,7 +53,7 @@ void	ft_main_loop(t_minishell *ms)
 			ms->file_error = 0;
 			if (ft_parser(ms, ms->input) == EXIT_SUCCESS)
 			{
-				ft_signals_child();
+				ft_signals_child(ms);
 				ft_executer(ms);
 				if (ms->n_pipes > 0)
 					ft_free_pipes(ms);

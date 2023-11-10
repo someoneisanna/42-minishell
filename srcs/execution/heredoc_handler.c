@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_handler.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 18:02:44 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/09 21:33:23 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/11/10 14:32:00 by jmarinho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,14 @@ char	*ft_expand_heredoc(t_minishell *ms, char *line);
 
 int	ft_handle_heredoc(t_minishell *ms, char *delimiter)
 {
-	int	status;
-
-	status = 0;
 	ms->pid_heredoc = fork();
 	if (ms->pid_heredoc < 0)
 		ft_perror(ms, E_FORK, YES, NULL);
 	else if (ms->pid_heredoc == 0)
 		ft_create_heredoc(ms, delimiter);
 	else
-		waitpid(ms->pid_heredoc, &status, 0);
-	if (WIFSIGNALED(status))
+		waitpid(ms->pid_heredoc, &ms->heredoc_status, 0);
+	if (WIFSIGNALED(ms->heredoc_status))
 		ft_free_all(ms, NO, YES);
 	return (open(".heredoc", O_RDONLY));
 }
