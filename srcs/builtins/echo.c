@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 09:32:41 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/09 21:35:58 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/11/10 15:08:34 by jmarinho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	ft_echo(t_minishell *ms, t_cmd *curr)
 	}
 	if (ft_get_start_index(curr->args) == 0)
 		printf("\n");
-	ft_free_all(ms,  YES, YES);
+	ft_free_all(ms, YES, YES);
 }
 
 int	ft_get_start_index(char **args)

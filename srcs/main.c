@@ -6,7 +6,7 @@
 /*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 11:26:27 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/10 14:09:00 by jmarinho         ###   ########.fr       */
+/*   Updated: 2023/11/10 15:07:41 by jmarinho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ void	ft_main_loop(t_minishell *ms)
 	while (42)
 	{
 		ft_signals();
-		printf("st main %i\n", ms->heredoc_status);
 		ms->input = readline("minishell> ");
 		if (ms->input == NULL)
 			ft_free_all(ms, NO, YES);

@@ -3,18 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   main_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 17:44:16 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/09 21:33:54 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/11/10 15:12:55 by jmarinho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-int	ft_perror(t_minishell *ms, char *error, int free_flag, char *cmd);
-int	ft_everything_is_space(char *str);
-int	ft_count_redir(t_token *first, t_type type, t_type type2);
+int		ft_perror(t_minishell *ms, char *error, int free_flag, char *cmd);
+int		ft_everything_is_space(char *str);
+int		ft_count_redir(t_token *first, t_type type, t_type type2);
+void	ft_has_heredoc(t_minishell *ms);
+
+void	ft_has_heredoc(t_minishell *ms)
+{
+	if (ms->cmd_lst->has_heredoc == YES)
+	{
+		ft_free_heredoc(0, ms);
+		signal(SIGINT, ft_handler_heredoc);
+		signal(SIGQUIT, SIG_IGN);
+	}
+}
 
 int	ft_perror(t_minishell *ms, char *error, int free_flag, char *cmd)
 {

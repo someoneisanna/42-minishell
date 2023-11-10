@@ -6,7 +6,7 @@
 /*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 09:30:28 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/10 14:29:14 by jmarinho         ###   ########.fr       */
+/*   Updated: 2023/11/10 15:13:28 by jmarinho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -266,6 +266,7 @@ void	ft_unset_unset(t_minishell *m, t_cmd *c, t_env *e, t_env *p);
 int		ft_perror(t_minishell *ms, char *error, int free_flag, char *file);
 int		ft_everything_is_space(char *str);
 int		ft_count_redir(t_token *first, t_type type1, t_type type2);
+void	ft_has_heredoc(t_minishell *ms);
 
 // parsing_utils.c
 int		ft_is_space(char c);
@@ -277,7 +278,7 @@ int		ft_in_dquote(char *cmd, char *stop);
 // execution_utils.c
 int		ft_is_forkable(t_minishell *ms, int execution_flag);
 void	ft_set_cmd_index(t_minishell *ms);
-void	ft_waitpid_handler(t_minishell *ms, int status, pid_t pid, int exec_flag);
+void	ft_waitpid_handler(t_minishell *ms, int i, pid_t pid, int exec_flag);
 char	*ft_find_path(char *cmd, char *possible_paths);
 void	ft_execute_mult_cmd_helper(t_minishell *ms, t_cmd *curr, int flag);
 

@@ -6,7 +6,7 @@
 /*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 11:28:01 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/10 14:28:56 by jmarinho         ###   ########.fr       */
+/*   Updated: 2023/11/10 15:10:19 by jmarinho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,12 +64,7 @@ void	ft_execute_only_cmd(t_minishell *ms, t_cmd *curr, char *cmd)
 	{
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
-		if (curr->has_heredoc == YES)
-		{
-			ft_free_heredoc(0, ms);
-			signal(SIGINT, ft_handler_heredoc);
-			signal(SIGQUIT, SIG_IGN);
-		}
+		ft_has_heredoc(ms);
 		ft_unsetable(ms, cmd);
 		if (ft_cmd_has_redir(curr) == TRUE)
 			ft_handle_redir(ms, curr);

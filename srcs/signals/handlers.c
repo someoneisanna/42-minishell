@@ -6,24 +6,24 @@
 /*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 16:01:57 by jmarinho          #+#    #+#             */
-/*   Updated: 2023/11/10 14:41:32 by jmarinho         ###   ########.fr       */
+/*   Updated: 2023/11/10 15:09:04 by jmarinho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
 void	ft_free_heredoc(int signum, t_minishell *ms)
-{	
-	static t_minishell *h;
+{
+	static t_minishell	*h;
 
-	if(!signum && ms)
+	if (!signum && ms)
 	{
 		h = ms;
 		return ;
 	}
-	if(signum == SIGINT)
+	if (signum == SIGINT)
 	{
-		if(h->n_pipes > 0)
+		if (h->n_pipes > 0)
 			ft_free_all(h, YES, YES);
 		else
 			ft_free_all(h, NO, YES);
