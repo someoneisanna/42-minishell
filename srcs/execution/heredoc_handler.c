@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_handler.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 18:02:44 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/09 12:57:22 by jmarinho         ###   ########.fr       */
+/*   Updated: 2023/11/09 21:33:23 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	ft_handle_heredoc(t_minishell *ms, char *delimiter)
 	else
 		waitpid(ms->pid_heredoc, &status, 0);
 	if (WIFSIGNALED(status))
-		ft_free_all(ms, YES);
+		ft_free_all(ms, NO, YES);
 	return (open(".heredoc", O_RDONLY));
 }
 
@@ -57,9 +57,7 @@ void	ft_create_heredoc(t_minishell *ms, char *delimiter)
 		free(line);
 	}
 	close(fd);
-	if (ms->n_pipes > 0)
-		ft_free_pipes(ms);
-	ft_free_all(ms, YES);
+	ft_free_all(ms, YES, YES);
 }
 
 char	*ft_expand_heredoc(t_minishell *ms, char *line)

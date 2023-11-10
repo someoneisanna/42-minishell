@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cacarval <cacarval@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 17:02:07 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/08 11:47:48 by cacarval         ###   ########.fr       */
+/*   Updated: 2023/11/10 10:35:39 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	ft_is_forkable(t_minishell *ms, int execution_flag)
 		if (execution_flag == YES)
 		{
 			ft_handle_redir(ms, ms->cmd_lst);
-			if (g_exit_status == 0 || g_exit_status == 127)
+			if (ms->file_error == NO)
 				ft_execute_cmd(ms, ms->cmd_lst, ms->cmd_lst->cmd);
 		}
 		return (FALSE);

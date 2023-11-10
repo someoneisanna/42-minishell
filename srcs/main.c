@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 11:26:27 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/09 12:50:30 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/11/10 10:35:05 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	ft_main_loop(t_minishell *ms);
 void	ft_special_handler(char *input);
-void	ft_free_all(t_minishell *ms, int exit_flag);
+void	ft_free_all(t_minishell *ms, int free_pipes, int exit_flag);
 
 int	g_exit_status;
 
@@ -42,13 +42,14 @@ void	ft_main_loop(t_minishell *ms)
 		ft_signals();
 		ms->input = readline("minishell> ");
 		if (ms->input == NULL)
-			ft_free_all(ms, YES);
+			ft_free_all(ms, NO, YES);
 		add_history(ms->input);
 		ft_special_handler(ms->input);
 		if (ft_everything_is_space(ms->input) == FALSE)
 		{
 			ms->n_pipes = 0;
 			ms->core_dump = 0;
+			ms->file_error = 0;
 			if (ft_parser(ms, ms->input) == EXIT_SUCCESS)
 			{
 				ft_signals_child();
@@ -57,7 +58,7 @@ void	ft_main_loop(t_minishell *ms)
 					ft_free_pipes(ms);
 				unlink(".heredoc");
 			}
-			ft_free_all(ms, NO);
+			ft_free_all(ms, NO, NO);
 		}
 	}
 	rl_clear_history();
@@ -75,13 +76,15 @@ void	ft_special_handler(char *input)
 	}
 }
 
-void	ft_free_all(t_minishell *ms, int exit_flag)
+void	ft_free_all(t_minishell *ms, int free_pipes, int exit_flag)
 {
 	if (ms->input == NULL)
 		printf("exit\n");
 	free(ms->input);
 	ft_free_token_lst(&ms->token_lst);
 	ft_free_cmd_lst(&ms->cmd_lst);
+	if (free_pipes == YES && ms->n_pipes > 0)
+		ft_free_pipes(ms);
 	if (exit_flag == YES)
 	{
 		ft_free_env_lst(&ms->env_lst);

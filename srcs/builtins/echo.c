@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 09:32:41 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/09 12:32:19 by jmarinho         ###   ########.fr       */
+/*   Updated: 2023/11/09 21:35:58 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,10 @@ void	ft_echo(t_minishell *ms, t_cmd *curr)
 	if (curr->args[1] == NULL)
 	{
 		printf("\n");
-		ft_free_all(ms, YES);
+		ft_free_all(ms, YES, YES);
 	}
 	if (ft_cmd_has_valid_option(curr->args) == FALSE)
-		ft_free_all(ms, YES);
+		ft_free_all(ms, YES, YES);
 	i = ft_get_start_index(curr->args);
 	while (curr->args[++i])
 	{
@@ -41,7 +41,7 @@ void	ft_echo(t_minishell *ms, t_cmd *curr)
 	}
 	if (ft_get_start_index(curr->args) == 0)
 		printf("\n");
-	ft_free_all(ms, YES);
+	ft_free_all(ms,  YES, YES);
 }
 
 int	ft_get_start_index(char **args)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 17:44:16 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/09 12:56:29 by jmarinho         ###   ########.fr       */
+/*   Updated: 2023/11/09 21:33:54 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	ft_perror(t_minishell *ms, char *error, int free_flag, char *cmd)
 			g_exit_status = 2;
 	}
 	if (free_flag == YES)
-		ft_free_all(ms, YES);
+		ft_free_all(ms, NO, YES);
 	return (EXIT_FAILURE);
 }
 

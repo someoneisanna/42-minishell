@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 09:30:28 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/09 12:56:18 by jmarinho         ###   ########.fr       */
+/*   Updated: 2023/11/10 10:34:33 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,6 @@ typedef struct s_cmd
 	int				fd_out;
 	int				index;
 	struct s_cmd	*next;
-	struct s_cmd	*prev;
 }	t_cmd;
 
 typedef struct s_minishell
@@ -138,6 +137,7 @@ typedef struct s_minishell
 	pid_t			pid_heredoc;
 	pid_t			*pid;
 	int				core_dump;
+	int				file_error;
 	int				heredoc_signal;
 	t_env			*env_lst;
 	t_token			*token_lst;
@@ -151,7 +151,7 @@ typedef struct s_minishell
 // main.c
 void	ft_main_loop(t_minishell *ms);
 void	ft_special_handler(char *input);
-void	ft_free_all(t_minishell *ms, int exit_flag);
+void	ft_free_all(t_minishell *ms, int free_pipes, int exit_flag);
 
 // PARSING _____________________________________________________________________
 
@@ -172,7 +172,6 @@ void	ft_add_token_back(t_token **token, t_token *new_token);
 
 // syntax_checker.c
 int		ft_syntax_checker(t_minishell *ms, t_token *token);
-int		ft_is_redir(t_type type);
 
 // expander.c
 void	ft_expander(t_minishell *ms, t_token *token);

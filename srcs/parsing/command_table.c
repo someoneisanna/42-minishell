@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_table.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 10:49:32 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/09 12:55:20 by jmarinho         ###   ########.fr       */
+/*   Updated: 2023/11/09 20:48:42 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,16 @@ int	ft_command_table_creator(t_minishell *ms)
 	{
 		if (curr->type == T_OTHER)
 			curr->type = T_COMMAND;
-		if (curr->type == T_REDIR_IN)
+		else if (curr->type == T_REDIR_IN)
 			curr->next->type = T_FILE_IN;
-		if (curr->type == T_REDIR_OUT)
+		else if (curr->type == T_REDIR_OUT)
 			curr->next->type = T_FILE_TR;
-		if (curr->type == T_REDIR2_OUT)
+		else if (curr->type == T_REDIR2_OUT)
 			curr->next->type = T_FILE_AP;
-		if (curr->type == T_REDIR2_IN)
+		else if (curr->type == T_REDIR2_IN)
 			curr->next->type = T_HEREDOC;
+		else if (curr->type == T_PIPE)
+			curr->next->type = T_COMMAND;
 		curr = curr->next;
 	}
 	if (ft_command_table_helper(ms) == EXIT_NO_CMD)

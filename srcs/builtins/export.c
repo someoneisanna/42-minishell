@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 09:34:03 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/09 12:33:13 by jmarinho         ###   ########.fr       */
+/*   Updated: 2023/11/10 10:49:04 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,6 @@ void	ft_export(t_minishell *ms, t_cmd *curr)
 		return (ft_export_list(ms, curr));
 	if (!ft_cmd_has_valid_option(curr->args))
 		return (ft_builtin_error(ms, curr, NULL, 2));
-	if (g_exit_status == 1)
-		return ;
 	while (curr->args[i])
 	{
 		while (curr->args[++i])
@@ -44,7 +42,7 @@ void	ft_export(t_minishell *ms, t_cmd *curr)
 		}
 	}
 	if (ms->n_pipes > 0)
-		ft_free_all(ms, YES);
+		ft_free_all(ms, YES, YES);
 }
 
 int	ft_export_variable(t_minishell *ms, t_cmd *cur, int i)
@@ -97,7 +95,7 @@ void	ft_export_list(t_minishell *ms, t_cmd *curr)
 	}
 	g_exit_status = 0;
 	if (ms->n_pipes > 0)
-		ft_free_all(ms, YES);
+		ft_free_all(ms, YES, YES);
 }
 
 void	ft_sort_env(t_env *env)

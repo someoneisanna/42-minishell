@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 17:47:33 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/09 12:50:37 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/11/09 20:49:12 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ t_cmd	*ft_new_cmd(t_token *first, int n_args)
 	new_cmd->fd_out = STDOUT_FILENO;
 	new_cmd->index = 0;
 	new_cmd->next = NULL;
-	new_cmd->prev = NULL;
 	return (new_cmd);
 }
 
@@ -85,8 +84,6 @@ char	**ft_add_files(t_token *first, t_type type1, t_type type2)
 	if (!redirs)
 		return (NULL);
 	curr = first;
-	if (curr->prev && (curr->prev->type == type1 || curr->prev->type == type2))
-		curr = curr->prev;
 	while (curr && curr->type != T_PIPE)
 	{
 		if (curr->type == type1 || curr->type == type2)
@@ -113,8 +110,6 @@ int	*ft_add_types(t_token *first, t_type type1, t_type type2)
 	if (!types)
 		return (NULL);
 	curr = first;
-	if (curr->prev && (curr->prev->type == type1 || curr->prev->type == type2))
-		curr = curr->prev;
 	while (curr && curr->type != T_PIPE)
 	{
 		if (curr->type == type1 || curr->type == type2)
