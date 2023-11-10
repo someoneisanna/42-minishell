@@ -6,7 +6,7 @@
 /*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 11:28:01 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/10 15:10:19 by jmarinho         ###   ########.fr       */
+/*   Updated: 2023/11/10 19:02:46 by jmarinho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,11 @@ void	ft_execute_cmd(t_minishell *ms, t_cmd *curr, char *cmd)
 	else if (ft_strncmp(cmd, "exit", 5) == 0)
 		ft_exit(ms, curr);
 	else
+	{
+		ft_build_envp(ms);
 		ft_execute_external(ms, curr, cmd);
+		ft_free_str_array(ms->envp);
+	}
 }
 
 void	ft_execute_external(t_minishell *ms, t_cmd *curr, char *cmd)

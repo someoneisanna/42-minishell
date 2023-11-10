@@ -6,7 +6,7 @@
 /*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 09:30:28 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/10 15:13:28 by jmarinho         ###   ########.fr       */
+/*   Updated: 2023/11/10 19:02:04 by jmarinho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -300,6 +300,7 @@ int		ft_strmlen(char *s, char match);
 bool	ft_args_are_valid(char *arg, int export_flag);
 int		ft_strmlen(char *s, char match);
 void	ft_unsetable(t_minishell *ms, char *cmd);
+void	ft_build_envp(t_minishell *ms);
 
 // SIGNALS _____________________________________________________________________
 

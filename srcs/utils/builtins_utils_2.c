@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_utils_2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 16:58:00 by jmarinho          #+#    #+#             */
-/*   Updated: 2023/11/10 10:19:06 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/11/10 19:02:30 by jmarinho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 bool	ft_args_are_valid(char *arg, int export_flag);
 int		ft_strmlen(char *s, char match);
 void	ft_unsetable(t_minishell *ms, char *cmd);
+void	ft_build_envp(t_minishell *ms);
 
 bool	ft_args_are_valid(char *arg, int export_flag)
 {
@@ -69,4 +70,32 @@ void	ft_unsetable(t_minishell *ms, char *cmd)
 		g_exit_status = 127;
 	}
 	ft_free_str_array(path_array);
+}
+
+void	ft_build_envp(t_minishell *ms)
+{
+	int		i;
+	char	*tmp;
+	t_env	*env;
+
+	i = 0;
+	env = ms->env_lst;
+	while (env)
+	{
+		i++;
+		env = env->next;
+	}
+	ms->envp = ft_calloc(sizeof(char *), (i + 1));
+	if (!ms->envp)
+		ft_free_all(ms, YES, YES);
+	i = 0;
+	env = ms->env_lst;
+	while (env)
+	{
+		tmp = ft_strjoin(env->key, "=");
+		ms->envp[i] = ft_strjoin(tmp, env->value);
+		free(tmp);
+		i++;
+		env = env->next;
+	}
 }
