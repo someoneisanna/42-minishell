@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 09:31:45 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/09 21:34:50 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/11/10 21:39:38 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void	ft_cd(t_minishell *ms, t_cmd *curr)
 	ft_update_env(&ms->env_lst, "PWD", free_dir);
 	if (!ft_find_env(ms->env_lst, "PWD"))
 		free(free_dir);
+	g_exit_status = 0;
 	if (ms->n_pipes > 0)
 		ft_free_all(ms, YES, YES);
 }

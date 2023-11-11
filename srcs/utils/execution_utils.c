@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 17:02:07 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/10 14:40:06 by jmarinho         ###   ########.fr       */
+/*   Updated: 2023/11/10 23:32:07 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ int	ft_is_forkable(t_minishell *ms, int execution_flag)
 	{
 		if (execution_flag == YES)
 		{
+			if (ms->cmd_lst->has_heredoc == YES)
+				signal(SIGQUIT, SIG_IGN);
 			ft_handle_redir(ms, ms->cmd_lst);
 			if (ms->file_error == NO)
 				ft_execute_cmd(ms, ms->cmd_lst, ms->cmd_lst->cmd);

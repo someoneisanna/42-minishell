@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_handler.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 18:02:44 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/10 14:32:00 by jmarinho         ###   ########.fr       */
+/*   Updated: 2023/11/10 23:26:59 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,6 @@ int	ft_handle_heredoc(t_minishell *ms, char *delimiter)
 		ft_create_heredoc(ms, delimiter);
 	else
 		waitpid(ms->pid_heredoc, &ms->heredoc_status, 0);
-	if (WIFSIGNALED(ms->heredoc_status))
-		ft_free_all(ms, NO, YES);
 	return (open(".heredoc", O_RDONLY));
 }
 
