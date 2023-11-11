@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 09:36:01 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/09 21:37:03 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/11/11 17:06:19 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void	ft_export_unset(t_minishell *ms, char *arg)
 	p = NULL;
 	while (e)
 	{
-		if (!strncmp(e->key, arg, ft_strmlen(arg, '=')))
+		if (!strncmp(e->key, arg, ft_strlen(e->key)))
 		{
 			if (ft_strchr(arg, '=') == NULL && e->value)
 				break ;

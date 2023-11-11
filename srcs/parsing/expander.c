@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 15:51:46 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/09 12:36:14 by jmarinho         ###   ########.fr       */
+/*   Updated: 2023/11/11 14:54:48 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,26 +40,26 @@ void	ft_expander(t_minishell *ms, t_token *token)
 	}
 }
 
-void	ft_expand_command(t_minishell *ms, t_token *token)
+void	ft_expand_command(t_minishell *ms, t_token *tkn)
 {
 	char	*tmp;
 	char	*key;
 	char	*value;
 
-	while (ft_strchr(token->content, '$') != NULL)
+	while (ft_strchr(tkn->content, '$') != NULL)
 	{
-		if (ft_in_squote(token->content, ft_strchr(token->content, '$')) == YES)
+		if (ft_in_squote(tkn->content, ft_strchr(tkn->content, '$')) == YES)
 			return ;
-		if ((ft_in_dquote(token->content, ft_strchr(token->content, '$')) == YES
-			) && (!(ft_strcmp(token->content, "\"$\""))))
+		if ((ft_in_dquote(tkn->content, ft_strchr(tkn->content, '$')) == YES)
+			&& (!(ft_strcmp(tkn->content, "\"$\""))))
 			return ;
-		key = ft_get_key(token->content);
+		key = ft_get_key(tkn->content);
 		if (ft_strncmp(key, "$?", 2) == 0)
 			value = ft_itoa(g_exit_status);
 		else
 			value = ft_get_env_value(&ms->env_lst, key);
-		tmp = token->content;
-		token->content = ft_replace_content(token->content, key, value);
+		tmp = tkn->content;
+		tkn->content = ft_replace_content(tkn->content, key, value);
 		free(tmp);
 		free(key);
 		free(value);

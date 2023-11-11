@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 09:30:28 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/10 19:02:04 by jmarinho         ###   ########.fr       */
+/*   Updated: 2023/11/11 12:35:20 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@
 # define E_SYNTAX	"syntax error near unexpected token"
 # define E_CMD		"command not found"
 # define E_FILE		"no such file or directory"
+# define E_DIR		"is a directory"
 # define E_MALLOC	"malloc error"
 # define E_PIPE		"pipe error"
 # define E_DUP2		"dup2 error"

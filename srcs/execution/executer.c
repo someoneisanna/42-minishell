@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executer.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 11:28:01 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/10 19:02:46 by jmarinho         ###   ########.fr       */
+/*   Updated: 2023/11/11 17:25:00 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,6 @@ void	ft_execute_cmd(t_minishell *ms, t_cmd *curr, char *cmd)
 	{
 		ft_build_envp(ms);
 		ft_execute_external(ms, curr, cmd);
-		ft_free_str_array(ms->envp);
 	}
 }
 
@@ -151,6 +150,7 @@ void	ft_execute_external(t_minishell *ms, t_cmd *curr, char *cmd)
 		i++;
 	}
 	ft_free_str_array(possible_paths);
+	ft_free_str_array(ms->envp);
 	if (ms->n_pipes > 0)
 		ft_free_pipes(ms);
 	ft_perror(ms, E_CMD, YES, cmd);

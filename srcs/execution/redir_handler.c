@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir_handler.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 13:50:25 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/10 13:21:25 by jmarinho         ###   ########.fr       */
+/*   Updated: 2023/11/11 17:41:50 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 int		ft_cmd_has_redir(t_cmd *curr);
 void	ft_handle_redir(t_minishell *m, t_cmd *c);
 int		ft_open_fd(t_minishell *m, t_cmd *c, char *filename, t_type filetype);
+int		ft_perror_fd(t_cmd *cmd, char *filename, t_type filetype);
 void	ft_close_fds(t_cmd *curr);
 
 int	ft_cmd_has_redir(t_cmd *curr)
@@ -69,10 +70,8 @@ int	ft_open_fd(t_minishell *m, t_cmd *c, char *filename, t_type filetype)
 	{
 		g_exit_status = 1;
 		m->file_error = YES;
-		if (ft_strlen(filename) > 0)
-			printf("minishell: %s: %s: %s\n", c->cmd, filename, E_FILE);
-		else
-			printf("minishell: ambiguous redirect\n");
+		if (ft_perror_fd(c, filename, filetype) != 0)
+			return (0);
 		if (m->n_pipes > 0)
 			ft_free_pipes(m);
 		if (ft_is_forkable(m, NO) == TRUE)
@@ -81,6 +80,30 @@ int	ft_open_fd(t_minishell *m, t_cmd *c, char *filename, t_type filetype)
 			ft_perror(m, NULL, NO, NULL);
 	}
 	return (fd);
+}
+
+int	ft_perror_fd(t_cmd *c, char *filename, t_type filetype)
+{
+	if (ft_strlen(filename) == 0)
+	{
+		printf("minishell: ambiguous redirect\n");
+		return (0);
+	}
+	if (filetype == T_FILE_IN)
+	{
+		if (!c)
+			return (printf("minishell: %s: %s\n", filename, E_FILE));
+		else
+			printf("minishell: %s: %s\n", filename, E_FILE);
+	}
+	else if (filetype == T_FILE_TR || filetype == T_FILE_AP)
+	{
+		if (!c)
+			return (printf("minishell: %s: %s\n", filename, E_DIR));
+		else
+			printf("minishell: %s: %s\n", filename, E_DIR);
+	}
+	return (0);
 }
 
 void	ft_close_fds(t_cmd *curr)

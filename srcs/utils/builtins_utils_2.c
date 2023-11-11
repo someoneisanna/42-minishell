@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_utils_2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 16:58:00 by jmarinho          #+#    #+#             */
-/*   Updated: 2023/11/10 19:02:30 by jmarinho         ###   ########.fr       */
+/*   Updated: 2023/11/11 17:26:07 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ void	ft_unsetable(t_minishell *ms, char *cmd)
 	{
 		printf("minishell: %s: no such file or directory\n", cmd);
 		g_exit_status = 127;
+		ft_free_all(ms, YES, YES);
 	}
 	ft_free_str_array(path_array);
 }
