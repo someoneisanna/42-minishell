@@ -11,7 +11,7 @@ NAME = minishell
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g
 LFLAGS = -lreadline
 
 RM = rm -f
@@ -75,8 +75,5 @@ fclean: clean
 	@printf "$(RED)	Executable ./$(NAME) was removed.\n$(RESET)"
 
 re: fclean all
-
-valgrind: all
-	@valgrind --suppressions=readline.supp --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(NAME)
 
 .PHONY: all clean fclean re

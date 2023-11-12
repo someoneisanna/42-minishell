@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executer.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 11:28:01 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/11 17:25:00 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/11/12 18:39:49 by jmarinho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	ft_execute_only_cmd(t_minishell *ms, t_cmd *curr, char *cmd)
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
 		ft_has_heredoc(ms);
-		ft_unsetable(ms, cmd);
+		// ft_unsetable(ms, cmd);
 		if (ft_cmd_has_redir(curr) == TRUE)
 			ft_handle_redir(ms, curr);
 		ft_execute_cmd(ms, curr, cmd);
@@ -123,6 +123,18 @@ void	ft_execute_cmd(t_minishell *ms, t_cmd *curr, char *cmd)
 	else
 	{
 		ft_build_envp(ms);
+		if (ft_find_env(ms->env_lst, "PATH") == NULL)
+		{
+			if (cmd[0] == '/' || (cmd[0] == '.' && cmd[1] == '/'))
+			{
+				if (access(cmd, F_OK | X_OK) == 0)
+					execve(cmd, curr->args, ms->envp);
+				ft_perror(ms, E_CMD, YES, cmd);
+					
+			}
+			else
+				ft_perror(ms, E_FILE, YES, cmd);
+		}
 		ft_execute_external(ms, curr, cmd);
 	}
 }
@@ -136,7 +148,7 @@ void	ft_execute_external(t_minishell *ms, t_cmd *curr, char *cmd)
 	i = 0;
 	possible_paths = ft_get_paths(ms->env_lst);
 	if (!possible_paths)
-		ft_perror(ms, NULL, YES, NULL);
+		ft_perror(ms, E_CMD, YES, cmd);
 	while (possible_paths[i])
 	{
 		possible_path = ft_find_path(cmd, possible_paths[i]);
