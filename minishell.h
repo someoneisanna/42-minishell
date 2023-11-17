@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 09:30:28 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/11 12:35:20 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/11/17 10:30:19 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -300,7 +300,7 @@ int		ft_strmlen(char *s, char match);
 // builtins_utils_2.c
 bool	ft_args_are_valid(char *arg, int export_flag);
 int		ft_strmlen(char *s, char match);
-void	ft_unsetable(t_minishell *ms, char *cmd);
+void	ft_if_no_path(t_minishell *ms, t_cmd *curr, char *cmd);
 void	ft_build_envp(t_minishell *ms);
 
 // SIGNALS _____________________________________________________________________

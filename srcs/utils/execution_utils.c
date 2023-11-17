@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 17:02:07 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/12 18:27:16 by jmarinho         ###   ########.fr       */
+/*   Updated: 2023/11/17 10:27:44 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,5 @@ void	ft_execute_mult_cmd_helper(t_minishell *ms, t_cmd *curr, int flag)
 			signal(SIGINT, ft_handler_heredoc);
 			signal(SIGQUIT, SIG_IGN);
 		}
-		// ft_unsetable(ms, curr->cmd);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 16:58:00 by jmarinho          #+#    #+#             */
-/*   Updated: 2023/11/11 17:26:07 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/11/17 10:33:25 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 bool	ft_args_are_valid(char *arg, int export_flag);
 int		ft_strmlen(char *s, char match);
-void	ft_unsetable(t_minishell *ms, char *cmd);
+void	ft_if_no_path(t_minishell *ms, t_cmd *curr, char *cmd);
 void	ft_build_envp(t_minishell *ms);
 
 bool	ft_args_are_valid(char *arg, int export_flag)
@@ -47,30 +47,23 @@ int	ft_strmlen(char *s, char match)
 	return (i);
 }
 
-void	ft_unsetable(t_minishell *ms, char *cmd)
+void	ft_if_no_path(t_minishell *ms, t_cmd *curr, char *cmd)
 {
-	char	**path_array;
-
-	if (ft_strncmp(cmd, "echo", 5) == 0)
-		return ;
-	else if (ft_strncmp(cmd, "pwd", 4) == 0)
-		return ;
-	else if (ft_strncmp(cmd, "export", 7) == 0)
-		return ;
-	else if (ft_strncmp(cmd, "unset", 6) == 0)
-		return ;
-	else if (ft_strncmp(cmd, "cd", 3) == 0)
-		return ;
-	else if (ft_strncmp(cmd, "exit", 5) == 0)
-		return ;
-	path_array = ft_get_paths(ms->env_lst);
-	if (!path_array)
+	if (ft_find_env(ms->env_lst, "PATH") == NULL)
 	{
-		printf("minishell: %s: no such file or directory\n", cmd);
-		g_exit_status = 127;
-		ft_free_all(ms, YES, YES);
+		if (cmd[0] == '/' || (cmd[0] == '.' && cmd[1] == '/'))
+		{
+			if (access(cmd, F_OK | X_OK) == 0)
+				execve(cmd, curr->args, ms->envp);
+			ft_free_str_array(ms->envp);
+			ft_perror(ms, E_CMD, YES, cmd);
+		}
+		else
+		{
+			ft_free_str_array(ms->envp);
+			ft_perror(ms, E_FILE, YES, cmd);
+		}
 	}
-	ft_free_str_array(path_array);
 }
 
 void	ft_build_envp(t_minishell *ms)

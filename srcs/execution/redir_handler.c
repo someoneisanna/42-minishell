@@ -6,7 +6,7 @@
 /*   By: ataboada <ataboada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 13:50:25 by ataboada          #+#    #+#             */
-/*   Updated: 2023/11/11 17:41:50 by ataboada         ###   ########.fr       */
+/*   Updated: 2023/11/17 10:18:06 by ataboada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,8 @@ int	ft_perror_fd(t_cmd *c, char *filename, t_type filetype)
 	if (ft_strlen(filename) == 0)
 	{
 		printf("minishell: ambiguous redirect\n");
+		if (!c)
+			return (42);
 		return (0);
 	}
 	if (filetype == T_FILE_IN)
