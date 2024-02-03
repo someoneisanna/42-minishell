@@ -1,0 +1,52 @@
+
+This is a folder that will help us understand some functions
+
+It was done using Indradhanush Gupta's tutorial on Writing a Unix Shell
+
+The right order is: (you don't have to follow it, but it was created in that order):
+	1. forks
+		- forks_0: fork
+		- forks_1: fork, wait
+	2. execve
+		- execve_0: execve
+		- execve_1: fork, execve
+	3. readline
+		- readline_0: readline
+		- readline_1: readline, fork, execve, wait
+		- readline_2: readline, add_history
+		- readline_3: readline, add_history, rl_clear_history
+		- readline_4: readline, add_history, rl_on_new_line, rl_replace_line,
+					  rl_redisplay
+	4. chdir
+		- chdir_0: getcwd
+		- chdir_1: chdir
+		- chdir_2: chdir, readline, fork, execvp (not execve, but similar), wait
+	5. signals
+		- signals_0: signal
+		- signals_1: fork, signal
+		- signals_2: sigemptyset, sigaction
+		- signals_3: sigemptyset, sigaddset
+	6. kill
+		- kill_0: fork, kill, waitpid
+	7. stat
+		- stat_0: stat
+		- stat_1: lstat
+		- stat_2: fstat
+	8. dir
+		- opendir_0: opendir, readdir, closedir
+	9. getenv
+		- getenv_0: getenv
+	10. pipe
+		- pipe_0: pipe, fork, wait
+		- pipe_1: pipe, fork, waitpid, dup2, access, execve
+		- pipe_2: unlink
+	11. tty
+		- tty_0: isatty, ttyname, ttyslot
+		- tty_1: ioctl
+		- tty_2: ioctl
+	12. termios
+		- termios_0: tcsetattr, tcgetattr
+	13. curses
+		- curses_0: getenv, tgetent, tgetflag, tgetnum
+		- curses_1: getenv, tgetent, tgetstr, tputs
+		- curses_2: getenv, tgetent, tgoto, tputs
